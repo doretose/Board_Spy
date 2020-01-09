@@ -35,6 +35,7 @@ public class NetworkManager : MonoBehaviourPunCallbacks
     List<RoomInfo> myList = new List<RoomInfo>();
     int currentPage = 1, maxPage, multiple;
 
+    
 
 
     #region 방리스트 갱신
@@ -84,7 +85,13 @@ public class NetworkManager : MonoBehaviourPunCallbacks
 
 
     #region 서버연결
-    void Awake() => Screen.SetResolution(960, 540, false);
+    void Awake()
+    {
+        Screen.SetResolution(960, 540, false);
+        PhotonNetwork.AutomaticallySyncScene = true;
+
+    }
+    
 
     void Update()
     {
@@ -127,6 +134,7 @@ public class NetworkManager : MonoBehaviourPunCallbacks
         RoomPanel.SetActive(true);
         RoomRenewal();
         ChatInput.text = "";
+        
         for (int i = 0; i < ChatText.Length; i++) ChatText[i].text = "";
     }
 
@@ -155,11 +163,13 @@ public class NetworkManager : MonoBehaviourPunCallbacks
         RoomRenewal();
         PV.RPC("ChatRPC", RpcTarget.All, "<color=yellow>" + otherPlayer.NickName + "님이 퇴장하셨습니다</color>");
     }
-
-    public void GameStart()
+    
+    static void GameStart()
     {
+        
         PhotonNetwork.LoadLevel(1);
     }
+
     void RoomRenewal()
     {
         ListText.text = "";
