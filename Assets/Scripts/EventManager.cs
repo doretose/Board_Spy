@@ -7,7 +7,7 @@ public class EventManager : MonoBehaviour
     #region 타일관련 변수
     //이벤트를 처리해야할 내용을 다음 selectTiles와 최종 점령지를 나타내고 있는 occtiles
     public static List<List<List<Tiles>>> selectTiles = new List<List<List<Tiles>>>();
-    public static int[,] occTiles = new int[15, 8];
+    public static int[,] occTiles = new int[15, 8]; // [ 1,1,1, 2, 2, 2, 0, 0 ,0  ]
 
     public static List<int> tileLocX = new List<int>();
     public static List<int> tileLocY = new List<int>();
