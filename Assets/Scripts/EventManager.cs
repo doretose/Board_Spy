@@ -50,7 +50,8 @@ public class EventManager : MonoBehaviour
             {
                 if (occTiles[i, j] != 0)
                 {
-                    switch (occTiles[i,i])
+                    Debug.Log(occTiles[i, j]);
+                    switch (occTiles[i,j])
                     {
                         case 1:
                             {

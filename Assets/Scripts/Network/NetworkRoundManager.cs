@@ -25,16 +25,15 @@ public class NetworkRoundManager : MonoBehaviourPunCallbacks, IPunObservable
     //호스트가 관리하고 각 클라이언트에게 공유되는 변수들
     public int startPlayerId; //현재 라운드의 선 플레이어
     public int inRoundingPlayerId; //현재 라운드의 턴을 진행하고 있는 플레이어
-    public int nowRound = 0; // 라운드
+    public static int nowRound = 0; // 라운드
 
     //호스트만 관리하는 변수들
     private List<bool> playerTrun = new List<bool>(); //해당 라운드에서 플레이어턴이 끝났는지 확인 모든 값이 false이면 다음 라운드로 진행
-<<<<<<< HEAD
+
     private bool cardDraw = false;
-    public static List<int> cardNum = new List<int>();
-=======
+
     public static List<int> cardNum = new List<int>(); //각 플레이어의 핸드 수를 확인 [0 = 1player ... 3 = 4player]
->>>>>>> b5bea4f971613b3000d6e515134d7712303b80fb
+
 
     //Select Button 클릭시 사용한 카드 ID와 좌표값을 EventManager 타일변수에 입력
     public static int? selectCard = null;
@@ -261,12 +260,16 @@ public class NetworkRoundManager : MonoBehaviourPunCallbacks, IPunObservable
             stream.SendNext(startPlayerId);
             stream.SendNext(inRoundingPlayerId);
             stream.SendNext(nowRound);
+            stream.SendNext(cardNum[0]);
+            stream.SendNext(cardNum[1]);
         }
         else
         {
             startPlayerId = (int)stream.ReceiveNext();
             inRoundingPlayerId = (int)stream.ReceiveNext();
             nowRound = (int)stream.ReceiveNext();
+            cardNum[0] = (int)stream.ReceiveNext();
+            cardNum[1] = (int)stream.ReceiveNext();
         }
     }
 }

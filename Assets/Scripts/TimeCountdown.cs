@@ -33,11 +33,7 @@ public class TimeCountdown : MonoBehaviour
             {
                 this.GetComponent<NetworkRoundManager>().EndTrun();
                 timeText.gameObject.SetActive(false);
-<<<<<<< HEAD
                 timerBoolean = false;
-                this.GetComponent<NetworkRoundManager>().EndTrun();
-=======
->>>>>>> b5bea4f971613b3000d6e515134d7712303b80fb
             }
         }
         else
