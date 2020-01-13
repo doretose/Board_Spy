@@ -11,46 +11,51 @@ public class NetworkRoundManager : MonoBehaviourPunCallbacks, IPunObservable
     PhotonView pv;
 
     public GameObject flag_1, flag_2, flag_3, flag_4;
-    public int startPlayerId;
-    public int inRoundingPlayerId;
-    public int nowRound = 1;
-    private int myPlayerId;
+    public int startPlayerId; //현재 라운드의 선 플레이어
+    public int inRoundingPlayerId; //현재 라운드의 턴을 진행하고 있는 플레이어
+    public int nowRound = 0; // 라운드
+    private int myPlayerId; 
     public static int public_Player_Id;
+    public static int public_nowRound;
 
     public TextMeshProUGUI roundText;
     public TextMeshProUGUI TrunText;
     public Button endButton;
     public Button selectButton;
 
-    private List<bool> playerTrun = new List<bool>();
+    private List<bool> playerTrun = new List<bool>(); //해당 라운드에서 플레이어턴이 끝났는지 확인 모든 값이 false이면 다음 라운드로 진행
+    private bool cardDraw = false;
 
+    //Select Button 클릭시 사용한 카드 ID와 좌표값을 EventManager 타일변수에 입력
     public static int? selectCard = null;
     public static int locX, locY;
-
-    // Start is called before the first frame update;
+    
     void Awake()
     {
         pv = this.GetComponent<PhotonView>();
+
+        //최초 선플레이어 지정, 모든 유저의 Turn을 True 플레이어 Id값 입력
         if (PhotonNetwork.IsMasterClient)
         {
-            if (PhotonNetwork.IsMasterClient) startPlayerId = Random.Range(0, PhotonNetwork.PlayerList.Length);
+            startPlayerId = Random.Range(0, PhotonNetwork.PlayerList.Length);
             inRoundingPlayerId = startPlayerId;
-            for (int i =0; i < PhotonNetwork.PlayerList.Length; i++)
-            {
-                playerTrun.Add(true);
-            }
+        }
+        for (int i = 0; i < PhotonNetwork.PlayerList.Length; i++)
+        {
+            playerTrun.Add(true);
         }
         myPlayerId = PhotonNetwork.LocalPlayer.ActorNumber;
         public_Player_Id = myPlayerId;
     }
 
-    // Update is called once per frame
     void FixedUpdate()
     {
+        
         Debug.Log($"방에 참가한 인원 수 : {PhotonNetwork.PlayerList.Length}");
         Debug.Log($"나의 PlayerId : {myPlayerId}");
         Debug.Log($"현재 라운드 선플레이어 : {startPlayerId + 1}");
 
+        //라운드 종료함수 호출
         if (PhotonNetwork.IsMasterClient)
         {
             if (!playerTrun.Contains(true))
@@ -63,7 +68,6 @@ public class NetworkRoundManager : MonoBehaviourPunCallbacks, IPunObservable
         //해당 턴 플레이어만 버튼 활성화
         if (myPlayerId == inRoundingPlayerId + 1)
         {
-            //if (!myTurn) EndTrun();
             endButton.interactable = true;
             //카드, 타일 선택이 모두 완료되면 셀렉트버튼 활성화
             if (selectCard.HasValue && MouseScripts.choice_Map == true) { selectButton.interactable = true; }
@@ -75,14 +79,21 @@ public class NetworkRoundManager : MonoBehaviourPunCallbacks, IPunObservable
             selectButton.interactable = false;
         }
 
-        
+        if(nowRound != 0 && cardDraw == false && GameObject.Find("Hand").transform.childCount < 2)
+        {
+            cardDraw = true;
+            if(!PhotonNetwork.IsMasterClient) pv.RPC("requestCardDraw", RpcTarget.MasterClient);
+        }
+
+        //UI 스크립트
         TrunText.text = $"{inRoundingPlayerId + 1}player Turn";
         roundText.text = $"{nowRound} Round";
     }
 
     #region RPC함수
+    
     [PunRPC]
-    private void RPCNextPlayer(int plyerId)
+    private void RPCEndPlayer(int plyerId)
     {
         if (PhotonNetwork.IsMasterClient)
         {
@@ -92,13 +103,27 @@ public class NetworkRoundManager : MonoBehaviourPunCallbacks, IPunObservable
     }
 
     [PunRPC]
+    private void RPCNextPlayer()
+    {
+        if (PhotonNetwork.IsMasterClient)
+        {
+            inRoundingPlayerId = (inRoundingPlayerId + 1) % PhotonNetwork.PlayerList.Length;
+            if (!playerTrun.Contains(true)) return;
+            if (playerTrun[inRoundingPlayerId] == false) RPCNextPlayer();
+        }
+    }
+
+    [PunRPC]
     private void CardDisStart() => GameObject.Find("DeckSystem").GetComponent<CardDistribute>().AllPlayerCardDistribute();
+
+    [PunRPC]
+    private void requestCardDraw() => cardDraw = true;
 
     [PunRPC]
     private void RPCRoundEnd()
     {
         Debug.Log(GameObject.Find("Hand").transform.childCount);
-        if (GameObject.Find("Hand").transform.childCount < 2)
+        if (cardDraw)
         {
             pv.RPC("CardDisStart", RpcTarget.MasterClient);
         }
@@ -119,6 +144,7 @@ public class NetworkRoundManager : MonoBehaviourPunCallbacks, IPunObservable
     {
         //playerId, cardId
         EventManager.selectTiles[locX][locY].Add(new Tiles(playerId, value));
+        EventManager.occTiles[locX,locY] = playerId;
         EventManager.tileLocX.Add(locX);
         EventManager.tileLocY.Add(locY);
 
@@ -167,15 +193,15 @@ public class NetworkRoundManager : MonoBehaviourPunCallbacks, IPunObservable
     #region 버튼 및 함수부
     public void EndTrun()
     {
+        playerTrun[myPlayerId - 1] = false;
         if (!PhotonNetwork.IsMasterClient)
         {
             Debug.Log("send Master next Trun");
-            pv.RPC("RPCNextPlayer", RpcTarget.MasterClient, myPlayerId);
+            pv.RPC("RPCEndPlayer", RpcTarget.MasterClient, myPlayerId);
         }
         else
         {
             inRoundingPlayerId = (inRoundingPlayerId + 1) % PhotonNetwork.PlayerList.Length;
-            playerTrun[myPlayerId - 1] = false;
         }
     }
 
@@ -199,7 +225,7 @@ public class NetworkRoundManager : MonoBehaviourPunCallbacks, IPunObservable
         GameObject destoy_Card = GameObject.FindGameObjectWithTag("UseCard");
         Destroy(destoy_Card);
 
-        EndTrun();
+        pv.RPC("RPCNextPlayer", RpcTarget.MasterClient);
         selectCard = null;
     }
     #endregion

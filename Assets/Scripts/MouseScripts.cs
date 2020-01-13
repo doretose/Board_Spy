@@ -29,7 +29,7 @@ public class MouseScripts : MonoBehaviour
         if (Physics.Raycast(ray, out hitInfo))
         {
             GameObject ourHitObject = hitInfo.collider.transform.gameObject;
-            if (ourHitObject.GetComponent<Hex>() != null)
+            if (ourHitObject.GetComponent<Hex>() != null && !ourHitObject.GetComponent<Hex>().thisBaseCamp)
             {
                 //Debug.Log("Raycast hit: " + ourHitObject.name);
                 if (Input.GetMouseButtonDown(0))

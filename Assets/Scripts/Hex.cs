@@ -7,6 +7,7 @@ public class Hex : MonoBehaviour
     // Our coordinates in the map array
     public int x;
     public int y;
+    public bool thisBaseCamp = false;
 
     public Hex[] GetNeighbours()
     {
