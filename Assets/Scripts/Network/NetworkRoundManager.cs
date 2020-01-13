@@ -122,7 +122,7 @@ public class NetworkRoundManager : MonoBehaviourPunCallbacks, IPunObservable
     [PunRPC]
     private void RPCRoundEnd()
     {
-        Debug.Log(GameObject.Find("Hand").transform.childCount);
+        //Debug.Log(GameObject.Find("Hand").transform.childCount);
         if (cardDraw)
         {
             pv.RPC("CardDisStart", RpcTarget.MasterClient);
