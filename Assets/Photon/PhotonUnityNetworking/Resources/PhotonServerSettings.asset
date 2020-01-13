@@ -41,5 +41,7 @@ MonoBehaviour:
   - RPCCardUseData
   - RPCNextPlayer
   - RPCRoundEnd
+  - requestCardDraw
+  - RPCEndPlayer
   DisableAutoOpenWizard: 1
   ShowSettings: 1

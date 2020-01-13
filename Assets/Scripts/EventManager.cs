@@ -5,10 +5,13 @@ using UnityEngine;
 public class EventManager : MonoBehaviour
 {
     #region 타일관련 변수
-    //test
+    //이벤트를 처리해야할 내용을 다음 selectTiles와 최종 점령지를 나타내고 있는 occtiles
     public static List<List<List<Tiles>>> selectTiles = new List<List<List<Tiles>>>();
+    public static int[,] occTiles = new int[15, 8];
+
     public static List<int> tileLocX = new List<int>();
     public static List<int> tileLocY = new List<int>();
+    
 
     private int LocX, LocY;
     #endregion
@@ -36,6 +39,7 @@ public class EventManager : MonoBehaviour
             for (int j = 0; j < selectTiles[LocX][LocY].Count; ++j)
             {
                 Debug.Log(j+1 + "번째 선택좌표 : (" + LocX + ", " + LocY + ") playerId, CardId = " + selectTiles[LocX][LocY][j].playerId + ",  " + selectTiles[LocX][LocY][j].cardId);
+                Debug.Log($"{occTiles[LocX, LocY]}plyer 점령 땅 : ({LocX} , {LocY})");
             }
         }
     }

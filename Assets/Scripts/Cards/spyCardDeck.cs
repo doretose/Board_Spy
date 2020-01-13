@@ -13,7 +13,6 @@ public class spyCardDeck : MonoBehaviour
 
     public GameObject CardToHand;
     public GameObject CardToHandAttack;
-    public GameObject[] Clones;
 
     public GameObject Hand;
 
