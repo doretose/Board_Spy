@@ -11,7 +11,8 @@ public class EventManager : MonoBehaviour
 
     public static List<int> tileLocX = new List<int>();
     public static List<int> tileLocY = new List<int>();
-    
+
+    public static int[] player_count = new int[4];
 
     private int LocX, LocY;
     #endregion
@@ -42,5 +43,39 @@ public class EventManager : MonoBehaviour
                 Debug.Log($"{occTiles[LocX, LocY]}plyer 점령 땅 : ({LocX} , {LocY})");
             }
         }
+
+        for (int i = 0; i < occTiles.GetLength(0); i++)
+        {
+            for (int j = 0; j < occTiles.GetLength(1); j++)
+            {
+                if (occTiles[i, j] != 0)
+                {
+                    switch (occTiles[i,i])
+                    {
+                        case 1:
+                            {
+                                player_count[0] += 1;
+                                break;
+                            }
+                        case 2:
+                            {
+                                player_count[1] += 1;
+                                break;
+                            }
+                        case 3:
+                            {
+                                player_count[2] += 1;
+                                break;
+                            }
+                        case 4:
+                            {
+                                player_count[3] += 1;
+                                break;
+                            }
+                    }
+                }
+            }
+        }
+        
     }
 }

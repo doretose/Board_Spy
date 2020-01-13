@@ -27,7 +27,7 @@ public class TimeCountdown : MonoBehaviour
             {
                 timeText.gameObject.SetActive(false);
                 timerBoolean = false;
-                this.GetComponent<NetworkRoundManager>().();
+                this.GetComponent<NetworkRoundManager>().EndTrun();
             }
         }
     }

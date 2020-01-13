@@ -27,14 +27,14 @@ public class NetworkManager : MonoBehaviourPunCallbacks
     public Text RoomInfoText;
     public Text[] ChatText;
     public InputField ChatInput;
-
+    
     [Header("ETC")]
     public Text StatusText;
     public PhotonView PV;
 
     List<RoomInfo> myList = new List<RoomInfo>();
     int currentPage = 1, maxPage, multiple;
-
+    public static int Player_Count;
     
 
 
@@ -154,7 +154,8 @@ public class NetworkManager : MonoBehaviourPunCallbacks
         }
         else
         {
-            StartBtn.interactable = (PhotonNetwork.CurrentRoom.PlayerCount >= 2) ? true : false;
+            Player_Count = PhotonNetwork.CurrentRoom.PlayerCount;
+            StartBtn.interactable = (Player_Count >= 2) ? true : false;
         }
     }
 

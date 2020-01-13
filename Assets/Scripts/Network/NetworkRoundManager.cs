@@ -25,6 +25,7 @@ public class NetworkRoundManager : MonoBehaviourPunCallbacks, IPunObservable
 
     private List<bool> playerTrun = new List<bool>(); //해당 라운드에서 플레이어턴이 끝났는지 확인 모든 값이 false이면 다음 라운드로 진행
     private bool cardDraw = false;
+    public static List<int> cardNum = new List<int>();
 
     //Select Button 클릭시 사용한 카드 ID와 좌표값을 EventManager 타일변수에 입력
     public static int? selectCard = null;
