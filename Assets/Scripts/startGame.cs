@@ -6,6 +6,6 @@ public class startGame : MonoBehaviour
     public void OnClickStartSync()
     {
         Debug.Log("시작하기전");
-        PhotonNetwork.LoadLevel("SampleScene");
+        PhotonNetwork.LoadLevel(1);
     }
 }

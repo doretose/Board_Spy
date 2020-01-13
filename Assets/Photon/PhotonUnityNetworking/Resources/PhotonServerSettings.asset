@@ -36,5 +36,10 @@ MonoBehaviour:
   - RespawnSpaceship
   - ChatRPC
   - GameStart
+  - CardDisStart
+  - RPCCardDistribute
+  - RPCCardUseData
+  - RPCNextPlayer
+  - RPCRoundEnd
   DisableAutoOpenWizard: 1
   ShowSettings: 1

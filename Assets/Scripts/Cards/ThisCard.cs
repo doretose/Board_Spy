@@ -72,10 +72,10 @@ public class ThisCard : MonoBehaviour, IPointerClickHandler
 
     public void OnPointerClick(PointerEventData eventData)
     {
-        int? selectNum = RoundManager.selectCAndT[0, 0];
+        int? selectNum = NetworkRoundManager.selectCard;
         if (cardSelect)
         {
-            RoundManager.selectCAndT[0, 0] = null;
+            NetworkRoundManager.selectCard = null;
             cardSelect = false;
             this.tag = "Untagged";
             GetComponent<CardToHand>().selectThisCard = false;
@@ -88,7 +88,7 @@ public class ThisCard : MonoBehaviour, IPointerClickHandler
         else
         {
             //플레이어 ID와 카드 ID값을 이벤트처리 배열에 입력
-            RoundManager.selectCAndT[0, 0] = id;
+            NetworkRoundManager.selectCard = id;
             cardSelect = true;
             this.tag = "UseCard";
             GetComponent<CardToHand>().selectThisCard = true;

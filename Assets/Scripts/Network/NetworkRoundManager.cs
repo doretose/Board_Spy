@@ -10,10 +10,12 @@ public class NetworkRoundManager : MonoBehaviourPunCallbacks, IPunObservable
 {
     PhotonView pv;
 
+    public GameObject flag_1, flag_2, flag_3, flag_4;
     public int startPlayerId;
     public int inRoundingPlayerId;
     public int nowRound = 1;
     private int myPlayerId;
+    public static int public_Player_Id;
 
     public TextMeshProUGUI roundText;
     public TextMeshProUGUI TrunText;
@@ -39,6 +41,7 @@ public class NetworkRoundManager : MonoBehaviourPunCallbacks, IPunObservable
             }
         }
         myPlayerId = PhotonNetwork.LocalPlayer.ActorNumber;
+        public_Player_Id = myPlayerId;
     }
 
     // Update is called once per frame
@@ -62,7 +65,6 @@ public class NetworkRoundManager : MonoBehaviourPunCallbacks, IPunObservable
         {
             //if (!myTurn) EndTrun();
             endButton.interactable = true;
-
             //카드, 타일 선택이 모두 완료되면 셀렉트버튼 활성화
             if (selectCard.HasValue && MouseScripts.choice_Map == true) { selectButton.interactable = true; }
             else { selectButton.interactable = false; }
@@ -119,6 +121,45 @@ public class NetworkRoundManager : MonoBehaviourPunCallbacks, IPunObservable
         EventManager.selectTiles[locX][locY].Add(new Tiles(playerId, value));
         EventManager.tileLocX.Add(locX);
         EventManager.tileLocY.Add(locY);
+
+        
+        //좌표 읽어오기
+        Debug.Log("choice");
+        GameObject go = GameObject.Find(locX + ", " + locY);
+        MeshRenderer mr = go.GetComponent<MeshRenderer>();
+        float pos_x = go.transform.position.x;
+        float pos_z = go.transform.position.z;
+
+        switch (playerId)
+        {
+            case 1:
+                {
+                    Instantiate(flag_1, new Vector3(pos_x, 1, pos_z), flag_1.transform.rotation);
+                    mr.material.color = new Color(255 / 255f, 0, 0);
+                    break;
+                }
+            case 2:
+                {
+                    Instantiate(flag_2, new Vector3(pos_x, 1, pos_z), flag_2.transform.rotation);
+                    mr.material.color = new Color(83 / 255f, 147 / 255f, 224 / 255f);
+                    break;
+                }
+            case 3:
+                {
+                    Instantiate(flag_3, new Vector3(pos_x, 1, pos_z), flag_3.transform.rotation);
+                    mr.material.color = new Color(248 / 255f, 215 / 255f, 0);
+                    //mr.material = Resources.Load("player_choice_yellow", typeof(Material)) as Material;
+                    break;
+                }
+            case 4:
+                {
+                    Instantiate(flag_4, new Vector3(pos_x, 1, pos_z), flag_4.transform.rotation);
+                    mr.material.color = new Color(168 / 255f, 0 / 255f, 255 / 255f);
+                    //mr.material = Resources.Load("player_choice_yellow", typeof(Material)) as Material;
+                    break;
+                }
+        }
+        
     }
 
     #endregion
