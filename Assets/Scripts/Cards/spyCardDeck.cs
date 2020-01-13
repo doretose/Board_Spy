@@ -39,7 +39,7 @@ public class spyCardDeck : MonoBehaviour
             }
         }
         Shuffle();
-        StartCoroutine(StartGame());
+        //StartCoroutine(StartGame());
     }
 
     // Update is called once per frame
