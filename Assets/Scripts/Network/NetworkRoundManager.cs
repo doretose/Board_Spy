@@ -16,6 +16,7 @@ public class NetworkRoundManager : MonoBehaviourPunCallbacks, IPunObservable
     public TextMeshProUGUI TrunText;
     public Button endButton;
     public Button selectButton;
+    public Button baseSelectButton;
 
     //플레이어의 정체성
     private int myPlayerId; 
@@ -29,16 +30,16 @@ public class NetworkRoundManager : MonoBehaviourPunCallbacks, IPunObservable
 
     //호스트만 관리하는 변수들
     private List<bool> playerTrun = new List<bool>(); //해당 라운드에서 플레이어턴이 끝났는지 확인 모든 값이 false이면 다음 라운드로 진행
-
-    private bool cardDraw = false;
-
     public static List<int> cardNum = new List<int>(); //각 플레이어의 핸드 수를 확인 [0 = 1player ... 3 = 4player]
-
 
     //Select Button 클릭시 사용한 카드 ID와 좌표값을 EventManager 타일변수에 입력
     public static int? selectCard = null;
-    public static int locX, locY;
-    
+    private int locX, locY;
+
+    //시간제한 함수
+    public TextMeshProUGUI timeText;
+    private float timeCost;
+
     void Awake()
     {
         pv = this.GetComponent<PhotonView>();
@@ -56,47 +57,64 @@ public class NetworkRoundManager : MonoBehaviourPunCallbacks, IPunObservable
         }
         myPlayerId = PhotonNetwork.LocalPlayer.ActorNumber;
         public_Player_Id = myPlayerId;
+        timeCost = 20;
     }
 
     void FixedUpdate()
     {
-        Debug.Log($"방에 참가한 인원 수 : {PhotonNetwork.PlayerList.Length}");
-        Debug.Log($"나의 PlayerId : {myPlayerId}");
-        Debug.Log($"현재 라운드 선플레이어 : {startPlayerId + 1}");
-        
-
         //라운드 종료함수 호출(호스트만)
         if (PhotonNetwork.IsMasterClient)
         {
-            Debug.Log($"현재 카드수 1 : {cardNum[0]}, 2 : {cardNum[1]}, 3 :  4 : ");
             if (!playerTrun.Contains(true))
             {
                 Debug.Log("라운드종료 함수 호출");
                 RPCRoundEnd();
             }
         }
+
+        roundText.text = $"{nowRound} Round";
+
+        //베이스 캠프 선택 0라운드
+        if (nowRound == 0)
+        {
+            TrunText.text = $"{inRoundingPlayerId + 1}player BaseCamp Select";
+            endButton.interactable = false;
+            selectButton.interactable = false;
+            timeText.gameObject.SetActive(false);
+
+            if (myPlayerId == inRoundingPlayerId + 1)
+            {
+                if (MouseScripts.choice_Map == true) baseSelectButton.interactable = true;
+                else baseSelectButton.interactable = false;
+            }
+            return;
+        }
         
         //해당 턴 플레이어만 버튼 활성화
         if (myPlayerId == inRoundingPlayerId + 1)
         {
             endButton.interactable = true;
+            TimeCount();//시간제한 함수 실행
+
             //카드, 타일 선택이 모두 완료되면 셀렉트버튼 활성화
             if (selectCard.HasValue && MouseScripts.choice_Map == true) { selectButton.interactable = true; }
             else { selectButton.interactable = false; }
         }
         else
         {
+            //시간제한
+            timeText.gameObject.SetActive(false);
+            timeCost = 20;
+
             endButton.interactable = false;
             selectButton.interactable = false;
         }
 
         //UI 스크립트
-        TrunText.text = $"{inRoundingPlayerId + 1}player Turn";
-        roundText.text = $"{nowRound} Round";
+        TrunText.text = $"{inRoundingPlayerId + 1}player Turn";   
     }
 
     #region RPC함수
-
     //버튼 이벤트 EndTurn 호스트에게만 => RPCEndPlayer()
     //해당 player의 Trun상황을 호스트가 False로 변경해주고 다음 플레이어로 변경
     [PunRPC]
@@ -156,8 +174,7 @@ public class NetworkRoundManager : MonoBehaviourPunCallbacks, IPunObservable
     {
         if(PhotonNetwork.IsMasterClient) cardNum[playerId - 1] -= 1;
         //playerId, cardId
-        EventManager.selectTiles[locX][locY].Add(new Tiles(playerId, value));
-        EventManager.occTiles[locX,locY] = playerId;
+        EventManager.setSelectTiles(locX, locY, playerId, value);
         EventManager.tileLocX.Add(locX);
         EventManager.tileLocY.Add(locY);
 
@@ -197,7 +214,18 @@ public class NetworkRoundManager : MonoBehaviourPunCallbacks, IPunObservable
                     break;
                 }
         }
-        
+    }
+
+    [PunRPC]
+    private void RPCSelectBase(int locX, int locY, int playerId)
+    {
+        EventManager.setOccTiles(locX, locY, playerId);
+
+        GameObject go = GameObject.Find(locX + ", " + locY);
+        go.GetComponent<Hex>().thisBaseCamp = true;
+
+        //해당 타일에 베이스캠프 이미지를 구현
+
     }
 
     #endregion
@@ -206,6 +234,7 @@ public class NetworkRoundManager : MonoBehaviourPunCallbacks, IPunObservable
     public void EndTrun()
     {
         endButton.interactable = false;
+        timeCost = 20;
         if (!PhotonNetwork.IsMasterClient)
         {
             Debug.Log("send Master next Trun");
@@ -240,7 +269,27 @@ public class NetworkRoundManager : MonoBehaviourPunCallbacks, IPunObservable
         Destroy(destoy_Card);
 
         pv.RPC("RPCNextPlayer", RpcTarget.MasterClient);
+        timeCost = 20;
         selectCard = null;
+    }
+
+    //베이스캠프 셀렉트 버트 클릭시 실행 0라운드에 진행되는 베이스캠프 선택
+    public void SelectBaseButton()
+    {
+        //맵 선택하면 Button 활성화하고 해당 맵의 좌표를 EvenetManager의 occTiles에 넣어준다.
+        locX = MouseScripts.choice_Map_x;
+        locY = MouseScripts.choice_Map_y;
+
+        MouseScripts.mr.material.color = new Color(32 / 255f, 84 / 255f, 30 / 255f);
+        MouseScripts.choice_Map = false;
+        MouseScripts.ps.Stop();
+        MouseScripts.ps.Clear();
+
+        pv.RPC("RPCSelectBase", RpcTarget.AllBuffered, locX, locY, myPlayerId);
+
+        //버튼 파괴하고 정상작동하도록
+        Destroy(baseSelectButton.gameObject);
+        EndTrun();
     }
 
     private void CardDisStart()
@@ -251,6 +300,21 @@ public class NetworkRoundManager : MonoBehaviourPunCallbacks, IPunObservable
         }
         GameObject.Find("DeckSystem").GetComponent<CardDistribute>().AllPlayerCardDistribute();
     }
+
+    //시간제한 활성함수 자신의 턴일 경우 해당 함수를 진행한다.
+    private void TimeCount()
+    {
+        timeText.gameObject.SetActive(true);
+        timeCost -= Time.deltaTime;
+        timeText.text = string.Format("{0:0}", timeCost);
+
+        if (timeCost < 0.0f)
+        {
+            EndTrun();
+            timeText.gameObject.SetActive(false);
+            return;
+        }
+    }
     #endregion
 
     public void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)
@@ -260,16 +324,16 @@ public class NetworkRoundManager : MonoBehaviourPunCallbacks, IPunObservable
             stream.SendNext(startPlayerId);
             stream.SendNext(inRoundingPlayerId);
             stream.SendNext(nowRound);
-            stream.SendNext(cardNum[0]);
-            stream.SendNext(cardNum[1]);
+            //stream.SendNext(cardNum[0]);
+            //stream.SendNext(cardNum[1]);
         }
         else
         {
             startPlayerId = (int)stream.ReceiveNext();
             inRoundingPlayerId = (int)stream.ReceiveNext();
             nowRound = (int)stream.ReceiveNext();
-            cardNum[0] = (int)stream.ReceiveNext();
-            cardNum[1] = (int)stream.ReceiveNext();
+            //cardNum[0] = (int)stream.ReceiveNext();
+            //cardNum[1] = (int)stream.ReceiveNext();
         }
     }
 }
