@@ -21,6 +21,7 @@ public class NetworkRoundManager : MonoBehaviourPunCallbacks, IPunObservable
     private int myPlayerId; 
     public static int public_Player_Id;
     public static int public_nowRound;
+    public static int player_Number;
 
     //호스트가 관리하고 각 클라이언트에게 공유되는 변수들
     public int startPlayerId; //현재 라운드의 선 플레이어
@@ -48,14 +49,17 @@ public class NetworkRoundManager : MonoBehaviourPunCallbacks, IPunObservable
         {
             startPlayerId = Random.Range(0, PhotonNetwork.PlayerList.Length);
             inRoundingPlayerId = startPlayerId;
-            for (int i = 0; i < PhotonNetwork.PlayerList.Length; i++)
-            {
-                playerTrun.Add(true);
-                cardNum.Add(0);
-            }
+           
+        }
+        for (int i = 0; i < PhotonNetwork.PlayerList.Length; i++)
+        {
+            playerTrun.Add(true);
+            cardNum.Add(0);
         }
         myPlayerId = PhotonNetwork.LocalPlayer.ActorNumber;
         public_Player_Id = myPlayerId;
+
+        player_Number = PhotonNetwork.PlayerList.Length;
     }
 
     void FixedUpdate()

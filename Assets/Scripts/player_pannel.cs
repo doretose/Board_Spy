@@ -52,7 +52,8 @@ public class player_pannel : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        switch (NetworkManager.Player_Count)
+        Debug.Log(NetworkRoundManager.player_Number);
+        switch (NetworkRoundManager.player_Number)
         {
             case 2:
                 {
