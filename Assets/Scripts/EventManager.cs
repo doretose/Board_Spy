@@ -40,8 +40,8 @@ public class EventManager : MonoBehaviour
             LocY = tileLocY[i];
             for (int j = 0; j < selectTiles[LocX][LocY].Count; ++j)
             {
-                Debug.Log(j+1 + "번째 선택좌표 : (" + LocX + ", " + LocY + ") playerId, CardId = " + selectTiles[LocX][LocY][j].playerId + ",  " + selectTiles[LocX][LocY][j].cardId);
-                Debug.Log($"{occTiles[LocX, LocY]}plyer 점령 땅 : ({LocX} , {LocY})");
+                //Debug.Log(j+1 + "번째 선택좌표 : (" + LocX + ", " + LocY + ") playerId, CardId = " + selectTiles[LocX][LocY][j].playerId + ",  " + selectTiles[LocX][LocY][j].cardId);
+                //Debug.Log($"{occTiles[LocX, LocY]}plyer 점령 땅 : ({LocX} , {LocY})");
             }
         }
 
@@ -56,7 +56,7 @@ public class EventManager : MonoBehaviour
                 }
             }
         }
-        Debug.Log($"점령지 1plyer : {player_count[0]} , 2player : {player_count[1]}, 3player : {player_count[2]}, 4player : {player_count[3]}");
+        //Debug.Log($"점령지 1plyer : {player_count[0]} , 2player : {player_count[1]}, 3player : {player_count[2]}, 4player : {player_count[3]}");
     }
 
     public static void setOccTiles(int locX, int locY, int playerId)

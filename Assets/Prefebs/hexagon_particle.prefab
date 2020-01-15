@@ -108,6 +108,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   x: 0
   y: 0
+  thisBaseCamp: 0
 --- !u!1001 &1267778401089658214
 PrefabInstance:
   m_ObjectHideFlags: 0

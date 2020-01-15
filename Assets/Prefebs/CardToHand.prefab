@@ -155,9 +155,8 @@ MonoBehaviour:
       m_Calls: []
   m_text: "\uC548\uB155"
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: e8124573642af444481700611b52d462, type: 2}
-  m_sharedMaterial: {fileID: 21193944055058134, guid: e8124573642af444481700611b52d462,
-    type: 2}
+  m_fontAsset: {fileID: 0}
+  m_sharedMaterial: {fileID: 0}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -348,7 +347,7 @@ RectTransform:
   m_GameObject: {fileID: 4565557504209054098}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 2.5, y: 3, z: 1}
+  m_LocalScale: {x: 0.1, y: 0.1, z: 0.1}
   m_Children:
   - {fileID: 4565557503897798335}
   - {fileID: 6279357280706033734}
@@ -375,12 +374,14 @@ MonoBehaviour:
   thisCard:
   - id: 0
     cardName: 
+    cardNameImage: {fileID: 0}
     thisImage: {fileID: 0}
   id: 0
   cardName: 
-  nameText: {fileID: 4565557503505232212}
-  thisSprite: {fileID: 0}
-  thatImage: {fileID: 4565557504338871834}
+  iconSprite: {fileID: 0}
+  nameSprite: {fileID: 0}
+  iconImage: {fileID: 0}
+  nameImage: {fileID: 0}
   cardBack: 1
   Hand: {fileID: 0}
   numberOfCardsInDeck: 0

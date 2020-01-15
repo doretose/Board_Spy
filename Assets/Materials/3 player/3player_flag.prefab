@@ -104,9 +104,9 @@ GameObject:
   m_Component:
   - component: {fileID: 4635377316141604662}
   - component: {fileID: 4687012324236459604}
-  m_Layer: 0
+  m_Layer: 2
   m_Name: 3player_flag
-  m_TagString: Untagged
+  m_TagString: Flag
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -210,7 +210,7 @@ MeshRenderer:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4636899333791151772}
-  m_Enabled: 1
+  m_Enabled: 0
   m_CastShadows: 1
   m_ReceiveShadows: 1
   m_DynamicOccludee: 1
@@ -536,7 +536,7 @@ SkinnedMeshRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4636899337404250032}
   m_Enabled: 1
-  m_CastShadows: 1
+  m_CastShadows: 0
   m_ReceiveShadows: 1
   m_DynamicOccludee: 1
   m_MotionVectors: 1
@@ -574,6 +574,6 @@ SkinnedMeshRenderer:
   m_BlendShapeWeights: []
   m_RootBone: {fileID: 0}
   m_AABB:
-    m_Center: {x: -0.00000500679, y: 0.21441764, z: -0.0002861023}
-    m_Extent: {x: 0.73103654, y: 0.8493934, z: 5.8213034}
+    m_Center: {x: 0.00000023841858, y: 0.21441764, z: -0.00025177002}
+    m_Extent: {x: 0.62812626, y: 0.8493935, z: 6.7603397}
   m_DirtyAABB: 0
