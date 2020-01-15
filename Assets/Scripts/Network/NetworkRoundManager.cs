@@ -69,7 +69,7 @@ public class NetworkRoundManager : MonoBehaviourPunCallbacks, IPunObservable
 
     void FixedUpdate()
     {
-        Debug.Log($"My Player Id : {myPlayerId}");
+       // Debug.Log($"My Player Id : {myPlayerId}");
         //라운드 종료함수 호출(호스트만)
         if (PhotonNetwork.IsMasterClient)
         {

@@ -48,29 +48,6 @@ public class MouseScripts : MonoBehaviour
                         int tresh = NetworkRoundManager.public_Player_Id;
 
                         mr.material.color = NetworkRoundManager.getMyColor(tresh);
-                        //switch (tresh)
-                        //{
-                        //    case 1:
-                        //        {
-                        //            mr.material.color = new Color(255 / 255f, 0, 0);
-                        //            break;
-                        //        }
-                        //    case 2:
-                        //        {
-                        //            mr.material.color = new Color(83 / 255f, 147 / 255f, 224 / 255f);
-                        //            break;
-                        //        }
-                        //    case 3:
-                        //        {
-                        //            mr.material.color = new Color(248 / 255f, 215 / 255f, 0);
-                        //            break;
-                        //        }
-                        //    case 4:
-                        //        {
-                        //            mr.material.color = new Color(168 / 255f, 0 / 255f, 255 / 255f);
-                        //            break;
-                        //        }
-                        //}
                         choice_Map = true;
                     }
                     // if(chice_map == true) 선택된 땅이 있다면 이전 선택된 x,y 와 비교 후 진행
