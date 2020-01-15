@@ -45,8 +45,8 @@ public class MouseScripts : MonoBehaviour
                         choice_Map_x = ourHitObject.GetComponent<Hex>().x;
                         choice_Map_y = ourHitObject.GetComponent<Hex>().y;
                         ps.Play();
-                        int tresh = NetworkRoundManager.public_Player_Id;
 
+                        int tresh = NetworkRoundManager.public_Player_Id;
                         mr.material.color = NetworkRoundManager.getMyColor(tresh);
                         choice_Map = true;
                     }
@@ -63,14 +63,8 @@ public class MouseScripts : MonoBehaviour
                             }
                             //녹색으로 다시 변환, Color로 변환을 할때에는 Unity에 색상표 / 255f 해줘야 보이는색으로 표현됨
                             int occTileId = GameObject.Find("EventSystem").GetComponent<EventManager>().getOccTiles(choice_Map_x, choice_Map_y);
-                            if (occTileId != 0)
-                            {
-                                mr.material.color = NetworkRoundManager.getMyColor(occTileId);
-                            }
-                            else
-                            {
-                                mr.material.color = new Color(32 / 255f, 84 / 255f, 30 / 255f);
-                            }
+                            mr.material.color = NetworkRoundManager.getMyColor(occTileId);
+
                             choice_Map = false;
                         }
                         // x, y값이 다르면

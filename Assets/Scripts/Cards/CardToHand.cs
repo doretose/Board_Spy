@@ -8,8 +8,8 @@ public class CardToHand : MonoBehaviour, IPointerEnterHandler, IPointerExitHandl
     public GameObject It;
 
     private Vector3 CardScale;
-    private Vector3 baseScale = new Vector3(2.5f, 3f, 1f);
-    private Vector3 highlightsScale = new Vector3(4f, 5f, 1f);
+    private Vector3 baseScale = new Vector3(1f, 1f, 1f);
+    private Vector3 highlightsScale = new Vector3(1.5f, 1.7f, 1f);
 
     public bool selectThisCard = false;
     // Use this for initialization

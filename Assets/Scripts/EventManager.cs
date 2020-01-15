@@ -92,13 +92,15 @@ public class EventManager : MonoBehaviour
                         }
                     case 2: //방어
                         {
-                            if(occTiles[LocX, LocY] == NetworkRoundManager.public_Player_Id)
+                            //방어카드를 사용한 플레이어의 땅이라면?
+                            if(occTiles[LocX, LocY] == checkPlayer)
                             {
                                 int idx = 0;
                                 while (idx < resultTiles.Count)
                                 {
-                                    if (resultTiles[idx].playerId != NetworkRoundManager.public_Player_Id)
+                                    if (resultTiles[idx].playerId != checkPlayer)
                                     {
+                                        Debug.Log("삭제! " + resultTiles[idx].playerId);
                                         resultTiles.RemoveAt(idx);
                                         break;
                                     }
@@ -125,21 +127,12 @@ public class EventManager : MonoBehaviour
                 }
             }
 
+            //탐색이 끝난 타일 초기화
             selectTiles[LocX][LocY].Clear();
-            //색깔 초록색으로 변경 해당 타일위의 프리팹을 모두 삭제
-            GameObject endTile = GameObject.Find(LocX + ", " + LocY);
-            MeshRenderer mr = endTile.GetComponent<MeshRenderer>();
-            mr.material.color = new Color(32 / 255f, 84 / 255f, 30 / 255f);
 
-            //GameObject[] endTileChilds;
-            //endTileChilds = endTile.GetComponentsInChildren<GameObject>();
-
-            //foreach (GameObject endTileChild in endTileChilds)
-            //{
-            //    if(endTileChild.name != "CFX_LightWall 1") Destroy(endTileChild);
-            //}
-
-            Debug.Log($"({LocX} , {LocY})의 resultTiles의 수 {resultTiles.Count}");
+            //프리팹 삭제
+            PrefebManager.DestroyPrefebs(LocX, LocY);
+            
             if (resultTiles.Count > 0)
             {
                 Debug.Log($"({LocX} , {LocY}) = {resultTiles[0].playerId}");
@@ -149,6 +142,10 @@ public class EventManager : MonoBehaviour
             {
                 occTiles[LocX, LocY] = occPlayerId;
                 PrefebManager.CreatePrefeb(flag[occPlayerId - 1], LocX, LocY, NetworkRoundManager.getMyColor(occPlayerId));
+            } else if(occTiles[LocX, LocY] != 0)
+            {
+                int tempid = occTiles[LocX, LocY];
+                PrefebManager.CreatePrefeb(flag[tempid - 1], LocX, LocY, NetworkRoundManager.getMyColor(tempid));
             }
         }
 
@@ -164,19 +161,18 @@ public class EventManager : MonoBehaviour
                 }
             }
         }
-
         tileLocX.Clear();
         tileLocY.Clear();
     }
 
-    public void setOccTiles(int locX, int locY, int playerId)
-    {
-        occTiles[locX, locY] = playerId;
-    }
+    public void setOccTiles(int locX, int locY, int playerId) => occTiles[locX, locY] = playerId;
+    
 
-    public void setSelectTiles(int locX, int locY, int playerId, int value)
+    public bool setSelectTiles(int locX, int locY, int playerId, int value)
     {
         selectTiles[locX][locY].Add(new Tiles(playerId, value));
+        if (selectTiles[locX][locY].Count > 1) return false;
+        else return true;
     }
 
     public int getOccTiles(int locX, int locY)
