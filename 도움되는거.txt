@@ -7,6 +7,3 @@
 pv.RPC (master한테만 보내고 자기 playerId, cardNum)
 
 마스터 다른 모든 플레이어한테 이걸 수신하고
-
-(마스터만 실행)
-pv.RPC (

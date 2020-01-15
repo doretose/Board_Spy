@@ -65,7 +65,7 @@ public class RoundManager : MonoBehaviour
         selectCAndT[0, 2] = MouseScripts.choice_Map_y;
 
         //playerId, cardId
-        EventManager.setSelectTiles(selectCAndT[0, 1].Value, selectCAndT[0, 2].Value, playerId, selectCAndT[0, 0].Value);
+        GameObject.Find("EventSystem").GetComponent<EventManager>().setSelectTiles(selectCAndT[0, 1].Value, selectCAndT[0, 2].Value, playerId, selectCAndT[0, 0].Value);
         EventManager.tileLocX.Add(selectCAndT[0, 1].Value);
         EventManager.tileLocY.Add(selectCAndT[0, 2].Value);
 
