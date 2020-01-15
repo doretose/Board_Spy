@@ -45,32 +45,10 @@ public class MouseScripts : MonoBehaviour
                         choice_Map_x = ourHitObject.GetComponent<Hex>().x;
                         choice_Map_y = ourHitObject.GetComponent<Hex>().y;
                         ps.Play();
-                        int tresh = NetworkRoundManager.public_Player_Id;
 
+                        int tresh = NetworkRoundManager.public_Player_Id;
                         mr.material.color = NetworkRoundManager.getMyColor(tresh);
-                        //switch (tresh)
-                        //{
-                        //    case 1:
-                        //        {
-                        //            mr.material.color = new Color(255 / 255f, 0, 0);
-                        //            break;
-                        //        }
-                        //    case 2:
-                        //        {
-                        //            mr.material.color = new Color(83 / 255f, 147 / 255f, 224 / 255f);
-                        //            break;
-                        //        }
-                        //    case 3:
-                        //        {
-                        //            mr.material.color = new Color(248 / 255f, 215 / 255f, 0);
-                        //            break;
-                        //        }
-                        //    case 4:
-                        //        {
-                        //            mr.material.color = new Color(168 / 255f, 0 / 255f, 255 / 255f);
-                        //            break;
-                        //        }
-                        //}
+
                         choice_Map = true;
                     }
                     // if(chice_map == true) 선택된 땅이 있다면 이전 선택된 x,y 와 비교 후 진행
@@ -86,14 +64,8 @@ public class MouseScripts : MonoBehaviour
                             }
                             //녹색으로 다시 변환, Color로 변환을 할때에는 Unity에 색상표 / 255f 해줘야 보이는색으로 표현됨
                             int occTileId = GameObject.Find("EventSystem").GetComponent<EventManager>().getOccTiles(choice_Map_x, choice_Map_y);
-                            if (occTileId != 0)
-                            {
-                                mr.material.color = NetworkRoundManager.getMyColor(occTileId);
-                            }
-                            else
-                            {
-                                mr.material.color = new Color(32 / 255f, 84 / 255f, 30 / 255f);
-                            }
+                            mr.material.color = NetworkRoundManager.getMyColor(occTileId);
+
                             choice_Map = false;
                         }
                         // x, y값이 다르면

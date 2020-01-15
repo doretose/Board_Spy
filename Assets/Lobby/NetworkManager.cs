@@ -165,9 +165,13 @@ public class NetworkManager : MonoBehaviourPunCallbacks
         PV.RPC("ChatRPC", RpcTarget.All, "<color=yellow>" + otherPlayer.NickName + "님이 퇴장하셨습니다</color>");
     }
     
-    static void GameStart()
+    public void GameStart()
     {
-        
+        // 현재 방 시작했으므로 Close 그리고 로비의 방리스트에서 안보이게 처리
+        PhotonNetwork.CurrentRoom.IsOpen = false;
+        PhotonNetwork.IsMessageQueueRunning = false;
+        PhotonNetwork.CurrentRoom.IsVisible = false;
+        Debug.Log("시작하기전");
         PhotonNetwork.LoadLevel(1);
     }
 
