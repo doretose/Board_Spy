@@ -6,18 +6,28 @@ using UnityEngine;
 public class EventManager : MonoBehaviour
 {
     #region 타일관련 변수
+    //타일크기 관련 변수
+    private static readonly int Xscale = 15;
+    private static readonly int Yscale = 8;
+
     //이벤트를 처리해야할 내용을 다음 selectTiles와 최종 점령지를 나타내고 있는 occtiles
     private List<List<List<Tiles>>> selectTiles = new List<List<List<Tiles>>>();
-    private int[,] occTiles = new int[15, 8];
+    private int[,] occTiles = new int[Xscale, Yscale];
+    private bool[,] occTilesVisit = new bool[Xscale, Yscale]; //false
 
     //타일 2차원배열에 접근하기 위해서 현재 지정된 좌표가 어디인지 확인하기 위해서 선택된 X,Y좌표를 저장
     public static List<int> tileLocX = new List<int>();
     public static List<int> tileLocY = new List<int>();
 
+    //정보 기록 변수
     public static int[] player_count = new int[4] { 0, 0, 0, 0 }; //점령지 수
+    public static int[] player_score = new int[4] { 0, 0, 0, 0 }; //플레이어별 점수
 
     //타일 순회를 위한 x,y좌표 저장 변수
     private int LocX, LocY;
+    //주변 타일 (좌상, 좌하, 우상, 우하, 좌, 우 Y좌표가 홀수일 때 이대로 짝수일 때는 0~3번인덱스 -1 ) 
+    private Pair<int, int>[] loc = new Pair<int, int>[6]
+        { new Pair<int, int>(0,1), new Pair<int, int>(0,-1), new Pair<int, int>(1,1), new Pair<int, int>(1,-1), new Pair<int, int>(-1,0), new Pair<int, int>(+1,0) };
 
     //깃발 프리팹
     public GameObject[] flag = new GameObject[4];
@@ -26,46 +36,43 @@ public class EventManager : MonoBehaviour
     // 3차원 배열 selectTiles 초기화
     private void Awake()
     {
-        for (int i = 0; i < 15; i++)
+        
+        for (int i = 0; i < Xscale; i++)
         {
             selectTiles.Add(new List<List<Tiles>>());
-            for (int j = 0; j < 8; j++)
+            for (int j = 0; j < Yscale; j++)
             {
                 selectTiles[i].Add(new List<Tiles>());
             }
         }
+        
     }
 
-    // 타일 위치에 관한 이벤트 처리
     void Update()
     {
-
-        for (int i = 0; i < tileLocX.Count; ++i)
+        if (!NetworkRoundManager.roundProcessBool)
         {
-            LocX = tileLocX[i];
-            LocY = tileLocY[i];
-            for (int j = 0; j < selectTiles[LocX][LocY].Count; ++j)
+            player_count = new int[4] { 0, 0, 0, 0 };
+            for (int i = 0; i < occTiles.GetLength(0); i++)
             {
-                //Debug.Log(j+1 + "번째 선택좌표 : (" + LocX + ", " + LocY + ") playerId, CardId = " + selectTiles[LocX][LocY][j].playerId + ",  " + selectTiles[LocX][LocY][j].cardId);
-                //Debug.Log($"{occTiles[LocX, LocY]}plyer 점령 땅 : ({LocX} , {LocY})");
-            }
-        }
-
-        player_count = new int[4] {0,0,0,0};
-        for (int i = 0; i < occTiles.GetLength(0); i++)
-        {
-            for (int j = 0; j < occTiles.GetLength(1); j++)
-            {
-                if (occTiles[i, j] != 0)
+                for (int j = 0; j < occTiles.GetLength(1); j++)
                 {
-                    player_count[occTiles[i, j]-1] += 1;
+                    if (occTiles[i, j] != 0)
+                    {
+                        player_count[occTiles[i, j] - 1] += 1;
+                    }
                 }
             }
         }
-        //Debug.Log($"점령지 1plyer : {player_count[0]} , 2player : {player_count[1]}, 3player : {player_count[2]}, 4player : {player_count[3]}");
     }
 
-    public void RoundResult()
+    public void StartRoundResult()
+    {
+        StartCoroutine("RoundResult");
+    }
+
+    // 타일 위치에 관한 이벤트 처리
+    IEnumerator RoundResult()
     {
         int occPlayerId, checkPlayer, checkCard;
         List<Tiles> resultTiles = new List<Tiles>();
@@ -133,11 +140,14 @@ public class EventManager : MonoBehaviour
             //프리팹 삭제
             PrefebManager.DestroyPrefebs(LocX, LocY);
             
+            //변경값이 있는가
             if (resultTiles.Count > 0)
             {
                 Debug.Log($"({LocX} , {LocY}) = {resultTiles[0].playerId}");
                 occPlayerId = resultTiles[0].playerId;
             }
+
+            //해당 타일 프리팹 생성
             if (occPlayerId != 0)
             {
                 occTiles[LocX, LocY] = occPlayerId;
@@ -147,6 +157,7 @@ public class EventManager : MonoBehaviour
                 int tempid = occTiles[LocX, LocY];
                 PrefebManager.CreatePrefeb(flag[tempid - 1], LocX, LocY, NetworkRoundManager.getMyColor(tempid));
             }
+            yield return new WaitForSeconds(1);
         }
 
         //최종적으로 player_count를 재탐색하고 타일 초기화 -> occTile에 따른 결과 반영
@@ -163,10 +174,27 @@ public class EventManager : MonoBehaviour
         }
         tileLocX.Clear();
         tileLocY.Clear();
+        yield return new WaitForSeconds(1);
+        NetworkRoundManager.roundProcessBool = false;
+    }
+
+    //점수 계산
+    private void score_check()
+    {
+        //
+        for (int i = 0; i < loc.Length; ++i)
+        {
+            Debug.Log($"{i}번째 인덱스 {loc[i].First}좌표 , {loc[i].Second}좌표");
+        }
+    }
+    
+
+public int getOccTiles(int locX, int locY)
+    {
+        return occTiles[locX, locY];
     }
 
     public void setOccTiles(int locX, int locY, int playerId) => occTiles[locX, locY] = playerId;
-    
 
     public bool setSelectTiles(int locX, int locY, int playerId, int value)
     {
@@ -175,8 +203,5 @@ public class EventManager : MonoBehaviour
         else return true;
     }
 
-    public int getOccTiles(int locX, int locY)
-    {
-        return occTiles[locX, locY];
-    }
+    
 }
