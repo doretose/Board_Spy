@@ -21,7 +21,6 @@ public class GameOver : MonoBehaviour
     {
         //플레이어 2명일때 34번 패널 지움
         // for문보다 간편해보여 if문으로 2명일때 3명일때 작성 4명일때는 모두 오픈이므로 x
-
         if (NetworkRoundManager.player_Number == 2)
         {
             Player_pannel[2].SetActive(false);
@@ -32,8 +31,7 @@ public class GameOver : MonoBehaviour
         //for (int i = 0; i < NetworkRoundManager.player_Number; i++)
         //    player_id[i].text = PhotonNetwork.PlayerList[i].NickName;//추후 닉네임변경
     }
-
-    // Update is called once per frame
+    
     void Update()
     {
         Player_Count();
@@ -41,32 +39,36 @@ public class GameOver : MonoBehaviour
     //각 플레이어 패널에 카드수, 점령땅의 수, 현재 점수를 표현
     void Player_Count()
     {
-        int temp = 0;
-        int temp2 = 0;
+        int temp = -1, temp2 = -1;
         for (int i = 0; i < NetworkRoundManager.player_Number; i++)
         {
             castle_txt[i].text = EventManager.player_count[i].ToString();
             //차후 점수 표시
-            //score_txt[i].text = NetworkRoundManager.                   .ToString();
-            /*
-             * if(temp > NetworkRoundManager.                   )
-             * {
-             *      return;
-             * }else if(temp == NetworkRoundManger.            )
-             * {
-             *      int temp2 == temp;
-             * }else
-             * {
-             *      temp = NetworkRoundManager.~~~~~~~~~~~;
-             * }
-             * 
-             * 
-             * */
+            score_txt[i].text = EventManager.player_score[i].ToString();
+             if(temp > EventManager.player_score[i])
+                  return;
+            else if(temp == EventManager.player_score[i])
+                 temp2 = temp;
+             else{
+                   temp = EventManager.player_score[i];
+             }
         }
-        // temp2가 0이면 temp1 이기게 처리
-        // temp2가 != 0이면 temp1, 2 무승부처리
-        // 그리고 이긴사람 img 띄우기
-        //Win_Img.GetComponent<Image>().sprite = Resources.Load<Sprite>("이긴플레이어 id");
+        if (temp2 != -1){
+            if (temp == temp2){
+                //Draw처리
+                //플레이어 2명 Draw 출력   남은 플레이어 Lose 출력
+                return;
+            }
+        }
+        else {
+            for (int i = 0; i < NetworkRoundManager.player_Number; i++) {
+                if (temp == EventManager.player_score[i])
+                {
+                    string win = i.ToString();
+                    Win_Img.GetComponent<Image>().sprite = Resources.Load<Sprite>(win);
+                }
+            }
+        }
     }
 
     public void onClickExit()
