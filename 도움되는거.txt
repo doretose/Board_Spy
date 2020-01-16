@@ -1,9 +1,37 @@
-        GameObject.Find("DeckSystem").GetComponent<CardDistribute>().AllPlayerCardDistribute();
 
 
-카운트해서
+땅을 점령한 상태면 true
+비어 있는 땅이라면 false
+
+score 탐색함수
+
+처음부터 확인해
+해당 좌표의 occTiles가 0이 아니고 occTilesVisit가 true라면
+player_score[occTiles[x][y]-1] += ScoreTilesVisit(x, y)
 
 
-pv.RPC (master한테만 보내고 자기 playerId, cardNum)
+Y좌표가 홀수일때
+  	       0,+1	     +1,+1
+	-1,0	3,3	+1,0
+	       0,-1	     +1,-1
 
-마스터 다른 모든 플레이어한테 이걸 수신하고
+Y좌표가 짝수일때		
+  	      -1,+1	     0,+1
+	-1,0	3,2	+1,0
+	      -1,-1	     0,-1
+
+[좌상, 좌하, 우상, 우하, 좌, 우]
+[[0,+1], [0,-1], [+1, +1], [+1,-1], [-1,0], [+1,0]]
+[[-1,+1], [-1,-1], [0, +1], [0,-1], [-1,0], [+1,0]]
+0~3번 인덱스 first에 -1
+
+ScoreTilesVisit(x, y)
+int result = 0;
+ occTilesVisit가 트루라면
+   occTileseVisit를 false로 변경하고
+   result += 1
+ false라면 return;
+
+ if((y % 2) == 0) //짝수
+     좌상 좌하 우상 우하 좌 우 호출
+    

@@ -39,27 +39,11 @@ public class spyCardDeck : MonoBehaviour
             }
         }
         Shuffle();
-        //StartCoroutine(StartGame());
     }
 
-    // Update is called once per frame
     void Update()
     {
         staticDeck = deck;
-    }
-
-    IEnumerator StartGame()
-    {
-        for (int i = 0; i <= 1; i++)
-        {
-            yield return new WaitForSeconds(0.5f);
-            Instantiate(CardToHandAttack, transform.position, transform.rotation);
-        }
-       for(int i = 0; i <= 2; i++)
-        {
-            yield return new WaitForSeconds(0.5f);
-            Instantiate(CardToHand, transform.position, transform.rotation);
-        }
     }
 
     public void Shuffle()
