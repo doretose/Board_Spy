@@ -171,6 +171,7 @@ public class NetworkManager : MonoBehaviourPunCallbacks
         PhotonNetwork.CurrentRoom.IsOpen = false;
         PhotonNetwork.IsMessageQueueRunning = false;
         PhotonNetwork.CurrentRoom.IsVisible = false;
+       
         Debug.Log("시작하기전");
         PhotonNetwork.LoadLevel(1);
     }
