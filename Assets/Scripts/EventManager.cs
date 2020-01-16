@@ -90,6 +90,7 @@ public class EventManager : MonoBehaviour
                 checkPlayer = selectTiles[LocX][LocY][j].playerId;
                 checkCard = selectTiles[LocX][LocY][j].cardId;
 
+                //사용 카드 처리
                 switch (checkCard)
                 {
                     case 1: //점령
@@ -161,7 +162,21 @@ public class EventManager : MonoBehaviour
         }
 
         //최종적으로 player_count를 재탐색하고 타일 초기화 -> occTile에 따른 결과 반영
+        tileLocX.Clear();
+        tileLocY.Clear();
+
+        RoundResultEnd();
+        
+        yield return new WaitForSeconds(1);
+        NetworkRoundManager.roundProcessBool = false;
+    }
+
+    //라운드결과 종료
+    private void RoundResultEnd()
+    {
         player_count = new int[4] { 0, 0, 0, 0 };
+        player_score = new int[4] { 0, 0, 0, 0 };
+
         for (int i = 0; i < occTiles.GetLength(0); i++)
         {
             for (int j = 0; j < occTiles.GetLength(1); j++)
@@ -169,27 +184,59 @@ public class EventManager : MonoBehaviour
                 if (occTiles[i, j] != 0)
                 {
                     player_count[occTiles[i, j] - 1] += 1;
+                    occTilesVisit[i, j] = true;
                 }
+                else { occTilesVisit[i, j] = false; }
             }
         }
-        tileLocX.Clear();
-        tileLocY.Clear();
-        yield return new WaitForSeconds(1);
-        NetworkRoundManager.roundProcessBool = false;
+        //점수 확인
+        Score_check();
     }
 
     //점수 계산
-    private void score_check()
+    private void Score_check()
     {
-        //
-        for (int i = 0; i < loc.Length; ++i)
+        //타일 좌표를 전체 탐색 
+        //좌표에 해당하는 occTiles가 0이 아니고 occTilesVisitVisit true라면 ScoreTilesVisit 호출
+        for (int i = 0; i < occTiles.GetLength(0); ++i)
         {
-            Debug.Log($"{i}번째 인덱스 {loc[i].First}좌표 , {loc[i].Second}좌표");
+            for (int j = 0; j < occTiles.GetLength(1); ++j)
+            {
+                if (occTiles[i, j] != 0 && occTilesVisit[i, j] == true)
+                {
+                    player_score[occTiles[i, j] - 1] += (int)Math.Pow(2,ScoreTilesVisit(i,j, occTiles[i, j]) - 1);
+                }
+            }
         }
+    }
+
+    private int ScoreTilesVisit(int x, int y, int playerId)
+    {
+        int minusEven = 0;
+        int result = 0;
+        if(x < 0 || x >= Xscale || y < 0 || y >= Yscale || playerId != occTiles[x, y]) return 0;
+
+        if (occTilesVisit[x, y] == true)
+        {
+            occTilesVisit[x, y] = false;
+            result += 1;
+        }
+        else return 0;
+
+
+        if ((y % 2) == 0) minusEven = 1;
+
+        for(int i = 0; i < loc.Length; ++i)
+        {
+            if (i > 3) minusEven = 0;
+            result += ScoreTilesVisit(x + (loc[i].First - minusEven), y + loc[i].Second, playerId);
+        }
+
+        return result;
     }
     
 
-public int getOccTiles(int locX, int locY)
+    public int getOccTiles(int locX, int locY)
     {
         return occTiles[locX, locY];
     }
