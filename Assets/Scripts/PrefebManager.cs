@@ -29,8 +29,8 @@ public class PrefebManager : MonoBehaviour
     {
         //색깔 초록색으로 변경 해당 타일위의 프리팹을 모두 삭제
         GameObject endTile = GameObject.Find(locX + ", " + locY);
-        MeshRenderer mr = endTile.GetComponent<MeshRenderer>();
-        mr.material.color = new Color(32 / 255f, 84 / 255f, 30 / 255f);
+        //MeshRenderer mr = endTile.GetComponent<MeshRenderer>();
+        //mr.material.color = new Color(32 / 255f, 84 / 255f, 30 / 255f);
 
         //탐색이 끝난 타일 위에 놓인 모든 기물 프리팹을 제거
         Transform[] endTileChilds;
