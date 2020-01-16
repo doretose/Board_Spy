@@ -53,7 +53,7 @@ public class player_pannel : MonoBehaviour
         {
             ground_text[i].text = EventManager.player_count[i].ToString();
             card_text[i].text = NetworkRoundManager.cardNum[i].ToString();
-            //차후 점수 표시
+            score_text[i].text = EventManager.player_score[i].ToString();
         }
     }
 }
