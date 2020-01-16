@@ -13,6 +13,7 @@ public class NetworkRoundManager : MonoBehaviourPunCallbacks, IPunObservable
     //public GameObject flag_1, flag_2, flag_3, flag_4;
     public GameObject[] tokken = new GameObject[4];
     public GameObject[] castle = new GameObject[4];
+    public GameObject sword_ani;
     private static Color[] myColor = new Color[5] { new Color(32 / 255f, 84 / 255f, 30 / 255f), new Color(255 / 255f, 0, 0) , new Color(83 / 255f, 147 / 255f, 224 / 255f), new Color(248 / 255f, 215 / 255f, 0), new Color(168 / 255f, 0 / 255f, 255 / 255f) };
     public TextMeshProUGUI roundText;
     public TextMeshProUGUI TrunText;
@@ -20,6 +21,7 @@ public class NetworkRoundManager : MonoBehaviourPunCallbacks, IPunObservable
     public Button selectButton;
     public Button baseSelectButton;
     public Button test;
+    public GameObject game_result_pannel;
 
     //플레이어의 정체성
     private int myPlayerId; 
@@ -47,6 +49,7 @@ public class NetworkRoundManager : MonoBehaviourPunCallbacks, IPunObservable
     //라운드실행제어 변수
     public static bool roundProcessBool = false;
 
+    public GameObject[] player_pannel_bg = new GameObject[4];
     void Awake()
     {
         pv = this.GetComponent<PhotonView>();
@@ -104,8 +107,8 @@ public class NetworkRoundManager : MonoBehaviourPunCallbacks, IPunObservable
         if (myPlayerId == inRoundingPlayerId + 1)
         {
             endButton.interactable = true;
+            player_pannel_bg[inRoundingPlayerId].SetActive(true);
             TimeCount();//시간제한 함수 실행
-
             //카드, 타일 선택이 모두 완료되면 셀렉트버튼 활성화
             if (selectCard.HasValue && MouseScripts.choice_Map == true) { selectButton.interactable = true; }
             else { selectButton.interactable = false; }
@@ -133,20 +136,22 @@ public class NetworkRoundManager : MonoBehaviourPunCallbacks, IPunObservable
         {
             Debug.Log("send Master next Trun");
             pv.RPC("RPCEndPlayer", RpcTarget.MasterClient, myPlayerId);
+            player_pannel_bg[inRoundingPlayerId ].SetActive(false);
         }
         else
         {
             inRoundingPlayerId = (inRoundingPlayerId + 1) % player_Number;
             playerTrun[myPlayerId - 1] = false;
+            player_pannel_bg[inRoundingPlayerId - 1].SetActive(false);
         }
     }
 
     public void SelectButton()
     {
+        player_pannel_bg[inRoundingPlayerId].SetActive(false);
         selectButton.interactable = false;
         //selectCAndT[0, 1], [0, 2] ==> x,y좌표
         Debug.Log("선택된 맵 x , y좌표 = " + "(" + MouseScripts.choice_Map_x + "," + MouseScripts.choice_Map_y + ")");
-
         //selectTiles[x][y].Add( playerId, cardid);
         locX = MouseScripts.choice_Map_x;
         locY = MouseScripts.choice_Map_y;
@@ -212,7 +217,11 @@ public class NetworkRoundManager : MonoBehaviourPunCallbacks, IPunObservable
         {
             playerTrun[i] = true;
         }
-
+        if (nowRound > 6)
+        {
+            RPCRoundEnd();
+            Invoke("RPCEndGame", 3);
+        }
         //라운드 처리 관련 함수 호출, roundProcessBool로 해당 스크립트 통제
     }
 
@@ -282,7 +291,10 @@ public class NetworkRoundManager : MonoBehaviourPunCallbacks, IPunObservable
             playerTrun[playerId - 1] = false;
             inRoundingPlayerId = (inRoundingPlayerId + 1) % player_Number;
             if (!playerTrun.Contains(true)) return; //
-            if (playerTrun[inRoundingPlayerId] == false) RPCNextPlayer();
+            if (playerTrun[inRoundingPlayerId] == false)
+            {
+                RPCNextPlayer();
+            }
         }
     }
 
@@ -295,10 +307,21 @@ public class NetworkRoundManager : MonoBehaviourPunCallbacks, IPunObservable
         {
             inRoundingPlayerId = (inRoundingPlayerId + 1) % player_Number;
             if (!playerTrun.Contains(true)) return; //
-            if (playerTrun[inRoundingPlayerId] == false) RPCNextPlayer();
+            if (playerTrun[inRoundingPlayerId] == false)
+            {
+                RPCNextPlayer();
+            }
         }
     }
 
+
+    [PunRPC]
+    private void RPCEndGame()
+    {
+        game_result_pannel.SetActive(true);
+        GameObject play_pannel = GameObject.Find("Canvas");
+        play_pannel.SetActive(false);
+    }
     //카드를 타일에 사용하는 함수
     //selectButton 모든 플레이어에게 => RPCCardUseData()
     //EventManager의 타일관련 함수에 카드의 데이터와 타일의 데이터를 입력한다.
@@ -315,9 +338,20 @@ public class NetworkRoundManager : MonoBehaviourPunCallbacks, IPunObservable
             EventManager.tileLocX.Add(locX);
             EventManager.tileLocY.Add(locY);
         }
-
-        PrefebManager.DestroyPrefebs(locX, locY);
-        PrefebManager.CreatePrefeb(tokken[playerId - 1], locX, locY);
+        //17일 추가
+        GameObject endTile = GameObject.Find(locX + ", " + locY);
+        Transform[] endTileChilds;
+        endTileChilds = endTile.GetComponentsInChildren<Transform>(true);
+        
+        if (endTileChilds.Length < 8)
+        {
+            PrefebManager.DestroyPrefebs(locX, locY);
+            PrefebManager.CreatePrefeb(tokken[playerId - 1], locX, locY);
+        }
+        else {
+            PrefebManager.DestroyPrefebs(locX, locY);
+            PrefebManager.CreateSwordPrefeb(sword_ani, locX, locY);
+        }
     }
 
     [PunRPC]

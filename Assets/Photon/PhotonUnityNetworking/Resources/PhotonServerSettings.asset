@@ -44,5 +44,6 @@ MonoBehaviour:
   - requestCardDraw
   - RPCEndPlayer
   - RPCSelectBase
+  - RPCEndGame
   DisableAutoOpenWizard: 1
   ShowSettings: 1
