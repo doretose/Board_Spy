@@ -10,6 +10,7 @@ TagManager:
   - FxTemporaire
   - Map
   - Flag
+  - GameOver
   layers:
   - Default
   - TransparentFX

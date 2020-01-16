@@ -21,7 +21,15 @@ public class PrefebManager : MonoBehaviour
         GameObject go = GameObject.Find(locX + ", " + locY);
         float pos_x = go.transform.position.x;
         float pos_z = go.transform.position.z;
+        Instantiate(isPrefeb, new Vector3(pos_x, 1, pos_z), isPrefeb.transform.transform.rotation, go.transform);
+    }
 
+    public static void CreateSwordPrefeb(GameObject isPrefeb, int locX, int locY)
+    {
+        GameObject go = GameObject.Find(locX + ", " + locY);
+        float pos_x = go.transform.position.x;
+        float pos_z = go.transform.position.z;
+        pos_x += (float)0.2;
         Instantiate(isPrefeb, new Vector3(pos_x, 1, pos_z), isPrefeb.transform.transform.rotation, go.transform);
     }
 

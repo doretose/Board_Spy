@@ -15,8 +15,8 @@ public class GameOver : MonoBehaviour
     [Header("Scoret Number Pannel")]
     public TextMeshProUGUI[] score_txt = new TextMeshProUGUI[4];
 
-    public GameObject Win_Img;
-
+    public Image Win_Img;
+    public Sprite[] player_img = new Sprite[4];
     void Start()
     {
         //플레이어 2명일때 34번 패널 지움
@@ -49,25 +49,29 @@ public class GameOver : MonoBehaviour
                   return;
             else if(temp == EventManager.player_score[i])
                  temp2 = temp;
-             else{
+             else
                    temp = EventManager.player_score[i];
-             }
         }
-        if (temp2 != -1){
-            if (temp == temp2){
-                //Draw처리
-                //플레이어 2명 Draw 출력   남은 플레이어 Lose 출력
-                return;
-            }
-        }
-        else {
+
+        //if (temp2 != -1){
+        //    if (temp == temp2){
+        //        //Draw처리
+        //        //플레이어 2명 Draw 출력   남은 플레이어 Lose 출력
+        //        return;
+        //    }
+        //}
+        //else {
             for (int i = 0; i < NetworkRoundManager.player_Number; i++) {
-                if (temp == EventManager.player_score[i])
-                {
-                    string win = i.ToString();
-                    Win_Img.GetComponent<Image>().sprite = Resources.Load<Sprite>(win);
-                }
+                Debug.Log("마지막, player_score : " + temp + ", " + EventManager.player_score[i]);
+
+            if (temp == EventManager.player_score[i])
+            {
+                Win_Img.sprite = player_img[i];
             }
+            else {
+                Win_Img.sprite = player_img[4];
+            }
+            //}
         }
     }
 
