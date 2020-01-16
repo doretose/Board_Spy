@@ -9,12 +9,11 @@ using UnityEngine.UI;
 public class NetworkRoundManager : MonoBehaviourPunCallbacks, IPunObservable
 {
     PhotonView pv;
-
     //UI 및 리소스
     //public GameObject flag_1, flag_2, flag_3, flag_4;
     public GameObject[] tokken = new GameObject[4];
     public GameObject[] castle = new GameObject[4];
-    private static Color[] myColor = new Color[4] { new Color(255 / 255f, 0, 0) , new Color(83 / 255f, 147 / 255f, 224 / 255f), new Color(248 / 255f, 215 / 255f, 0), new Color(168 / 255f, 0 / 255f, 255 / 255f) };
+    private static Color[] myColor = new Color[5] { new Color(32 / 255f, 84 / 255f, 30 / 255f), new Color(255 / 255f, 0, 0) , new Color(83 / 255f, 147 / 255f, 224 / 255f), new Color(248 / 255f, 215 / 255f, 0), new Color(168 / 255f, 0 / 255f, 255 / 255f) };
     public TextMeshProUGUI roundText;
     public TextMeshProUGUI TrunText;
     public Button endButton;
@@ -69,7 +68,7 @@ public class NetworkRoundManager : MonoBehaviourPunCallbacks, IPunObservable
 
     void FixedUpdate()
     {
-        Debug.Log($"My Player Id : {myPlayerId}");
+       // Debug.Log($"My Player Id : {myPlayerId}");
         //라운드 종료함수 호출(호스트만)
         if (PhotonNetwork.IsMasterClient)
         {
@@ -140,7 +139,8 @@ public class NetworkRoundManager : MonoBehaviourPunCallbacks, IPunObservable
         locX = MouseScripts.choice_Map_x;
         locY = MouseScripts.choice_Map_y;
 
-        MouseScripts.mr.material.color = new Color(32 / 255f, 84 / 255f, 30 / 255f);
+        int occTileId = GameObject.Find("EventSystem").GetComponent<EventManager>().getOccTiles(locX, locY);
+        MouseScripts.mr.material.color = myColor[occTileId];
         MouseScripts.choice_Map = false;
         MouseScripts.ps.Stop();
         MouseScripts.ps.Clear();
@@ -159,11 +159,13 @@ public class NetworkRoundManager : MonoBehaviourPunCallbacks, IPunObservable
     //베이스캠프 셀렉트 버트 클릭시 실행 0라운드에 진행되는 베이스캠프 선택
     public void SelectBaseButton()
     {
+        baseSelectButton.interactable = false;
         //맵 선택하면 Button 활성화하고 해당 맵의 좌표를 EvenetManager의 occTiles에 넣어준다.
         locX = MouseScripts.choice_Map_x;
         locY = MouseScripts.choice_Map_y;
 
-        MouseScripts.mr.material.color = new Color(32 / 255f, 84 / 255f, 30 / 255f);
+        int occTileId = GameObject.Find("EventSystem").GetComponent<EventManager>().getOccTiles(locX, locY);
+        MouseScripts.mr.material.color = myColor[occTileId];
         MouseScripts.choice_Map = false;
         MouseScripts.ps.Stop();
         MouseScripts.ps.Clear();
@@ -201,7 +203,7 @@ public class NetworkRoundManager : MonoBehaviourPunCallbacks, IPunObservable
 
     private void RoundZeroAction()
     {
-        TrunText.text = $"{inRoundingPlayerId + 1}player BaseCamp Select";
+        TrunText.text = $"{inRoundingPlayerId + 1} BaseCamp";
         endButton.interactable = false;
         selectButton.interactable = false;
         timeText.gameObject.SetActive(false);
@@ -215,7 +217,7 @@ public class NetworkRoundManager : MonoBehaviourPunCallbacks, IPunObservable
 
     public static Color getMyColor(int occId)
     {
-        return myColor[occId - 1];
+        return myColor[occId];
     }
 
     #endregion
@@ -281,50 +283,18 @@ public class NetworkRoundManager : MonoBehaviourPunCallbacks, IPunObservable
     [PunRPC]
     private void RPCCardUseData(int locX, int locY, int playerId, int value)
     {
+        bool anotherCard;
         if(PhotonNetwork.IsMasterClient) cardNum[playerId - 1] -= 1;
         //playerId, cardId
-        GameObject.Find("EventSystem").GetComponent<EventManager>().setSelectTiles(locX, locY, playerId, value);
-        EventManager.tileLocX.Add(locX);
-        EventManager.tileLocY.Add(locY);
+        anotherCard = GameObject.Find("EventSystem").GetComponent<EventManager>().setSelectTiles(locX, locY, playerId, value);
+        if(anotherCard)
+        {
+            EventManager.tileLocX.Add(locX);
+            EventManager.tileLocY.Add(locY);
+        }
 
+        PrefebManager.DestroyPrefebs(locX, locY);
         PrefebManager.CreatePrefeb(tokken[playerId - 1], locX, locY);
-        ////좌표 읽어오기
-        //Debug.Log("choice");
-        //GameObject go = GameObject.Find(locX + ", " + locY);
-        //MeshRenderer mr = go.GetComponent<MeshRenderer>();
-        //float pos_x = go.transform.position.x;
-        //float pos_z = go.transform.position.z;
-
-        ////해당 좌표에 토큰생성... (선택단계)
-        //switch (playerId)
-        //{
-        //    case 1:
-        //        {
-        //            Instantiate(flag_1, new Vector3(pos_x, 1, pos_z), flag_1.transform.rotation);;
-        //            mr.material.color = new Color(255 / 255f, 0, 0);
-        //            break;
-        //        }
-        //    case 2:
-        //        {
-        //            Instantiate(flag_2, new Vector3(pos_x, 1, pos_z), flag_2.transform.rotation);
-        //            mr.material.color = new Color(83 / 255f, 147 / 255f, 224 / 255f);
-        //            break;
-        //        }
-        //    case 3:
-        //        {
-        //            Instantiate(flag_3, new Vector3(pos_x, 1, pos_z), flag_3.transform.rotation);
-        //            mr.material.color = new Color(248 / 255f, 215 / 255f, 0);
-        //            //mr.material = Resources.Load("player_choice_yellow", typeof(Material)) as Material;
-        //            break;
-        //        }
-        //    case 4:
-        //        {
-        //            Instantiate(flag_4, new Vector3(pos_x, 1, pos_z), flag_4.transform.rotation);
-        //            mr.material.color = new Color(168 / 255f, 0 / 255f, 255 / 255f);
-        //            //mr.material = Resources.Load("player_choice_yellow", typeof(Material)) as Material;
-        //            break;
-        //        }
-        //}
     }
 
     //0라운드 베이스 선택관련 RPC함수 모든 인원들은 해당 플레이어가 어디로 베이스 캠프를 선정했는지 확인한다.
@@ -337,7 +307,7 @@ public class NetworkRoundManager : MonoBehaviourPunCallbacks, IPunObservable
         go.GetComponent<Hex>().thisBaseCamp = true;
 
         //해당 타일에 베이스캠프 이미지를 구현
-        PrefebManager.CreatePrefeb(castle[playerId - 1], locX, locY, myColor[playerId - 1]);
+        PrefebManager.CreatePrefeb(castle[playerId - 1], locX, locY, myColor[playerId]);
     }
 
     #endregion

@@ -27,48 +27,24 @@ public class player_pannel : MonoBehaviour
     
     void Start()
     {
-
+        //플레이어 2명일때 34번 패널 지움
+        // for문보다 간편해보여 if문으로 2명일때 3명일때 작성 4명일때는 모두 오픈이므로 x
+        
+        if (NetworkRoundManager.player_Number == 2)
+        {
+            Player_pannel[2].SetActive(false);
+            Player_pannel[3].SetActive(false);
+        }
+        if (NetworkRoundManager.player_Number == 3)
+            Player_pannel[3].SetActive(false);
+        for (int i = 0; i < NetworkRoundManager.player_Number; i++)
+            player_id[i].text = PhotonNetwork.PlayerList[i].NickName;//추후 닉네임변경
     }
 
     // Update is called once per frame
     void Update()
     {
-        if (NetworkRoundManager.nowRound == 0)
-        {
-            //플레이어의 설정한 닉네임을 패널에 표현
-            for (int i = 0; i < NetworkRoundManager.player_Number; i++)
-                player_id[i].text = PhotonNetwork.PlayerList[i].NickName;//추후 닉네임변경
-
-            //플레이어 2명일때 34번 패널 지움
-            // for문보다 간편해보여 if문으로 2명일때 3명일때 작성 4명일때는 모두 오픈이므로 x
-            if (NetworkRoundManager.player_Number == 2)
-            {
-                Player_pannel[2].SetActive(false);
-                Player_pannel[3].SetActive(false);
-            }
-            if (NetworkRoundManager.player_Number == 3)
-                Player_pannel[3].SetActive(false);
-        }
-        else {
-            switch (NetworkRoundManager.player_Number)
-            {
-                case 2:
-                    {
-                        Player_Count();
-                        break;
-                    }
-                case 3:
-                    {
-                        Player_Count();
-                        break;
-                    }
-                case 4:
-                    {
-                        Player_Count();
-                        break;
-                    }
-            }
-        }
+        Player_Count();
     }
     //각 플레이어 패널에 카드수, 점령땅의 수, 현재 점수를 표현
     void Player_Count()
