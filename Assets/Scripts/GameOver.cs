@@ -61,15 +61,20 @@ public class GameOver : MonoBehaviour
         //    }
         //}
         //else {
-            for (int i = 0; i < NetworkRoundManager.player_Number; i++) {
+        Debug.Log("nowRound : " + NetworkRoundManager.nowRound);
+        if (NetworkRoundManager.nowRound > 6) {
+            for (int i = 0; i < NetworkRoundManager.player_Number; i++)
+            {
                 Debug.Log("마지막, player_score : " + temp + ", " + EventManager.player_score[i]);
 
-            if (temp == EventManager.player_score[i])
-            {
-                Win_Img.sprite = player_img[i];
-            }
-            else {
-                Win_Img.sprite = player_img[4];
+                if (temp == EventManager.player_score[i])
+                {
+                    Win_Img.sprite = player_img[i - 1];
+                }
+                else
+                {
+                    Win_Img.sprite = player_img[4];
+                }
             }
             //}
         }

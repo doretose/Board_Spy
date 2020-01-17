@@ -20,8 +20,6 @@ public class NetworkRoundManager : MonoBehaviourPunCallbacks, IPunObservable
     public Button endButton;
     public Button selectButton;
     public Button baseSelectButton;
-    public Button test;
-    public GameObject game_result_pannel;
 
     //플레이어의 정체성
     private int myPlayerId; 
@@ -93,8 +91,15 @@ public class NetworkRoundManager : MonoBehaviourPunCallbacks, IPunObservable
                 MasterRoundEnd();
             }
         }
-
-        roundText.text = $"{nowRound} Round";
+        if (nowRound < 6)
+        {
+            roundText.text = $"{nowRound} Round";
+        }
+        else if (nowRound >= 6)
+        {
+            roundText.text = $"Last Round";
+            roundText.color = Color.red;
+        }
 
         //베이스 캠프 선택 0라운드
         if (nowRound == 0)
@@ -142,7 +147,7 @@ public class NetworkRoundManager : MonoBehaviourPunCallbacks, IPunObservable
         {
             inRoundingPlayerId = (inRoundingPlayerId + 1) % player_Number;
             playerTrun[myPlayerId - 1] = false;
-            player_pannel_bg[inRoundingPlayerId - 1].SetActive(false);
+            player_pannel_bg[inRoundingPlayerId].SetActive(false);
         }
     }
 
@@ -216,11 +221,6 @@ public class NetworkRoundManager : MonoBehaviourPunCallbacks, IPunObservable
         for (int i = 0; i < player_Number; i++)
         {
             playerTrun[i] = true;
-        }
-        if (nowRound > 6)
-        {
-            RPCRoundEnd();
-            Invoke("RPCEndGame", 3);
         }
         //라운드 처리 관련 함수 호출, roundProcessBool로 해당 스크립트 통제
     }
@@ -314,14 +314,7 @@ public class NetworkRoundManager : MonoBehaviourPunCallbacks, IPunObservable
         }
     }
 
-
-    [PunRPC]
-    private void RPCEndGame()
-    {
-        game_result_pannel.SetActive(true);
-        GameObject play_pannel = GameObject.Find("Canvas");
-        play_pannel.SetActive(false);
-    }
+   
     //카드를 타일에 사용하는 함수
     //selectButton 모든 플레이어에게 => RPCCardUseData()
     //EventManager의 타일관련 함수에 카드의 데이터와 타일의 데이터를 입력한다.

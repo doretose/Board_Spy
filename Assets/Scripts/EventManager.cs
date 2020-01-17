@@ -33,6 +33,9 @@ public class EventManager : MonoBehaviour
     public GameObject[] flag = new GameObject[4];
     #endregion
 
+    //플레이어 패널
+    public GameObject game_result_pannel;
+
     // 3차원 배열 selectTiles 초기화
     private void Awake()
     {
@@ -207,6 +210,15 @@ public class EventManager : MonoBehaviour
                     player_score[occTiles[i, j] - 1] += (int)Math.Pow(2,ScoreTilesVisit(i,j, occTiles[i, j]) - 1);
                 }
             }
+        }
+        if (NetworkRoundManager.nowRound > 6)
+        {
+            Debug.Log("gameover_pannel on ");
+            //NetworkRoundManager.RPCEndGame();
+            game_result_pannel.SetActive(true);
+            GameObject play_pannel = GameObject.Find("Canvas");
+            Debug.Log("now_play_pannel_off ");
+            play_pannel.SetActive(false);
         }
     }
 
