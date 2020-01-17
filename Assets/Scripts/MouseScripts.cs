@@ -32,7 +32,7 @@ public class MouseScripts : MonoBehaviour
             if (ourHitObject.GetComponent<Hex>() != null && !ourHitObject.GetComponent<Hex>().thisBaseCamp)
             {
                 //Debug.Log("Raycast hit: " + ourHitObject.name);
-                if (Input.GetMouseButtonDown(0))
+                if (Input.GetMouseButton(0))
                 {
                     mr = ourHitObject.GetComponentInChildren<MeshRenderer>();
                     ps = ourHitObject.GetComponentInChildren<ParticleSystem>();
@@ -74,6 +74,13 @@ public class MouseScripts : MonoBehaviour
                         }
                     }
                 }
+
+                //if (Input.GetMouseButton(1))
+                //{
+                //    return;
+                //    // locX, locY, 패널.setActive(true), 
+                //    //실행되야될 함수 : 패널==> locX, locY(화면 텍스트 위치표시 용도), 
+                //}
             }
         }
     }
