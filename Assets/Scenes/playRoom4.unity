@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 170076734}
-  m_IndirectSpecularColor: {r: 0.44657844, g: 0.49641222, b: 0.57481694, a: 1}
+  m_IndirectSpecularColor: {r: 0.44657898, g: 0.4964133, b: 0.5748178, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -3401,7 +3401,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -0.000044835233, y: -222.81506}
+  m_AnchoredPosition: {x: 0.00000092924165, y: -222.81502}
   m_SizeDelta: {x: 84.8, y: 719.53}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &303700135
@@ -5402,7 +5402,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.22612458, y: 0.027301788}
   m_AnchorMax: {x: 0.33356002, y: 0.21400002}
-  m_AnchoredPosition: {x: -4.239891, y: 4.0403137}
+  m_AnchoredPosition: {x: -4.2398987, y: 4.0403137}
   m_SizeDelta: {x: -0.9899998, y: 2.0100002}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &500884324
@@ -7476,6 +7476,7 @@ MonoBehaviour:
   baseSelectButton: {fileID: 1336393444}
   startPlayerId: 0
   inRoundingPlayerId: 0
+  preRoundingPlayerId: 0
   timeText: {fileID: 1673976628}
   player_pannel_bg:
   - {fileID: 234950231}
@@ -16913,7 +16914,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.4294078, y: 0.28821927}
   m_AnchorMax: {x: 0.79540783, y: 0.5}
-  m_AnchoredPosition: {x: 0.099999905, y: 0.40000153}
+  m_AnchoredPosition: {x: 0.10000038, y: 0.40000153}
   m_SizeDelta: {x: -0.5269966, y: 0.56295395}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1680095244
@@ -19448,7 +19449,7 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 717474846}
-        m_MethodName: EndTrun
+        m_MethodName: EndTurn
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
