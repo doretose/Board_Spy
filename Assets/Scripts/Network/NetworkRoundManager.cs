@@ -150,7 +150,7 @@ public class NetworkRoundManager : MonoBehaviourPunCallbacks, IPunObservable
         timeCost = 20;
         if (!PhotonNetwork.IsMasterClient)
         {
-            Debug.Log("send Master next Trun");
+            Debug.Log("send Master next Turn");
             pv.RPC("RPCEndPlayer", RpcTarget.MasterClient, myPlayerId);
         }
         else
