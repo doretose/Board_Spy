@@ -29,10 +29,10 @@ public class MouseScripts : MonoBehaviour
         if (Physics.Raycast(ray, out hitInfo))
         {
             GameObject ourHitObject = hitInfo.collider.transform.gameObject;
-            if (ourHitObject.GetComponent<Hex>() != null && !ourHitObject.GetComponent<Hex>().thisBaseCamp)
+            if (ourHitObject.GetComponent<Hex>() != null && !ourHitObject.GetComponent<Hex>().thisBaseCamp && NetworkRoundManager.isMyTurn)
             {
                 //Debug.Log("Raycast hit: " + ourHitObject.name);
-                if (Input.GetMouseButton(0))
+                if (Input.GetMouseButtonDown(0))
                 {
                     mr = ourHitObject.GetComponentInChildren<MeshRenderer>();
                     ps = ourHitObject.GetComponentInChildren<ParticleSystem>();

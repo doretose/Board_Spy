@@ -168,8 +168,23 @@ public class EventManager : MonoBehaviour
         tileLocX.Clear();
         tileLocY.Clear();
 
+        //라운드결과 종료 => 점령지, 점수 계산
         RoundResultEnd();
         
+        NetworkRoundManager.nowRound += 1;
+
+        if (NetworkRoundManager.nowRound > NetworkRoundManager.roundLimit)
+        {
+            yield return new WaitForSeconds(2);
+
+            Debug.Log("gameover_pannel on ");
+            //NetworkRoundManager.RPCEndGame();
+            game_result_pannel.SetActive(true);
+            GameObject play_pannel = GameObject.Find("Canvas");
+            Debug.Log("now_play_pannel_off ");
+            play_pannel.SetActive(false);
+        }
+
         yield return new WaitForSeconds(1);
         NetworkRoundManager.roundProcessBool = false;
     }
@@ -210,15 +225,6 @@ public class EventManager : MonoBehaviour
                     player_score[occTiles[i, j] - 1] += (int)Math.Pow(2,ScoreTilesVisit(i,j, occTiles[i, j]) - 1);
                 }
             }
-        }
-        if (NetworkRoundManager.nowRound > 6)
-        {
-            Debug.Log("gameover_pannel on ");
-            //NetworkRoundManager.RPCEndGame();
-            game_result_pannel.SetActive(true);
-            GameObject play_pannel = GameObject.Find("Canvas");
-            Debug.Log("now_play_pannel_off ");
-            play_pannel.SetActive(false);
         }
     }
 
