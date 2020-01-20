@@ -2154,7 +2154,6 @@ MonoBehaviour:
   - {fileID: 6514891741863532835, guid: ce802b61d00cb1f469abe2ab821a7f9e, type: 3}
   - {fileID: 4636899333479465442, guid: a2ee1a45a5d831f41903640211d358bb, type: 3}
   - {fileID: 2011540240264104612, guid: fe8a77da36f4481499317f09935f94ba, type: 3}
-  - {fileID: 582418790}
   game_result_pannel: {fileID: 1865739221}
 --- !u!1 &208762793
 GameObject:
@@ -16043,26 +16042,6 @@ PrefabInstance:
       propertyPath: m_SizeDelta.y
       value: 38.02
       objectReference: {fileID: 0}
-    - target: {fileID: 5055144632568020188, guid: c6adcbc3e2f30e04e87709cc8f096097,
-        type: 3}
-      propertyPath: m_RootOrder
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 6709724966012747354, guid: c6adcbc3e2f30e04e87709cc8f096097,
-        type: 3}
-      propertyPath: m_RootOrder
-      value: 5
-      objectReference: {fileID: 0}
-    - target: {fileID: 5055144632568020188, guid: c6adcbc3e2f30e04e87709cc8f096097,
-        type: 3}
-      propertyPath: m_RootOrder
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 6709724966012747354, guid: c6adcbc3e2f30e04e87709cc8f096097,
-        type: 3}
-      propertyPath: m_RootOrder
-      value: 5
-      objectReference: {fileID: 0}
     - target: {fileID: 7329139667284979492, guid: c6adcbc3e2f30e04e87709cc8f096097,
         type: 3}
       propertyPath: m_IsActive
@@ -16072,6 +16051,26 @@ PrefabInstance:
         type: 3}
       propertyPath: m_IsActive
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5055144632568020188, guid: c6adcbc3e2f30e04e87709cc8f096097,
+        type: 3}
+      propertyPath: m_RootOrder
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5055144632568020188, guid: c6adcbc3e2f30e04e87709cc8f096097,
+        type: 3}
+      propertyPath: m_RootOrder
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6709724966012747354, guid: c6adcbc3e2f30e04e87709cc8f096097,
+        type: 3}
+      propertyPath: m_RootOrder
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 6709724966012747354, guid: c6adcbc3e2f30e04e87709cc8f096097,
+        type: 3}
+      propertyPath: m_RootOrder
+      value: 5
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: c6adcbc3e2f30e04e87709cc8f096097, type: 3}
@@ -20758,6 +20757,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   toastMsg: {fileID: 1288889516}
+  isMyMsg: 1
 --- !u!1 &2009959592
 GameObject:
   m_ObjectHideFlags: 0

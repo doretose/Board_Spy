@@ -46,7 +46,6 @@ public class MouseScripts : MonoBehaviour
                     ourHitObject.GetComponentInChildren<ParticleSystem>();
                     if (choice_Map == false)
                     {
-
                         // 선택된 땅이 없으면 선택된 땅의 x, y값을 저장 후 색변환
                         choice_Map_x = ourHitObject.GetComponent<Hex>().x;
                         choice_Map_y = ourHitObject.GetComponent<Hex>().y;

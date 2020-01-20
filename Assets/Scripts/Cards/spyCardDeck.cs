@@ -19,14 +19,14 @@ public class spyCardDeck : MonoBehaviour
     // Use this for initialization
     void Start()
     {
-        deckSize = 40;
+        deckSize = 50;
         for(int i =0; i < deckSize; i++)
         {
-            if(i < 20)
+            if(i < 25)
             {
                 deck[i] = CardDataBase.cardList[x];
                 continue;
-            }else if(i < 30){
+            }else if(i < 40){
                 x = 2;
                 deck[i] = CardDataBase.cardList[x];
                 continue;
