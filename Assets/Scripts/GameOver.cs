@@ -6,7 +6,7 @@ using TMPro;
 using UnityEngine.SceneManagement;
 using Photon.Pun;
 
-public class GameOver : MonoBehaviour
+public class GameOver : MonoBehaviourPunCallbacks
 {
     //변수의 수가 많아 각 패널로 분류하여 가시성 높임
     [Header("Player Pannel")]
@@ -79,23 +79,40 @@ public class GameOver : MonoBehaviour
             //}
         }
     }
-
-    public void onClickExit()
+    public override void OnLeftRoom()
     {
+        SceneManager.LoadScene(0);
+    }
+
+    IEnumerator left_Room()
+    {
+        //PhotonNetwork.Disconnect();
         PhotonNetwork.LeaveRoom();
-        Invoke("test_invoke_leaveroom", 1);
-        //if (PhotonNetwork.CurrentRoom == null)
-        //{
-        //    PhotonNetwork.LoadLevel(0);
-        //    //SceneManager.LoadScene(0);
-        //}
-        //카드넘버, nowrounm
-        //PhotonNetwork.JoinLobby();
-        //PhotonNetwork.LoadLevel(0);
+        while (PhotonNetwork.InRoom)
+        {
+            Debug.Log("while문안");
+            yield return null;
+        }
+        SceneManager.LoadScene(0);
     }
 
-    void test_invoke_leaveroom()
+    public void LeaveRoom()
     {
-        PhotonNetwork.LoadLevel(0);
+        StartCoroutine(left_Room());
+        Debug.Log("103번째줄");
+        //PhotonNetwork.LeaveRoom();
     }
+
+    //public void onClickExit()
+    //{
+    //    PhotonNetwork.LeaveRoom();
+    //    //if (PhotonNetwork.CurrentRoom == null)
+    //    //{
+    //    //    PhotonNetwork.LoadLevel(0);
+    //    //    //SceneManager.LoadScene(0);
+    //    //}
+    //    //카드넘버, nowrounm
+    //    //PhotonNetwork.JoinLobby();
+    //    //PhotonNetwork.LoadLevel(0);
+    //}
 }
