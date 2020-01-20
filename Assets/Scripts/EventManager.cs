@@ -54,23 +54,23 @@ public class EventManager : MonoBehaviour
         
     }
 
-    void Update()
-    {
-        if (!NetworkRoundManager.roundProcessBool)
-        {
-            player_count = new int[4] { 0, 0, 0, 0 };
-            for (int i = 0; i < occTiles.GetLength(0); i++)
-            {
-                for (int j = 0; j < occTiles.GetLength(1); j++)
-                {
-                    if (occTiles[i, j] != 0)
-                    {
-                        player_count[occTiles[i, j] - 1] += 1;
-                    }
-                }
-            }
-        }
-    }
+    //void Update()
+    //{
+    //    if (!NetworkRoundManager.roundProcessBool)
+    //    {
+    //        player_count = new int[4] { 0, 0, 0, 0 };
+    //        for (int i = 0; i < occTiles.GetLength(0); i++)
+    //        {
+    //            for (int j = 0; j < occTiles.GetLength(1); j++)
+    //            {
+    //                if (occTiles[i, j] != 0)
+    //                {
+    //                    player_count[occTiles[i, j] - 1] += 1;
+    //                }
+    //            }
+    //        }
+    //    }
+    //}
 
     public void StartRoundResult()
     {

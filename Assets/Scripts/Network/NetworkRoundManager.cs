@@ -80,7 +80,6 @@ public class NetworkRoundManager : MonoBehaviourPunCallbacks, IPunObservable
         myPlayerId = PhotonNetwork.LocalPlayer.ActorNumber;
         public_Player_Id = myPlayerId;
         timeCost = 20;
-        
     }
 
     void FixedUpdate()

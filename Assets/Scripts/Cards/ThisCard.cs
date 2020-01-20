@@ -8,12 +8,9 @@ using TMPro;
 public class ThisCard : MonoBehaviour, IPointerClickHandler
 {
     public List<Card> thisCard = new List<Card>();
-    //public int thisId;
 
     public int id;
     public string cardName;
-
-    //public TextMeshProUGUI nameText;
 
     public Sprite iconSprite, nameSprite;
     public Image iconImage, nameImage;
@@ -29,7 +26,6 @@ public class ThisCard : MonoBehaviour, IPointerClickHandler
 
     void Start()
     {
-        //thisCard[0] = CardDataBase.cardList[thisId];
         numberOfCardsInDeck = spyCardDeck.deckSize;
     }
 
@@ -47,8 +43,6 @@ public class ThisCard : MonoBehaviour, IPointerClickHandler
 
         iconSprite = thisCard[0].thisImage;
         nameSprite = thisCard[0].cardNameImage;
-
-        //nameText.text = "" + cardName;
 
         iconImage.sprite = iconSprite;
         nameImage.sprite = nameSprite;
@@ -81,6 +75,7 @@ public class ThisCard : MonoBehaviour, IPointerClickHandler
             GetComponent<CardToHand>().selectThisCard = false;
             return;
         }
+
         if (selectNum.HasValue)
         {
             return;
