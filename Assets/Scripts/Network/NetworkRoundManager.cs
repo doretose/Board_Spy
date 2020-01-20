@@ -14,6 +14,8 @@ public class NetworkRoundManager : MonoBehaviourPunCallbacks, IPunObservable
     public GameObject[] tokken = new GameObject[4];
     public GameObject[] castle = new GameObject[4];
     public GameObject sword_ani;
+    public GameObject[] endTurnText = new GameObject[4];
+    public GameObject[] Crown = new GameObject[4];
     private static Color[] myColor = new Color[5] { new Color(32 / 255f, 84 / 255f, 30 / 255f), new Color(255 / 255f, 0, 0) , new Color(83 / 255f, 147 / 255f, 224 / 255f), new Color(248 / 255f, 215 / 255f, 0), new Color(168 / 255f, 0 / 255f, 255 / 255f) };
     public TextMeshProUGUI roundText;
     public TextMeshProUGUI TrunText;
@@ -34,7 +36,7 @@ public class NetworkRoundManager : MonoBehaviourPunCallbacks, IPunObservable
     public static int nowRound = 0; // 라운드
 
     //호스트만 관리하는 변수들
-    private List<bool> playerTrun = new List<bool>(); //해당 라운드에서 플레이어턴이 끝났는지 확인 모든 값이 false이면 다음 라운드로 진행
+    private List<bool> playerTurn = new List<bool>(); //해당 라운드에서 플레이어턴이 끝났는지 확인 모든 값이 false이면 다음 라운드로 진행
     public static List<int> cardNum = new List<int>(); //각 플레이어의 핸드 수를 확인 [0 = 1player ... 3 = 4player]
 
     //Select Button 클릭시 사용한 카드 ID와 좌표값을 EventManager 타일변수에 입력
@@ -48,7 +50,7 @@ public class NetworkRoundManager : MonoBehaviourPunCallbacks, IPunObservable
     //라운드실행제어 변수
     public static bool roundProcessBool = false;
     public static bool isMyTurn = false;
-    public static int roundLimit = 2;
+    public static int roundLimit = 6;
 
     public GameObject[] player_pannel_bg = new GameObject[4];
     void Awake()
@@ -62,10 +64,11 @@ public class NetworkRoundManager : MonoBehaviourPunCallbacks, IPunObservable
         {
             startPlayerId = Random.Range(0, player_Number);
             inRoundingPlayerId = startPlayerId;
+
         }
         for (int i = 0; i < player_Number; i++)
         {
-            playerTrun.Add(true);
+            playerTurn.Add(true);
             cardNum.Add(0);
         }
 
@@ -88,12 +91,13 @@ public class NetworkRoundManager : MonoBehaviourPunCallbacks, IPunObservable
         //라운드 종료함수 호출(호스트만)
         if (PhotonNetwork.IsMasterClient)
         {
-            if (!playerTrun.Contains(true))
+            if (!playerTurn.Contains(true))
             {
                 Debug.Log("라운드종료 함수 호출");
                 MasterRoundEnd();
             }
         }
+
         if (nowRound < roundLimit)
         {
             roundText.text = $"{nowRound} Round";
@@ -104,11 +108,17 @@ public class NetworkRoundManager : MonoBehaviourPunCallbacks, IPunObservable
             roundText.color = Color.red;
         }
 
-        //플레이어 패널 백그라운드 활성
+        //플레이어 패널 백그라운드, 플레이어 턴 종료, 크라운 활성
         for (int i = 0; i < player_Number; i++)
         {
             if (i == inRoundingPlayerId) player_pannel_bg[i].SetActive(true);
             else player_pannel_bg[i].SetActive(false);
+
+            if (playerTurn[i]) endTurnText[i].SetActive(false);
+            else endTurnText[i].SetActive(true);
+
+            if (i == startPlayerId) Crown[i].SetActive(true);
+            else Crown[i].SetActive(false);
         }
 
         //베이스 캠프 선택 0라운드
@@ -117,7 +127,7 @@ public class NetworkRoundManager : MonoBehaviourPunCallbacks, IPunObservable
             RoundZeroAction();
             return;
         }
-        
+
         //해당 턴 플레이어만 버튼 활성화
         if (myPlayerId == inRoundingPlayerId + 1)
         {
@@ -157,7 +167,7 @@ public class NetworkRoundManager : MonoBehaviourPunCallbacks, IPunObservable
         else
         {
             inRoundingPlayerId = (inRoundingPlayerId + 1) % player_Number;
-            playerTrun[myPlayerId - 1] = false;
+            playerTurn[myPlayerId - 1] = false;
         }
     }
 
@@ -213,10 +223,12 @@ public class NetworkRoundManager : MonoBehaviourPunCallbacks, IPunObservable
     //선플레이어를 다음플레이어로 변경하고 Round를 증가, 모든 플레이어의 Trun상황을 True로 변경 
     private void MasterRoundEnd()
     {
-        for (int i = 0; i < player_Number; i++)
-        {
-            playerTrun[i] = true;
-        }
+        //for (int i = 0; i < player_Number; i++)
+        //{
+        //    playerTurn[i] = true;
+        //    player_pannel_bg[i].SetActive(false);
+        //    endTurnText[i].SetActive(true);
+        //}
 
         //라운드 처리 관련 함수 호출, roundProcessBool로 해당 스크립트 통제
         pv.RPC("RPCRoundEnd", RpcTarget.AllBuffered);
@@ -302,10 +314,10 @@ public class NetworkRoundManager : MonoBehaviourPunCallbacks, IPunObservable
     {
         if (PhotonNetwork.IsMasterClient)
         {
-            playerTrun[playerId - 1] = false;
+            playerTurn[playerId - 1] = false;
             inRoundingPlayerId = (inRoundingPlayerId + 1) % player_Number;
-            if (!playerTrun.Contains(true)) return; //
-            if (playerTrun[inRoundingPlayerId] == false)
+            if (!playerTurn.Contains(true)) return; //
+            if (playerTurn[inRoundingPlayerId] == false)
             {
                 RPCNextPlayer();
             }
@@ -320,8 +332,8 @@ public class NetworkRoundManager : MonoBehaviourPunCallbacks, IPunObservable
         if (PhotonNetwork.IsMasterClient)
         {
             inRoundingPlayerId = (inRoundingPlayerId + 1) % player_Number;
-            if (!playerTrun.Contains(true)) return; //
-            if (playerTrun[inRoundingPlayerId] == false)
+            if (!playerTurn.Contains(true)) return; //
+            if (playerTurn[inRoundingPlayerId] == false)
             {
                 RPCNextPlayer();
             }
@@ -365,6 +377,14 @@ public class NetworkRoundManager : MonoBehaviourPunCallbacks, IPunObservable
     private void RPCRoundEnd()
     {
         roundProcessBool = true;
+
+        for (int i = 0; i < player_Number; i++)
+        {
+            playerTurn[i] = true;
+            player_pannel_bg[i].SetActive(false);
+            endTurnText[i].SetActive(true);
+        }
+
         GameObject.Find("EventSystem").GetComponent<EventManager>().StartRoundResult();
     }
 
@@ -389,13 +409,21 @@ public class NetworkRoundManager : MonoBehaviourPunCallbacks, IPunObservable
         {
             stream.SendNext(startPlayerId);
             stream.SendNext(inRoundingPlayerId);
-            for (int i = 0; i < player_Number; i++) stream.SendNext(cardNum[i]);
+            for (int i = 0; i < player_Number; i++)
+            {
+                stream.SendNext(playerTurn[i]);
+                stream.SendNext(cardNum[i]);
+            }
         }
         else
         {
             startPlayerId = (int)stream.ReceiveNext();
             inRoundingPlayerId = (int)stream.ReceiveNext();
-            for (int i = 0; i < player_Number; i++) cardNum[i] = (int)stream.ReceiveNext();
+            for (int i = 0; i < player_Number; i++)
+            {
+                playerTurn[i] = (bool)stream.ReceiveNext();
+                cardNum[i] = (int)stream.ReceiveNext();
+            }
         }
     }
 }
