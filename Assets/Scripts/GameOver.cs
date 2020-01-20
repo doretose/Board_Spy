@@ -17,6 +17,7 @@ public class GameOver : MonoBehaviour
 
     public Image Win_Img;
     public Sprite[] player_img = new Sprite[4];
+
     void Start()
     {
         //플레이어 2명일때 34번 패널 지움
@@ -45,12 +46,9 @@ public class GameOver : MonoBehaviour
             castle_txt[i].text = EventManager.player_count[i].ToString();
             //차후 점수 표시
             score_txt[i].text = EventManager.player_score[i].ToString();
-             if(temp > EventManager.player_score[i])
-                  return;
-            else if(temp == EventManager.player_score[i])
-                 temp2 = temp;
-             else
-                   temp = EventManager.player_score[i];
+            if (temp > EventManager.player_score[i]) break;
+            else if(temp == EventManager.player_score[i]) temp2 = temp;
+            else temp = EventManager.player_score[i];
         }
 
         //if (temp2 != -1){
@@ -62,19 +60,20 @@ public class GameOver : MonoBehaviour
         //}
         //else {
         Debug.Log("nowRound : " + NetworkRoundManager.nowRound);
-        if (NetworkRoundManager.nowRound > 6) {
+        if (NetworkRoundManager.nowRound > NetworkRoundManager.roundLimit) {
             for (int i = 0; i < NetworkRoundManager.player_Number; i++)
             {
                 Debug.Log("마지막, player_score : " + temp + ", " + EventManager.player_score[i]);
 
                 if (temp == EventManager.player_score[i])
                 {
-                    Win_Img.sprite = player_img[i - 1];
+                    Win_Img.sprite = player_img[i];
+                    break;
                 }
-                else
-                {
-                    Win_Img.sprite = player_img[4];
-                }
+                //else
+                //{
+                //    Win_Img.sprite = player_img[3];
+                //}
             }
             //}
         }

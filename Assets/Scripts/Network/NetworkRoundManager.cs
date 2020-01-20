@@ -46,6 +46,8 @@ public class NetworkRoundManager : MonoBehaviourPunCallbacks, IPunObservable
 
     //라운드실행제어 변수
     public static bool roundProcessBool = false;
+    public static bool isMyTurn = false;
+    public static int roundLimit = 2;
 
     public GameObject[] player_pannel_bg = new GameObject[4];
     void Awake()
@@ -91,14 +93,21 @@ public class NetworkRoundManager : MonoBehaviourPunCallbacks, IPunObservable
                 MasterRoundEnd();
             }
         }
-        if (nowRound < 6)
+        if (nowRound < roundLimit)
         {
             roundText.text = $"{nowRound} Round";
         }
-        else if (nowRound >= 6)
+        else if (nowRound >= roundLimit)
         {
             roundText.text = $"Last Round";
             roundText.color = Color.red;
+        }
+
+        //플레이어 패널 백그라운드 활성
+        for (int i = 0; i < player_Number; i++)
+        {
+            if (i == inRoundingPlayerId) player_pannel_bg[i].SetActive(true);
+            else player_pannel_bg[i].SetActive(false);
         }
 
         //베이스 캠프 선택 0라운드
@@ -111,8 +120,8 @@ public class NetworkRoundManager : MonoBehaviourPunCallbacks, IPunObservable
         //해당 턴 플레이어만 버튼 활성화
         if (myPlayerId == inRoundingPlayerId + 1)
         {
+            isMyTurn = true;
             endButton.interactable = true;
-            player_pannel_bg[inRoundingPlayerId].SetActive(true);
             TimeCount();//시간제한 함수 실행
             //카드, 타일 선택이 모두 완료되면 셀렉트버튼 활성화
             if (selectCard.HasValue && MouseScripts.choice_Map == true) { selectButton.interactable = true; }
@@ -120,6 +129,7 @@ public class NetworkRoundManager : MonoBehaviourPunCallbacks, IPunObservable
         }
         else
         {
+            isMyTurn = false;
             //시간제한
             timeText.gameObject.SetActive(false);
             timeCost = 20;
@@ -129,11 +139,12 @@ public class NetworkRoundManager : MonoBehaviourPunCallbacks, IPunObservable
         }
 
         //UI 스크립트
-        TrunText.text = $"{inRoundingPlayerId + 1}player Turn";   
+        TrunText.text = $"{inRoundingPlayerId + 1}player Turn";
+        
     }
 
     #region 버튼 및 함수부
-    public void EndTrun()
+    public void EndTurn()
     {
         endButton.interactable = false;
         timeCost = 20;
@@ -141,19 +152,16 @@ public class NetworkRoundManager : MonoBehaviourPunCallbacks, IPunObservable
         {
             Debug.Log("send Master next Trun");
             pv.RPC("RPCEndPlayer", RpcTarget.MasterClient, myPlayerId);
-            player_pannel_bg[inRoundingPlayerId ].SetActive(false);
         }
         else
         {
             inRoundingPlayerId = (inRoundingPlayerId + 1) % player_Number;
             playerTrun[myPlayerId - 1] = false;
-            player_pannel_bg[inRoundingPlayerId].SetActive(false);
         }
     }
 
     public void SelectButton()
     {
-        player_pannel_bg[inRoundingPlayerId].SetActive(false);
         selectButton.interactable = false;
         //selectCAndT[0, 1], [0, 2] ==> x,y좌표
         Debug.Log("선택된 맵 x , y좌표 = " + "(" + MouseScripts.choice_Map_x + "," + MouseScripts.choice_Map_y + ")");
@@ -196,7 +204,7 @@ public class NetworkRoundManager : MonoBehaviourPunCallbacks, IPunObservable
 
         //버튼 파괴하고 정상작동하도록
         Destroy(baseSelectButton.gameObject);
-        EndTrun();
+        EndTurn();
     }
 
     //모든 플레이어의 Trun 상황이 false라면 시작된다. Update에 위치
@@ -204,6 +212,12 @@ public class NetworkRoundManager : MonoBehaviourPunCallbacks, IPunObservable
     //선플레이어를 다음플레이어로 변경하고 Round를 증가, 모든 플레이어의 Trun상황을 True로 변경 
     private void MasterRoundEnd()
     {
+        for (int i = 0; i < player_Number; i++)
+        {
+            playerTrun[i] = true;
+        }
+
+        //라운드 처리 관련 함수 호출, roundProcessBool로 해당 스크립트 통제
         pv.RPC("RPCRoundEnd", RpcTarget.AllBuffered);
 
         for (int i = 0; i < player_Number; i++)
@@ -217,12 +231,7 @@ public class NetworkRoundManager : MonoBehaviourPunCallbacks, IPunObservable
 
         startPlayerId = (startPlayerId + 1) % player_Number;
         inRoundingPlayerId = startPlayerId;
-        nowRound += 1;
-        for (int i = 0; i < player_Number; i++)
-        {
-            playerTrun[i] = true;
-        }
-        //라운드 처리 관련 함수 호출, roundProcessBool로 해당 스크립트 통제
+        //nowRound += 1;
     }
 
     private void CardDisStart()
@@ -243,7 +252,7 @@ public class NetworkRoundManager : MonoBehaviourPunCallbacks, IPunObservable
 
         if (timeCost < 0.0f)
         {
-            EndTrun();
+            EndTurn();
             timeText.gameObject.SetActive(false);
             return;
         }
@@ -259,8 +268,12 @@ public class NetworkRoundManager : MonoBehaviourPunCallbacks, IPunObservable
 
         if (myPlayerId == inRoundingPlayerId + 1)
         {
+            isMyTurn = true;
             if (MouseScripts.choice_Map == true) baseSelectButton.interactable = true;
             else baseSelectButton.interactable = false;
+        } else
+        {
+            isMyTurn = false;
         }
     }
 
@@ -369,25 +382,18 @@ public class NetworkRoundManager : MonoBehaviourPunCallbacks, IPunObservable
 
     #endregion
 
-    public void testButton()
-    {
-        GameObject.Find("EventSystem").GetComponent<EventManager>().StartRoundResult();
-    }
-
     public void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)
     {
         if (stream.IsWriting)
         {
             stream.SendNext(startPlayerId);
             stream.SendNext(inRoundingPlayerId);
-            stream.SendNext(nowRound);
             for (int i = 0; i < player_Number; i++) stream.SendNext(cardNum[i]);
         }
         else
         {
             startPlayerId = (int)stream.ReceiveNext();
             inRoundingPlayerId = (int)stream.ReceiveNext();
-            nowRound = (int)stream.ReceiveNext();
             for (int i = 0; i < player_Number; i++) cardNum[i] = (int)stream.ReceiveNext();
         }
     }
