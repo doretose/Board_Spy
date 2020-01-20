@@ -50,7 +50,7 @@ public class NetworkRoundManager : MonoBehaviourPunCallbacks, IPunObservable
     //라운드실행제어 변수
     public static bool roundProcessBool = false;
     public static bool isMyTurn = false;
-    public static int roundLimit = 6;
+    public static int roundLimit = 2;
 
     public GameObject[] player_pannel_bg = new GameObject[4];
     void Awake()

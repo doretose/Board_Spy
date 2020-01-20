@@ -35,10 +35,7 @@ public class NetworkManager : MonoBehaviourPunCallbacks
     List<RoomInfo> myList = new List<RoomInfo>();
     int currentPage = 1, maxPage, multiple;
     public static int Player_Count;
-
-    bool isConnecting;
-
-
+     
     #region 방리스트 갱신
     // ◀버튼 -2 , ▶버튼 -1 , 셀 숫자
     public void MyListClick(int num)
@@ -101,7 +98,7 @@ public class NetworkManager : MonoBehaviourPunCallbacks
 
     public void Connect() => PhotonNetwork.ConnectUsingSettings();
 
-    public override void OnConnectedToMaster() => PhotonNetwork.JoinLobby();
+    public override void OnConnectedToMaster() =>PhotonNetwork.JoinLobby();
 
     public override void OnJoinedLobby()
     {
@@ -132,11 +129,6 @@ public class NetworkManager : MonoBehaviourPunCallbacks
     {
         PhotonNetwork.LeaveRoom();
      }
-
-    public void OnLeftRoom()
-    {
-        SceneManager.LoadScene(0);
-    }
 
     public override void OnJoinedRoom()
     {
