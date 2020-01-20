@@ -6,8 +6,8 @@ public class HexTileMapGenerator : MonoBehaviour
 {
     public GameObject hexTilePrefab;
     public Transform holder;
-    [SerializeField] int mapWidth;
-    [SerializeField] int mapHeight;
+    [SerializeField] int mapWidth = 0;
+    [SerializeField] int mapHeight = 0;
 
     float tileXOffset = 1.8f;
     float tileZOffset = 1.565f;

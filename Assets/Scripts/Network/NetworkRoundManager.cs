@@ -20,6 +20,7 @@ public class NetworkRoundManager : MonoBehaviourPunCallbacks, IPunObservable
     public Button endButton;
     public Button selectButton;
     public Button baseSelectButton;
+    public GameObject choice_effect;
 
     //플레이어의 정체성
     private int myPlayerId; 
@@ -352,11 +353,11 @@ public class NetworkRoundManager : MonoBehaviourPunCallbacks, IPunObservable
         if (endTileChilds.Length < 8)
         {
             PrefebManager.DestroyPrefebs(locX, locY);
-            PrefebManager.CreatePrefeb(tokken[playerId - 1], locX, locY);
+            PrefebManager.CreatePrefeb(tokken[playerId - 1], locX, locY, choice_effect);
         }
         else {
             PrefebManager.DestroyPrefebs(locX, locY);
-            PrefebManager.CreateSwordPrefeb(sword_ani, locX, locY);
+            PrefebManager.CreateSwordPrefeb(sword_ani, locX, locY, choice_effect);
         }
     }
 
