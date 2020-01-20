@@ -23,7 +23,7 @@ public class MouseScripts : MonoBehaviour
 
     void Update()
     {
-        //Å¬¸¯ÀÌ UIÀ§ÀÌ¸é ±×³É return
+        //í´ë¦­ì´ UIìœ„ì´ë©´ ê·¸ëƒ¥ return
         if (EventSystem.current.IsPointerOverGameObject())
         {
             return;
@@ -40,13 +40,15 @@ public class MouseScripts : MonoBehaviour
                 //Debug.Log("Raycast hit: " + ourHitObject.name);
                 if (Input.GetMouseButtonDown(0))
                 {
-                    mr = ourHitObject.GetComponentInChildren<MeshRenderer>();
-                    ps = ourHitObject.GetComponentInChildren<ParticleSystem>();
-                    Debug.Log(ps);
+                    //mr = ourHitObject.GetComponentInChildren<MeshRenderer>();
+                    //ps = ourHitObject.GetComponentInChildren<ParticleSystem>();
+                    //Debug.Log(ps);
                     ourHitObject.GetComponentInChildren<ParticleSystem>();
                     if (choice_Map == false)
                     {
-                        // ¼±ÅÃµÈ ¶¥ÀÌ ¾øÀ¸¸é ¼±ÅÃµÈ ¶¥ÀÇ x, y°ªÀ» ÀúÀå ÈÄ »öº¯È¯
+                        mr = ourHitObject.GetComponentInChildren<MeshRenderer>();
+                        ps = ourHitObject.GetComponentInChildren<ParticleSystem>();
+                        // ì„ íƒëœ ë•…ì´ ì—†ìœ¼ë©´ ì„ íƒëœ ë•…ì˜ x, yê°’ì„ ì €ì¥ í›„ ìƒ‰ë³€í™˜
                         choice_Map_x = ourHitObject.GetComponent<Hex>().x;
                         choice_Map_y = ourHitObject.GetComponent<Hex>().y;
                         ps.Play();
@@ -55,10 +57,10 @@ public class MouseScripts : MonoBehaviour
                         mr.material.color = NetworkRoundManager.getMyColor(tresh);
                         choice_Map = true;
                     }
-                    // if(chice_map == true) ¼±ÅÃµÈ ¶¥ÀÌ ÀÖ´Ù¸é ÀÌÀü ¼±ÅÃµÈ x,y ¿Í ºñ±³ ÈÄ ÁøÇà
+                    // if(chice_map == true) ì„ íƒëœ ë•…ì´ ìˆë‹¤ë©´ ì´ì „ ì„ íƒëœ x,y ì™€ ë¹„êµ í›„ ì§„í–‰
                     else
                     {
-                        // x, y°ªÀÌ °°À¸¸é
+                        // x, yê°’ì´ ê°™ìœ¼ë©´
                         if (ourHitObject.GetComponent<Hex>().x == choice_Map_x && choice_Map_y == ourHitObject.GetComponent<Hex>().y)
                         {
                             if (ps.isPlaying == true)
@@ -66,13 +68,13 @@ public class MouseScripts : MonoBehaviour
                                 ps.Stop();
                                 ps.Clear();
                             }
-                            //³ì»öÀ¸·Î ´Ù½Ã º¯È¯, Color·Î º¯È¯À» ÇÒ¶§¿¡´Â Unity¿¡ »ö»óÇ¥ / 255f ÇØÁà¾ß º¸ÀÌ´Â»öÀ¸·Î Ç¥ÇöµÊ
+                            //ë…¹ìƒ‰ìœ¼ë¡œ ë‹¤ì‹œ ë³€í™˜, Colorë¡œ ë³€í™˜ì„ í• ë•Œì—ëŠ” Unityì— ìƒ‰ìƒí‘œ / 255f í•´ì¤˜ì•¼ ë³´ì´ëŠ”ìƒ‰ìœ¼ë¡œ í‘œí˜„ë¨
                             int occTileId = GameObject.Find("EventSystem").GetComponent<EventManager>().getOccTiles(choice_Map_x, choice_Map_y);
                             mr.material.color = NetworkRoundManager.getMyColor(occTileId);
 
                             choice_Map = false;
                         }
-                        // x, y°ªÀÌ ´Ù¸£¸é
+                        // x, yê°’ì´ ë‹¤ë¥´ë©´
                         else
                         {
                             if (isMyMsg) StartCoroutine("MsgNotice");
@@ -83,8 +85,8 @@ public class MouseScripts : MonoBehaviour
                 //if (Input.GetMouseButton(1))
                 //{
                 //    return;
-                //    // locX, locY, ÆĞ³Î.setActive(true), 
-                //    //½ÇÇàµÇ¾ßµÉ ÇÔ¼ö : ÆĞ³Î==> locX, locY(È­¸é ÅØ½ºÆ® À§Ä¡Ç¥½Ã ¿ëµµ), 
+                //    // locX, locY, íŒ¨ë„.setActive(true), 
+                //    //ì‹¤í–‰ë˜ì•¼ë  í•¨ìˆ˜ : íŒ¨ë„==> locX, locY(í™”ë©´ í…ìŠ¤íŠ¸ ìœ„ì¹˜í‘œì‹œ ìš©ë„), 
                 //}
             }
         }
@@ -94,7 +96,7 @@ public class MouseScripts : MonoBehaviour
     {
         isMyMsg = false;
 
-        Debug.Log("ÇÏ³ªÀÇ ¶¥¸¸ ¼±ÅÃ°¡´ÉÇÕ´Ï´Ù!");
+        Debug.Log("í•˜ë‚˜ì˜ ë•…ë§Œ ì„ íƒê°€ëŠ¥í•©ë‹ˆë‹¤!");
         toastMsg.SetActive(true);
 
         toastMsg.GetComponent<Image>().color = backupColor;

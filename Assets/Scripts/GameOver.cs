@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
+using UnityEngine.SceneManagement;
 using Photon.Pun;
 
 public class GameOver : MonoBehaviour
@@ -82,8 +83,19 @@ public class GameOver : MonoBehaviour
     public void onClickExit()
     {
         PhotonNetwork.LeaveRoom();
-        PhotonNetwork.JoinLobby();
-        PhotonNetwork.LoadLevel(0);
+        Invoke("test_invoke_leaveroom", 1);
+        //if (PhotonNetwork.CurrentRoom == null)
+        //{
+        //    PhotonNetwork.LoadLevel(0);
+        //    //SceneManager.LoadScene(0);
+        //}
+        //카드넘버, nowrounm
+        //PhotonNetwork.JoinLobby();
+        //PhotonNetwork.LoadLevel(0);
     }
 
+    void test_invoke_leaveroom()
+    {
+        PhotonNetwork.LoadLevel(0);
+    }
 }

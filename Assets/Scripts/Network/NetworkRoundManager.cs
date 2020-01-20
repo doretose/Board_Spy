@@ -55,6 +55,11 @@ public class NetworkRoundManager : MonoBehaviourPunCallbacks, IPunObservable
     public GameObject[] player_pannel_bg = new GameObject[4];
     void Awake()
     {
+        //초기화
+        nowRound = 0;
+        playerTurn.Clear();
+        cardNum.Clear();
+
         pv = this.GetComponent<PhotonView>();
 
         player_Number = PhotonNetwork.PlayerList.Length;
@@ -158,6 +163,9 @@ public class NetworkRoundManager : MonoBehaviourPunCallbacks, IPunObservable
     {
         endButton.interactable = false;
         timeCost = 20;
+        if (MouseScripts.mr.material.color != null)
+            init_tile(MouseScripts.choice_Map_x, MouseScripts.choice_Map_y);
+
         if (!PhotonNetwork.IsMasterClient)
         {
             Debug.Log("send Master next Turn");
@@ -179,11 +187,7 @@ public class NetworkRoundManager : MonoBehaviourPunCallbacks, IPunObservable
         locX = MouseScripts.choice_Map_x;
         locY = MouseScripts.choice_Map_y;
 
-        int occTileId = GameObject.Find("EventSystem").GetComponent<EventManager>().getOccTiles(locX, locY);
-        MouseScripts.mr.material.color = myColor[occTileId];
-        MouseScripts.choice_Map = false;
-        MouseScripts.ps.Stop();
-        MouseScripts.ps.Clear();
+        init_tile(locX, locY);
 
         //playerId, cardId
         pv.RPC("RPCCardUseData", RpcTarget.AllBuffered, locX, locY, myPlayerId, selectCard.Value);
@@ -194,6 +198,15 @@ public class NetworkRoundManager : MonoBehaviourPunCallbacks, IPunObservable
         pv.RPC("RPCNextPlayer", RpcTarget.MasterClient);
         timeCost = 20;
         selectCard = null;
+    }
+
+    void init_tile(int locX, int locY)
+    {
+        int occTileId = GameObject.Find("EventSystem").GetComponent<EventManager>().getOccTiles(locX, locY);
+        MouseScripts.mr.material.color = myColor[occTileId];
+        MouseScripts.choice_Map = false;
+        MouseScripts.ps.Stop();
+        MouseScripts.ps.Clear();
     }
 
     //베이스캠프 셀렉트 버트 클릭시 실행 0라운드에 진행되는 베이스캠프 선택
