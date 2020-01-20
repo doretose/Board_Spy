@@ -16,19 +16,21 @@ public class PrefebManager : MonoBehaviour
         mr.material.color = isColor;
     }
 
-    public static void CreatePrefeb(GameObject isPrefeb, int locX, int locY)
+    public static void CreatePrefeb(GameObject isPrefeb, int locX, int locY, GameObject choice_effect)
     {
         GameObject go = GameObject.Find(locX + ", " + locY);
         float pos_x = go.transform.position.x;
         float pos_z = go.transform.position.z;
+        Destroy(Instantiate(choice_effect, new Vector3(pos_x, 1, pos_z), choice_effect.transform.transform.rotation, go.transform), 2f);
         Instantiate(isPrefeb, new Vector3(pos_x, 1, pos_z), isPrefeb.transform.transform.rotation, go.transform);
     }
 
-    public static void CreateSwordPrefeb(GameObject isPrefeb, int locX, int locY)
+    public static void CreateSwordPrefeb(GameObject isPrefeb, int locX, int locY, GameObject choice_effect)
     {
         GameObject go = GameObject.Find(locX + ", " + locY);
         float pos_x = go.transform.position.x;
         float pos_z = go.transform.position.z;
+        Destroy(Instantiate(choice_effect, new Vector3(pos_x, 1, pos_z), choice_effect.transform.transform.rotation, go.transform), 2f);
         pos_x += (float)0.2;
         Instantiate(isPrefeb, new Vector3(pos_x, 1, pos_z), isPrefeb.transform.transform.rotation, go.transform);
     }
