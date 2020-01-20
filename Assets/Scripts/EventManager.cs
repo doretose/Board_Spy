@@ -31,6 +31,7 @@ public class EventManager : MonoBehaviour
 
     //깃발 프리팹
     public GameObject[] flag = new GameObject[4];
+
     #endregion
 
     //플레이어 패널
@@ -161,7 +162,7 @@ public class EventManager : MonoBehaviour
                 int tempid = occTiles[LocX, LocY];
                 PrefebManager.CreatePrefeb(flag[tempid - 1], LocX, LocY, NetworkRoundManager.getMyColor(tempid));
             }
-            yield return new WaitForSeconds(1);
+            yield return new WaitForSeconds(0.5f);
         }
 
         //최종적으로 player_count를 재탐색하고 타일 초기화 -> occTile에 따른 결과 반영

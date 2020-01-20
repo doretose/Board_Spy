@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.UI;
 using System.Collections;
 using UnityEngine.EventSystems;
 
@@ -9,10 +10,15 @@ public class MouseScripts : MonoBehaviour
     public static int choice_Map_y = 0;
     public static MeshRenderer mr;
     public static ParticleSystem ps;
+    public GameObject toastMsg;
+    Color backupColor;
+    public bool isMyMsg = true;
+
     void Start()
     {
         ps = GameObject.FindGameObjectWithTag("Map").GetComponentInChildren<ParticleSystem>();
         ps.Stop();
+        backupColor = toastMsg.GetComponent<Image>().color;
     }
 
     void Update()
@@ -70,7 +76,7 @@ public class MouseScripts : MonoBehaviour
                         // x, y값이 다르면
                         else
                         {
-                            Debug.Log("하나의 땅만 선택가능합니다!");
+                            if (isMyMsg) StartCoroutine("MsgNotice");
                         }
                     }
                 }
@@ -85,4 +91,28 @@ public class MouseScripts : MonoBehaviour
         }
     }
 
+    IEnumerator MsgNotice()
+    {
+        isMyMsg = false;
+
+        Debug.Log("하나의 땅만 선택가능합니다!");
+        toastMsg.SetActive(true);
+
+        toastMsg.GetComponent<Image>().color = backupColor;
+        Color fadeColor = toastMsg.GetComponent<Image>().color;
+        float time = 0f, start = 1f, end = 0f, FadeTime = 1.1f;
+
+        while(fadeColor.a > 0f)
+        {
+            time += Time.deltaTime / FadeTime;
+            fadeColor.a = Mathf.Lerp(start, end, time);
+            toastMsg.GetComponent<Image>().color = fadeColor;
+            yield return null;
+        }
+
+        toastMsg.SetActive(false);
+
+        isMyMsg = true;
+        yield return 0;
+    }
 }
