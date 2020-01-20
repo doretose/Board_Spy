@@ -105,6 +105,7 @@ public class NetworkManager : MonoBehaviourPunCallbacks
 
     public override void OnJoinedLobby()
     {
+        Debug.Log("로비 재실행");
         LobbyPanel.SetActive(true);
         RoomPanel.SetActive(false);
         PhotonNetwork.LocalPlayer.NickName = NickNameInput.text;
@@ -127,7 +128,15 @@ public class NetworkManager : MonoBehaviourPunCallbacks
 
     public void JoinRandomRoom() => PhotonNetwork.JoinRandomRoom();
 
-    public void LeaveRoom() => PhotonNetwork.LeaveRoom();
+    public void LeaveRoom()
+    {
+        PhotonNetwork.LeaveRoom();
+     }
+
+    public void OnLeftRoom()
+    {
+        SceneManager.LoadScene(0);
+    }
 
     public override void OnJoinedRoom()
     {
@@ -137,6 +146,8 @@ public class NetworkManager : MonoBehaviourPunCallbacks
         
         for (int i = 0; i < ChatText.Length; i++) ChatText[i].text = "";
     }
+
+    
 
     public override void OnCreateRoomFailed(short returnCode, string message) { RoomInput.text = ""; CreateRoom(); }
 

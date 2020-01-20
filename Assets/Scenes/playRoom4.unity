@@ -1851,7 +1851,7 @@ MonoBehaviour:
   m_lineSpacingMax: 0
   m_paragraphSpacing: 0
   m_charWidthMaxAdj: 0
-  m_enableWordWrapping: 1
+  m_enableWordWrapping: 0
   m_wordWrappingRatios: 0.4
   m_overflowMode: 0
   m_firstOverflowCharacterIndex: -1
@@ -2154,7 +2154,6 @@ MonoBehaviour:
   - {fileID: 6514891741863532835, guid: ce802b61d00cb1f469abe2ab821a7f9e, type: 3}
   - {fileID: 4636899333479465442, guid: a2ee1a45a5d831f41903640211d358bb, type: 3}
   - {fileID: 2011540240264104612, guid: fe8a77da36f4481499317f09935f94ba, type: 3}
-  - {fileID: 582418790}
   game_result_pannel: {fileID: 1865739221}
 --- !u!1 &208762793
 GameObject:
@@ -2948,10 +2947,10 @@ MonoBehaviour:
   m_lineSpacingMax: 0
   m_paragraphSpacing: 0
   m_charWidthMaxAdj: 0
-  m_enableWordWrapping: 1
+  m_enableWordWrapping: 0
   m_wordWrappingRatios: 0.4
   m_overflowMode: 0
-  m_firstOverflowCharacterIndex: 0
+  m_firstOverflowCharacterIndex: -1
   m_linkedTextComponent: {fileID: 0}
   m_isLinkedTextComponent: 0
   m_isTextTruncated: 0
@@ -5461,10 +5460,10 @@ RectTransform:
   m_Father: {fileID: 208762794}
   m_RootOrder: 8
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0.22612458, y: 0.027301788}
-  m_AnchorMax: {x: 0.33356002, y: 0.21400002}
-  m_AnchoredPosition: {x: -4.2398987, y: 4.0403137}
-  m_SizeDelta: {x: -0.9899998, y: 2.0100002}
+  m_AnchorMin: {x: 0.22431074, y: 0.048229605}
+  m_AnchorMax: {x: 0.33200002, y: 0.24128237}
+  m_AnchoredPosition: {x: 0.30000305, y: 0}
+  m_SizeDelta: {x: -0.98999786, y: 0.010000229}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &500884324
 MonoBehaviour:
@@ -6002,10 +6001,10 @@ MonoBehaviour:
   m_lineSpacingMax: 0
   m_paragraphSpacing: 0
   m_charWidthMaxAdj: 0
-  m_enableWordWrapping: 1
+  m_enableWordWrapping: 0
   m_wordWrappingRatios: 0.4
   m_overflowMode: 0
-  m_firstOverflowCharacterIndex: 0
+  m_firstOverflowCharacterIndex: -1
   m_linkedTextComponent: {fileID: 0}
   m_isLinkedTextComponent: 0
   m_isTextTruncated: 0
@@ -7661,10 +7660,10 @@ MonoBehaviour:
   m_lineSpacingMax: 0
   m_paragraphSpacing: 0
   m_charWidthMaxAdj: 0
-  m_enableWordWrapping: 1
+  m_enableWordWrapping: 0
   m_wordWrappingRatios: 0.4
   m_overflowMode: 0
-  m_firstOverflowCharacterIndex: 0
+  m_firstOverflowCharacterIndex: -1
   m_linkedTextComponent: {fileID: 0}
   m_isLinkedTextComponent: 0
   m_isTextTruncated: 0
@@ -8992,7 +8991,7 @@ MonoBehaviour:
   m_lineSpacingMax: 0
   m_paragraphSpacing: 0
   m_charWidthMaxAdj: 0
-  m_enableWordWrapping: 1
+  m_enableWordWrapping: 0
   m_wordWrappingRatios: 0.4
   m_overflowMode: 0
   m_firstOverflowCharacterIndex: -1
@@ -11826,15 +11825,15 @@ RectTransform:
   m_GameObject: {fileID: 1171462379}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 1.5274999, y: 1.625, z: 1}
   m_Children: []
   m_Father: {fileID: 208762794}
   m_RootOrder: 7
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0.34420002, y: 0.027301788}
-  m_AnchorMax: {x: 0.9176502, y: 0.2622102}
-  m_AnchoredPosition: {x: -2.300003, y: 0.2000122}
-  m_SizeDelta: {x: 4.5, y: -1.052}
+  m_AnchorMin: {x: 0.3266693, y: 0.048229605}
+  m_AnchorMax: {x: 0.90831083, y: 0.28838402}
+  m_AnchoredPosition: {x: 1.5, y: -1.9299927}
+  m_SizeDelta: {x: -147.62, y: -32.129997}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1171462381
 MonoBehaviour:
@@ -11897,10 +11896,10 @@ MonoBehaviour:
   m_lineSpacingMax: 0
   m_paragraphSpacing: 0
   m_charWidthMaxAdj: 0
-  m_enableWordWrapping: 1
+  m_enableWordWrapping: 0
   m_wordWrappingRatios: 0.4
   m_overflowMode: 0
-  m_firstOverflowCharacterIndex: 0
+  m_firstOverflowCharacterIndex: -1
   m_linkedTextComponent: {fileID: 0}
   m_isLinkedTextComponent: 0
   m_isTextTruncated: 0
@@ -11929,7 +11928,7 @@ MonoBehaviour:
     spaceCount: 1
     wordCount: 2
     linkCount: 0
-    lineCount: 2
+    lineCount: 1
     pageCount: 1
     materialCount: 1
   m_isUsingLegacyAnimationComponent: 0
@@ -12842,7 +12841,7 @@ MonoBehaviour:
   m_lineSpacingMax: 0
   m_paragraphSpacing: 0
   m_charWidthMaxAdj: 0
-  m_enableWordWrapping: 1
+  m_enableWordWrapping: 0
   m_wordWrappingRatios: 0.4
   m_overflowMode: 0
   m_firstOverflowCharacterIndex: -1
@@ -14234,10 +14233,10 @@ MonoBehaviour:
   m_lineSpacingMax: 0
   m_paragraphSpacing: 0
   m_charWidthMaxAdj: 0
-  m_enableWordWrapping: 1
+  m_enableWordWrapping: 0
   m_wordWrappingRatios: 0.4
   m_overflowMode: 0
-  m_firstOverflowCharacterIndex: 0
+  m_firstOverflowCharacterIndex: -1
   m_linkedTextComponent: {fileID: 0}
   m_isLinkedTextComponent: 0
   m_isTextTruncated: 0
@@ -16043,26 +16042,6 @@ PrefabInstance:
       propertyPath: m_SizeDelta.y
       value: 38.02
       objectReference: {fileID: 0}
-    - target: {fileID: 5055144632568020188, guid: c6adcbc3e2f30e04e87709cc8f096097,
-        type: 3}
-      propertyPath: m_RootOrder
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 6709724966012747354, guid: c6adcbc3e2f30e04e87709cc8f096097,
-        type: 3}
-      propertyPath: m_RootOrder
-      value: 5
-      objectReference: {fileID: 0}
-    - target: {fileID: 5055144632568020188, guid: c6adcbc3e2f30e04e87709cc8f096097,
-        type: 3}
-      propertyPath: m_RootOrder
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 6709724966012747354, guid: c6adcbc3e2f30e04e87709cc8f096097,
-        type: 3}
-      propertyPath: m_RootOrder
-      value: 5
-      objectReference: {fileID: 0}
     - target: {fileID: 7329139667284979492, guid: c6adcbc3e2f30e04e87709cc8f096097,
         type: 3}
       propertyPath: m_IsActive
@@ -16072,6 +16051,26 @@ PrefabInstance:
         type: 3}
       propertyPath: m_IsActive
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5055144632568020188, guid: c6adcbc3e2f30e04e87709cc8f096097,
+        type: 3}
+      propertyPath: m_RootOrder
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5055144632568020188, guid: c6adcbc3e2f30e04e87709cc8f096097,
+        type: 3}
+      propertyPath: m_RootOrder
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6709724966012747354, guid: c6adcbc3e2f30e04e87709cc8f096097,
+        type: 3}
+      propertyPath: m_RootOrder
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 6709724966012747354, guid: c6adcbc3e2f30e04e87709cc8f096097,
+        type: 3}
+      propertyPath: m_RootOrder
+      value: 5
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: c6adcbc3e2f30e04e87709cc8f096097, type: 3}
@@ -17843,7 +17842,7 @@ MonoBehaviour:
   m_enableWordWrapping: 1
   m_wordWrappingRatios: 0.4
   m_overflowMode: 0
-  m_firstOverflowCharacterIndex: 0
+  m_firstOverflowCharacterIndex: -1
   m_linkedTextComponent: {fileID: 0}
   m_isLinkedTextComponent: 0
   m_isTextTruncated: 0
@@ -20364,7 +20363,7 @@ MonoBehaviour:
   m_lineSpacingMax: 0
   m_paragraphSpacing: 0
   m_charWidthMaxAdj: 0
-  m_enableWordWrapping: 1
+  m_enableWordWrapping: 0
   m_wordWrappingRatios: 0.4
   m_overflowMode: 0
   m_firstOverflowCharacterIndex: -1
@@ -20758,6 +20757,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   toastMsg: {fileID: 1288889516}
+  isMyMsg: 1
 --- !u!1 &2009959592
 GameObject:
   m_ObjectHideFlags: 0

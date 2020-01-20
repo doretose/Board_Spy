@@ -40,7 +40,9 @@ public class EventManager : MonoBehaviour
     // 3차원 배열 selectTiles 초기화
     private void Awake()
     {
-        
+        player_count = new int[4] { 0, 0, 0, 0 };
+        player_score = new int[4] { 0, 0, 0, 0 };
+
         for (int i = 0; i < Xscale; i++)
         {
             selectTiles.Add(new List<List<Tiles>>());
