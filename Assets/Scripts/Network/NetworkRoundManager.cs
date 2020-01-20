@@ -133,13 +133,13 @@ public class NetworkRoundManager : MonoBehaviourPunCallbacks, IPunObservable
     }
 
     #region 버튼 및 함수부
-    public void EndTrun()
+    public void EndTurn()
     {
         endButton.interactable = false;
         timeCost = 20;
         if (!PhotonNetwork.IsMasterClient)
         {
-            Debug.Log("send Master next Trun");
+            Debug.Log("send Master next Turn");
             pv.RPC("RPCEndPlayer", RpcTarget.MasterClient, myPlayerId);
             player_pannel_bg[inRoundingPlayerId ].SetActive(false);
         }
@@ -196,7 +196,7 @@ public class NetworkRoundManager : MonoBehaviourPunCallbacks, IPunObservable
 
         //버튼 파괴하고 정상작동하도록
         Destroy(baseSelectButton.gameObject);
-        EndTrun();
+        EndTurn();
     }
 
     //모든 플레이어의 Trun 상황이 false라면 시작된다. Update에 위치
@@ -243,7 +243,7 @@ public class NetworkRoundManager : MonoBehaviourPunCallbacks, IPunObservable
 
         if (timeCost < 0.0f)
         {
-            EndTrun();
+            EndTurn();
             timeText.gameObject.SetActive(false);
             return;
         }

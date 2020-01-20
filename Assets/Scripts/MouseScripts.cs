@@ -32,7 +32,7 @@ public class MouseScripts : MonoBehaviour
             if (ourHitObject.GetComponent<Hex>() != null && !ourHitObject.GetComponent<Hex>().thisBaseCamp)
             {
                 //Debug.Log("Raycast hit: " + ourHitObject.name);
-                if (Input.GetMouseButton(0))
+                if (Input.GetMouseButtonDown(0))
                 {
                     mr = ourHitObject.GetComponentInChildren<MeshRenderer>();
                     ps = ourHitObject.GetComponentInChildren<ParticleSystem>();
