@@ -61,7 +61,7 @@ public class NetworkRoundManager : MonoBehaviourPunCallbacks, IPunObservable
         playerTurn.Clear();
         cardNum.Clear();
         roundProcessBool = false;
-        roundLimit = 2;
+        roundLimit = 6;
 
         pv = this.GetComponent<PhotonView>();
 

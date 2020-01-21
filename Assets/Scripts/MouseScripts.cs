@@ -14,8 +14,14 @@ public class MouseScripts : MonoBehaviour
     Color backupColor;
     public bool isMyMsg = true;
 
+    //교전창 관련 변수
+    public GameObject result_pannel;
+    public GameObject War_prefab;
+    // layMask로 Map타일을 제외하고 Raycast 안되게 처리하기 위한 변수
+    int _layerMask;
     void Start()
     {
+        _layerMask = 1 << LayerMask.NameToLayer("Map");
         ps = GameObject.FindGameObjectWithTag("Map").GetComponentInChildren<ParticleSystem>();
         ps.Stop();
         backupColor = toastMsg.GetComponent<Image>().color;
@@ -31,8 +37,8 @@ public class MouseScripts : MonoBehaviour
 
         Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
         RaycastHit hitInfo;
-        
-        if (Physics.Raycast(ray, out hitInfo))
+
+        if (Physics.Raycast(ray, out hitInfo, _layerMask))
         {
             GameObject ourHitObject = hitInfo.collider.transform.gameObject;
             if (ourHitObject.GetComponent<Hex>() != null && !ourHitObject.GetComponent<Hex>().thisBaseCamp && NetworkRoundManager.isMyTurn)
@@ -82,12 +88,25 @@ public class MouseScripts : MonoBehaviour
                     }
                 }
 
-                //if (Input.GetMouseButton(1))
-                //{
-                //    return;
-                //    // locX, locY, 패널.setActive(true), 
-                //    //실행되야될 함수 : 패널==> locX, locY(화면 텍스트 위치표시 용도), 
-                //}
+                if (Input.GetMouseButtonDown(1))
+                {
+                    // selectTiles x,y좌표확인후 0초과면 
+                    // playerid, cardid
+                    // locX, locY, 패널.setActive(true), 
+                    //실행되야될 함수 : 패널==> locX, locY(화면 텍스트 위치표시 용도), 
+                    result_pannel.SetActive(true);
+                    //GameObject _warUiGo = Instantiate(War_prefab) as GameObject;
+                    Instantiate(War_prefab).transform.SetParent(GameObject.Find("Content").transform, false);
+                    
+                    //_warUiGo.transform.SetParent(result_pannel.transform, false);
+                    //Instantiate(War_prefab, new Vector3(1, 1, 1), War_prefab.transform.transform.rotation, go.transform);
+
+
+                }
+                else if (Input.GetMouseButtonUp(1))
+                {
+                    result_pannel.SetActive(false);
+                }
             }
         }
     }

@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 4624954612026973182}
   - component: {fileID: 4614967521578646778}
   - component: {fileID: 4676361871522457158}
-  m_Layer: 0
+  m_Layer: 2
   m_Name: polest
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -160,7 +160,7 @@ GameObject:
   - component: {fileID: 4614967523065408584}
   - component: {fileID: 4676361871466203646}
   - component: {fileID: 4733380694119955198}
-  m_Layer: 0
+  m_Layer: 2
   m_Name: basest
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -282,7 +282,7 @@ GameObject:
   - component: {fileID: 4624954614687400256}
   - component: {fileID: 4814413333303399256}
   - component: {fileID: 4736843604551919830}
-  m_Layer: 0
+  m_Layer: 2
   m_Name: flagcl
   m_TagString: Untagged
   m_Icon: {fileID: 0}

@@ -114,7 +114,7 @@ Animation:
   m_GameObject: {fileID: 4594986865659879699}
   m_Enabled: 1
   serializedVersion: 3
-  m_Animation: {fileID: 7400000, guid: 818e4bea8436c9445b1966220a21d5e1, type: 2}
+  m_Animation: {fileID: 7400000, guid: 3a51e4fd754e71148ad1d3cebf8e74c9, type: 2}
   m_Animations:
   - {fileID: 7400000, guid: 818e4bea8436c9445b1966220a21d5e1, type: 2}
   m_WrapMode: 0
@@ -281,11 +281,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 4594986866496067745}
     m_Modifications:
-    - target: {fileID: 2230032788874688230, guid: 29336850161d68b4aae0c41f8379307d,
-        type: 3}
-      propertyPath: m_Name
-      value: left_sword
-      objectReference: {fileID: 0}
     - target: {fileID: 2230032788874688226, guid: 29336850161d68b4aae0c41f8379307d,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -341,6 +336,11 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 2230032788874688230, guid: 29336850161d68b4aae0c41f8379307d,
+        type: 3}
+      propertyPath: m_Name
+      value: left_sword
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 29336850161d68b4aae0c41f8379307d, type: 3}
 --- !u!1001 &5111332936007829100
@@ -350,21 +350,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 4594986866496067745}
     m_Modifications:
-    - target: {fileID: 8731272469148493694, guid: a910c6e228ecc1a47bff09771435dc1b,
-        type: 3}
-      propertyPath: m_Animation
-      value: 
-      objectReference: {fileID: 7400000, guid: 818e4bea8436c9445b1966220a21d5e1, type: 2}
-    - target: {fileID: 8731272469148493694, guid: a910c6e228ecc1a47bff09771435dc1b,
-        type: 3}
-      propertyPath: m_Animations.Array.data[0]
-      value: 
-      objectReference: {fileID: 7400000, guid: 818e4bea8436c9445b1966220a21d5e1, type: 2}
-    - target: {fileID: 8731272469148493695, guid: a910c6e228ecc1a47bff09771435dc1b,
-        type: 3}
-      propertyPath: m_Name
-      value: right_sword
-      objectReference: {fileID: 0}
     - target: {fileID: 8731272469148493691, guid: a910c6e228ecc1a47bff09771435dc1b,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -420,5 +405,20 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: -60
       objectReference: {fileID: 0}
+    - target: {fileID: 8731272469148493695, guid: a910c6e228ecc1a47bff09771435dc1b,
+        type: 3}
+      propertyPath: m_Name
+      value: right_sword
+      objectReference: {fileID: 0}
+    - target: {fileID: 8731272469148493694, guid: a910c6e228ecc1a47bff09771435dc1b,
+        type: 3}
+      propertyPath: m_Animation
+      value: 
+      objectReference: {fileID: 7400000, guid: 818e4bea8436c9445b1966220a21d5e1, type: 2}
+    - target: {fileID: 8731272469148493694, guid: a910c6e228ecc1a47bff09771435dc1b,
+        type: 3}
+      propertyPath: m_Animations.Array.data[0]
+      value: 
+      objectReference: {fileID: 7400000, guid: 818e4bea8436c9445b1966220a21d5e1, type: 2}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: a910c6e228ecc1a47bff09771435dc1b, type: 3}
