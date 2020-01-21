@@ -105,7 +105,14 @@ public class NetworkManager : MonoBehaviourPunCallbacks
         Debug.Log("로비 재실행");
         LobbyPanel.SetActive(true);
         RoomPanel.SetActive(false);
-        PhotonNetwork.LocalPlayer.NickName = NickNameInput.text;
+        if (NickNameInput.text == "")
+        {
+            PhotonNetwork.LocalPlayer.NickName = PhotonNetwork.NickName;
+        }
+        else
+        {
+            PhotonNetwork.LocalPlayer.NickName = NickNameInput.text;
+        }
         WelcomeText.text = PhotonNetwork.LocalPlayer.NickName + "님 환영합니다";
         myList.Clear();
     }

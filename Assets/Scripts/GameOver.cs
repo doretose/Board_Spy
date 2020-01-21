@@ -69,23 +69,6 @@ public class GameOver : MonoBehaviourPunCallbacks
                 }
             }
         }
-
-            if (NetworkRoundManager.nowRound > NetworkRoundManager.roundLimit) {
-            for (int i = 0; i < NetworkRoundManager.player_Number; i++)
-            {
-
-                if (temp == EventManager.player_score[i])
-                {
-                    Win_Img.sprite = player_img[i];
-                    break;
-                }
-                //else
-                //{
-                //    Win_Img.sprite = player_img[3];
-                //}
-            }
-            //}
-        }
     }
     public override void OnLeftRoom()
     {
@@ -94,11 +77,9 @@ public class GameOver : MonoBehaviourPunCallbacks
 
     IEnumerator left_Room()
     {
-        //PhotonNetwork.Disconnect();
         PhotonNetwork.LeaveRoom();
         while (PhotonNetwork.InRoom)
         {
-            Debug.Log("while문안");
             yield return null;
         }
         SceneManager.LoadScene(0);
@@ -107,20 +88,5 @@ public class GameOver : MonoBehaviourPunCallbacks
     public void LeaveRoom()
     {
         StartCoroutine(left_Room());
-        Debug.Log("103번째줄");
-        //PhotonNetwork.LeaveRoom();
     }
-
-    //public void onClickExit()
-    //{
-    //    PhotonNetwork.LeaveRoom();
-    //    //if (PhotonNetwork.CurrentRoom == null)
-    //    //{
-    //    //    PhotonNetwork.LoadLevel(0);
-    //    //    //SceneManager.LoadScene(0);
-    //    //}
-    //    //카드넘버, nowrounm
-    //    //PhotonNetwork.JoinLobby();
-    //    //PhotonNetwork.LoadLevel(0);
-    //}
 }
