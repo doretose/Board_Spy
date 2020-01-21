@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 3079516678546658657}
   - component: {fileID: 2901370146018887545}
   - component: {fileID: 3111742722448358647}
-  m_Layer: 0
+  m_Layer: 2
   m_Name: flagcl
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -319,7 +319,7 @@ GameObject:
   - component: {fileID: 3079516679311003615}
   - component: {fileID: 3069255028649617627}
   - component: {fileID: 3059705518027436647}
-  m_Layer: 0
+  m_Layer: 2
   m_Name: polest
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -415,7 +415,7 @@ GameObject:
   - component: {fileID: 3069255026847397993}
   - component: {fileID: 3059705521058192863}
   - component: {fileID: 3108573376317435615}
-  m_Layer: 0
+  m_Layer: 2
   m_Name: basest
   m_TagString: Untagged
   m_Icon: {fileID: 0}

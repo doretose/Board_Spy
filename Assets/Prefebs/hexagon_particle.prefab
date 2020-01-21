@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 3516583347364003418}
   - component: {fileID: 8589165353868800124}
   - component: {fileID: 1272445942535308054}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: hexagon_particle
   m_TagString: Map
   m_Icon: {fileID: 0}
