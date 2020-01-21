@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using TMPro;
 
 public class EventManager : MonoBehaviour
 {
@@ -29,6 +30,10 @@ public class EventManager : MonoBehaviour
     private Pair<int, int>[] loc = new Pair<int, int>[6]
         { new Pair<int, int>(0,1), new Pair<int, int>(0,-1), new Pair<int, int>(1,1), new Pair<int, int>(1,-1), new Pair<int, int>(-1,0), new Pair<int, int>(+1,0) };
 
+    //턴 처리 종료시 다음 턴 진행인원에게 턴 안내
+    public GameObject activeTextObj;
+    private Vector3 initPos; //턴 안내 텍스트 최초 위치 저장
+
     //깃발 프리팹
     public GameObject[] flag = new GameObject[4];
 
@@ -36,6 +41,7 @@ public class EventManager : MonoBehaviour
 
     //플레이어 패널
     public GameObject game_result_pannel;
+    public GameObject gameEndPannel;
 
     // 3차원 배열 selectTiles 초기화
     private void Awake()
@@ -51,7 +57,8 @@ public class EventManager : MonoBehaviour
                 selectTiles[i].Add(new List<Tiles>());
             }
         }
-        
+
+        initPos = activeTextObj.transform.position;
     }
 
     //void Update()
@@ -180,16 +187,16 @@ public class EventManager : MonoBehaviour
         {
             yield return new WaitForSeconds(2);
 
-            Debug.Log("gameover_pannel on ");
-            //NetworkRoundManager.RPCEndGame();
             game_result_pannel.SetActive(true);
-            GameObject play_pannel = GameObject.Find("Canvas");
-            Debug.Log("now_play_pannel_off ");
-            play_pannel.SetActive(false);
         }
+        else
+        {
+            yield return new WaitForSeconds(1);
 
-        yield return new WaitForSeconds(1);
-        NetworkRoundManager.roundProcessBool = false;
+            //라운드 텍스트 이동하는거요
+            NetworkRoundManager.roundProcessBool = false;
+            TweenMoveObj();
+        }
     }
 
     //라운드결과 종료
@@ -255,7 +262,20 @@ public class EventManager : MonoBehaviour
 
         return result;
     }
-    
+
+    public void TweenMoveObj()
+    {
+        StartCoroutine("TweenMove");
+    }
+
+    IEnumerator TweenMove()
+    {
+        activeTextObj.transform.position = initPos;
+        iTween.MoveTo(activeTextObj, iTween.Hash("islocal", true, "x", 0, "time", 0.8f, "easetype", iTween.EaseType.easeOutQuint));
+        yield return new WaitForSeconds(0.8f);
+        iTween.MoveTo(activeTextObj, iTween.Hash("islocal", true, "x", -700, "time", 0.6f, "easetype", iTween.EaseType.easeInQuint));
+        yield return null;
+    }
 
     public int getOccTiles(int locX, int locY)
     {
@@ -271,5 +291,11 @@ public class EventManager : MonoBehaviour
         else return true;
     }
 
-    
+    public void GameEndButton()
+    {
+        GameObject play_pannel = GameObject.Find("Canvas");
+        play_pannel.SetActive(false);
+        game_result_pannel.SetActive(false);
+        gameEndPannel.SetActive(true);
+    }
 }

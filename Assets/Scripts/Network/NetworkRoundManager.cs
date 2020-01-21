@@ -18,7 +18,8 @@ public class NetworkRoundManager : MonoBehaviourPunCallbacks, IPunObservable
     public GameObject[] Crown = new GameObject[4];
     private static Color[] myColor = new Color[5] { new Color(32 / 255f, 84 / 255f, 30 / 255f), new Color(255 / 255f, 0, 0) , new Color(83 / 255f, 147 / 255f, 224 / 255f), new Color(248 / 255f, 215 / 255f, 0), new Color(168 / 255f, 0 / 255f, 255 / 255f) };
     public TextMeshProUGUI roundText;
-    public TextMeshProUGUI TrunText;
+    public TextMeshProUGUI TurnText;
+    public TextMeshProUGUI actTxt;
     public Button endButton;
     public Button selectButton;
     public Button baseSelectButton;
@@ -48,9 +49,9 @@ public class NetworkRoundManager : MonoBehaviourPunCallbacks, IPunObservable
     private float timeCost;
 
     //라운드실행제어 변수
-    public static bool roundProcessBool = false;
+    public static bool roundProcessBool;
     public static bool isMyTurn = false;
-    public static int roundLimit = 2;
+    public static int roundLimit;
 
     public GameObject[] player_pannel_bg = new GameObject[4];
     void Awake()
@@ -59,6 +60,8 @@ public class NetworkRoundManager : MonoBehaviourPunCallbacks, IPunObservable
         nowRound = 0;
         playerTurn.Clear();
         cardNum.Clear();
+        roundProcessBool = false;
+        roundLimit = 2;
 
         pv = this.GetComponent<PhotonView>();
 
@@ -91,7 +94,26 @@ public class NetworkRoundManager : MonoBehaviourPunCallbacks, IPunObservable
             return;
         }
 
-       // Debug.Log($"My Player Id : {myPlayerId}");
+        Debug.Log($"현재 내 Id : {myPlayerId}");
+
+        //Text UI 스크립트
+        if (inRoundingPlayerId + 1 == myPlayerId)
+        {
+            actTxt.color = getMyColor(myPlayerId);
+            actTxt.text = "Your Turn";
+            TurnText.color = getMyColor(myPlayerId);
+            TurnText.text = "My Turn";
+        }
+        else if (PhotonNetwork.PlayerList.Length > 1)
+        {
+            actTxt.color = Color.black;
+            TurnText.color = Color.black;
+            actTxt.text = $"{PhotonNetwork.PlayerList[inRoundingPlayerId].NickName} Turn";
+            TurnText.text = $"{inRoundingPlayerId + 1}player Turn";
+        }
+        
+
+        // Debug.Log($"My Player Id : {myPlayerId}");
         //라운드 종료함수 호출(호스트만)
         if (PhotonNetwork.IsMasterClient)
         {
@@ -151,11 +173,7 @@ public class NetworkRoundManager : MonoBehaviourPunCallbacks, IPunObservable
 
             endButton.interactable = false;
             selectButton.interactable = false;
-        }
-
-        //UI 스크립트
-        TrunText.text = $"{inRoundingPlayerId + 1}player Turn";
-        
+        }       
     }
 
     #region 버튼 및 함수부
@@ -168,13 +186,11 @@ public class NetworkRoundManager : MonoBehaviourPunCallbacks, IPunObservable
 
         if (!PhotonNetwork.IsMasterClient)
         {
-            Debug.Log("send Master next Turn");
             pv.RPC("RPCEndPlayer", RpcTarget.MasterClient, myPlayerId);
         }
         else
         {
-            inRoundingPlayerId = (inRoundingPlayerId + 1) % player_Number;
-            playerTurn[myPlayerId - 1] = false;
+            RPCEndPlayer(myPlayerId);
         }
     }
 
@@ -195,7 +211,7 @@ public class NetworkRoundManager : MonoBehaviourPunCallbacks, IPunObservable
         GameObject destoy_Card = GameObject.FindGameObjectWithTag("UseCard");
         Destroy(destoy_Card);
 
-        pv.RPC("RPCNextPlayer", RpcTarget.MasterClient);
+        pv.RPC("RPCNextPlayer", RpcTarget.AllBuffered);
         timeCost = 20;
         selectCard = null;
     }
@@ -286,7 +302,7 @@ public class NetworkRoundManager : MonoBehaviourPunCallbacks, IPunObservable
     //0라운드 베이스캠프 선택동안 UPDATE 제어
     private void RoundZeroAction()
     {
-        TrunText.text = $"{inRoundingPlayerId + 1} BaseCamp";
+        TurnText.text = $"{inRoundingPlayerId + 1} BaseCamp";
         endButton.interactable = false;
         selectButton.interactable = false;
         timeText.gameObject.SetActive(false);
@@ -304,7 +320,8 @@ public class NetworkRoundManager : MonoBehaviourPunCallbacks, IPunObservable
 
     private void RoundResultProcessIng()
     {
-        TrunText.text = $"Round Result";
+        TurnText.color = Color.black;
+        TurnText.text = $"Round Result";
         endButton.interactable = false;
         selectButton.interactable = false;
         timeText.gameObject.SetActive(false);
@@ -332,7 +349,9 @@ public class NetworkRoundManager : MonoBehaviourPunCallbacks, IPunObservable
             if (playerTurn[inRoundingPlayerId] == false)
             {
                 RPCNextPlayer();
+                return;
             }
+            pv.RPC("StartActiveTxt", RpcTarget.AllBuffered);
         }
     }
 
@@ -348,10 +367,17 @@ public class NetworkRoundManager : MonoBehaviourPunCallbacks, IPunObservable
             if (playerTurn[inRoundingPlayerId] == false)
             {
                 RPCNextPlayer();
+                return;
             }
+            pv.RPC("StartActiveTxt", RpcTarget.AllBuffered);
         }
     }
 
+    [PunRPC]
+    private void StartActiveTxt()
+    {
+        GameObject.Find("EventSystem").GetComponent<EventManager>().TweenMoveObj();
+    }
    
     //카드를 타일에 사용하는 함수
     //selectButton 모든 플레이어에게 => RPCCardUseData()
