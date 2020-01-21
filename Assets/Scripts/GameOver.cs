@@ -16,6 +16,7 @@ public class GameOver : MonoBehaviourPunCallbacks
     [Header("Scoret Number Pannel")]
     public TextMeshProUGUI[] score_txt = new TextMeshProUGUI[4];
 
+    public TextMeshProUGUI gameResultText;
     public Image Win_Img;
     public Sprite[] player_img = new Sprite[4];
 
@@ -36,8 +37,9 @@ public class GameOver : MonoBehaviourPunCallbacks
     
     void Update()
     {
-        Player_Count();
+        if(PhotonNetwork.PlayerList.Length > 1) Player_Count();
     }
+
     //각 플레이어 패널에 카드수, 점령땅의 수, 현재 점수를 표현
     void Player_Count()
     {
@@ -52,19 +54,25 @@ public class GameOver : MonoBehaviourPunCallbacks
             else temp = EventManager.player_score[i];
         }
 
-        //if (temp2 != -1){
-        //    if (temp == temp2){
-        //        //Draw처리
-        //        //플레이어 2명 Draw 출력   남은 플레이어 Lose 출력
-        //        return;
-        //    }
-        //}
-        //else {
-        Debug.Log("nowRound : " + NetworkRoundManager.nowRound);
-        if (NetworkRoundManager.nowRound > NetworkRoundManager.roundLimit) {
+        if(temp == EventManager.player_score[NetworkRoundManager.public_Player_Id -1])
+        {
+            gameResultText.text = "You Win!!";
+        } else { gameResultText.text = "You Lose..."; }
+
+        if (temp2 != -1)
+        {
+            if (temp == temp2)
+            {
+                if (temp == EventManager.player_score[NetworkRoundManager.public_Player_Id -1])
+                {
+                    gameResultText.text = "Draw...";
+                }
+            }
+        }
+
+            if (NetworkRoundManager.nowRound > NetworkRoundManager.roundLimit) {
             for (int i = 0; i < NetworkRoundManager.player_Number; i++)
             {
-                Debug.Log("마지막, player_score : " + temp + ", " + EventManager.player_score[i]);
 
                 if (temp == EventManager.player_score[i])
                 {
