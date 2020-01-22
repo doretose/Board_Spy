@@ -11,6 +11,8 @@ TagManager:
   - Map
   - Flag
   - GameOver
+  - Bullet
+  - war_item
   layers:
   - Default
   - TransparentFX
