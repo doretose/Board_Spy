@@ -12,7 +12,10 @@ public class EventManager : MonoBehaviour
     private static readonly int Yscale = 8;
 
     //이벤트를 처리해야할 내용을 다음 selectTiles와 최종 점령지를 나타내고 있는 occtiles
-    private List<List<List<Tiles>>> selectTiles = new List<List<List<Tiles>>>();
+    /*
+     * 01-22 일단 public 추후 다른방법 필요
+     * */
+    public static List<List<List<Tiles>>> selectTiles = new List<List<List<Tiles>>>();
     
     private int[,] occTiles = new int[Xscale, Yscale];
     private bool[,] occTilesVisit = new bool[Xscale, Yscale]; //false

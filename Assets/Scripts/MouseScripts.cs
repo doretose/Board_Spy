@@ -2,6 +2,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using System.Collections;
 using UnityEngine.EventSystems;
+using TMPro;
 
 public class MouseScripts : MonoBehaviour
 {
@@ -17,6 +18,10 @@ public class MouseScripts : MonoBehaviour
     //교전창 관련 변수
     public GameObject result_pannel;
     public GameObject War_prefab;
+    //public TextMeshProUGUI used_num;
+    //public Image used_player;
+    //public Image used_card;
+    bool war_onoff;
     // layMask로 Map타일을 제외하고 Raycast 안되게 처리하기 위한 변수
     int _layerMask;
     void Start()
@@ -46,6 +51,8 @@ public class MouseScripts : MonoBehaviour
                 //Debug.Log("Raycast hit: " + ourHitObject.name);
                 if (Input.GetMouseButtonDown(0))
                 {
+                    choice_Map_x = ourHitObject.GetComponent<Hex>().x;
+                    choice_Map_y = ourHitObject.GetComponent<Hex>().y;
                     //mr = ourHitObject.GetComponentInChildren<MeshRenderer>();
                     //ps = ourHitObject.GetComponentInChildren<ParticleSystem>();
                     //Debug.Log(ps);
@@ -55,8 +62,6 @@ public class MouseScripts : MonoBehaviour
                         mr = ourHitObject.GetComponentInChildren<MeshRenderer>();
                         ps = ourHitObject.GetComponentInChildren<ParticleSystem>();
                         // 선택된 땅이 없으면 선택된 땅의 x, y값을 저장 후 색변환
-                        choice_Map_x = ourHitObject.GetComponent<Hex>().x;
-                        choice_Map_y = ourHitObject.GetComponent<Hex>().y;
                         ps.Play();
 
                         int tresh = NetworkRoundManager.public_Player_Id;
@@ -90,22 +95,71 @@ public class MouseScripts : MonoBehaviour
 
                 if (Input.GetMouseButtonDown(1))
                 {
-                    // selectTiles x,y좌표확인후 0초과면 
-                    // playerid, cardid
-                    // locX, locY, 패널.setActive(true), 
-                    //실행되야될 함수 : 패널==> locX, locY(화면 텍스트 위치표시 용도), 
-                    result_pannel.SetActive(true);
-                    //GameObject _warUiGo = Instantiate(War_prefab) as GameObject;
-                    Instantiate(War_prefab).transform.SetParent(GameObject.Find("Content").transform, false);
-                    
-                    //_warUiGo.transform.SetParent(result_pannel.transform, false);
-                    //Instantiate(War_prefab, new Vector3(1, 1, 1), War_prefab.transform.transform.rotation, go.transform);
+                    choice_Map_x = ourHitObject.GetComponent<Hex>().x;
+                    choice_Map_y = ourHitObject.GetComponent<Hex>().y;
+                    GameObject[] objects = GameObject.FindGameObjectsWithTag("war_item");
+                    if (EventManager.selectTiles[choice_Map_x][choice_Map_y].Count != 0)
+                    {
+                        if (war_onoff == false)
+                        {
+                            // selectTiles x,y좌표확인후 0초과면 
+                            // playerid, cardid
+                            // locX, locY, 패널.setActive(true), 
+                            //실행되야될 함수 : 패널==> locX, locY(화면 텍스트 위치표시 용도), 
+                            war_onoff = true;
+                            result_pannel.SetActive(true);
 
 
-                }
-                else if (Input.GetMouseButtonUp(1))
-                {
-                    result_pannel.SetActive(false);
+                            for (int i = 0; i < EventManager.selectTiles[choice_Map_x][choice_Map_y].Count; i++)
+                            {
+                                Instantiate(War_prefab).transform.SetParent(GameObject.Find("Content").transform, false);
+                                TextMeshProUGUI used_num = War_prefab.transform.GetChild(1).gameObject.GetComponent<TextMeshProUGUI>();
+                                Image used_player = War_prefab.transform.GetChild(2).gameObject.GetComponent<Image>();
+                                Image used_card = War_prefab.transform.GetChild(3).gameObject.GetComponent<Image>();
+                                used_num.text = "" + i;
+                                switch (EventManager.selectTiles[choice_Map_x][choice_Map_y][i].playerId)
+                                {
+                                    case 0:
+                                        {
+                                            used_player.sprite = Resources.Load<Sprite>("1");
+                                            break;
+                                        }
+                                    case 1:
+                                        {
+                                            used_player.sprite = Resources.Load<Sprite>("2");
+                                            break;
+                                        }
+                                    case 2:
+                                        {
+                                            used_player.sprite = Resources.Load<Sprite>("3");
+                                            break;
+                                        }
+                                    case 3:
+                                        {
+                                            used_player.sprite = Resources.Load<Sprite>("4");
+                                            break;
+                                        }
+                                }
+                                //a.sprite = Resources.Load<Sprite>("nameImage/bluffing");
+                            }
+
+                            // Item 생성 -> Instantiate(War_prefab).transform.SetParent(GameObject.Find("Content").transform, false);
+                        }
+                        else
+                        {
+                            war_onoff = false;
+                            result_pannel.SetActive(false);
+                            for (int i = 0; i < objects.Length; i++)
+                                Destroy(objects[i]);
+                        }
+                    }
+                    else
+                    {
+                        war_onoff = false;
+                        result_pannel.SetActive(false);
+                        for (int i = 0; i < objects.Length; i++)
+                            Destroy(objects[i]);
+                    }
                 }
             }
         }
