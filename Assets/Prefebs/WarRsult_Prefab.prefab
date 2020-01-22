@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 6819604946242277958}
   - component: {fileID: 6819604946242277957}
   m_Layer: 2
-  m_Name: PlayerNumber
+  m_Name: used_player
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -30,7 +30,7 @@ RectTransform:
   m_LocalScale: {x: 0.5, y: 0.5, z: 0.5}
   m_Children: []
   m_Father: {fileID: 6819604946525507055}
-  m_RootOrder: 1
+  m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
@@ -82,8 +82,8 @@ GameObject:
   m_Component:
   - component: {fileID: 6819604946525507055}
   m_Layer: 2
-  m_Name: Item
-  m_TagString: Untagged
+  m_Name: WarRsult_Prefab
+  m_TagString: war_item
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -100,9 +100,9 @@ RectTransform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 6819604946657068577}
+  - {fileID: 6819604946763708273}
   - {fileID: 6819604946242277956}
   - {fileID: 6819604946661595839}
-  - {fileID: 6819604946763708273}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -195,7 +195,7 @@ GameObject:
   - component: {fileID: 6819604946661595825}
   - component: {fileID: 6819604946661595824}
   m_Layer: 2
-  m_Name: Image
+  m_Name: used_card
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -213,7 +213,7 @@ RectTransform:
   m_LocalScale: {x: 0.8, y: 0.4375, z: 1}
   m_Children: []
   m_Father: {fileID: 6819604946525507055}
-  m_RootOrder: 2
+  m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 1, y: 0.5}
   m_AnchorMax: {x: 1, y: 0.5}
@@ -267,7 +267,7 @@ GameObject:
   - component: {fileID: 6819604946763708275}
   - component: {fileID: 6819604946763708274}
   m_Layer: 2
-  m_Name: Text (TMP)
+  m_Name: used_num
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -285,7 +285,7 @@ RectTransform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 6819604946525507055}
-  m_RootOrder: 3
+  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
@@ -328,8 +328,8 @@ MonoBehaviour:
   m_fontMaterials: []
   m_fontColor32:
     serializedVersion: 2
-    rgba: 4286193245
-  m_fontColor: {r: 0.3683506, g: 0.12028302, b: 0.4811321, a: 1}
+    rgba: 4292401368
+  m_fontColor: {r: 0.8490566, g: 0.8490566, b: 0.8490566, a: 1}
   m_enableVertexGradient: 0
   m_colorMode: 3
   m_fontColorGradient:
