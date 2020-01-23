@@ -33,7 +33,7 @@ public class NetworkRoundManager : MonoBehaviourPunCallbacks, IPunObservable
 
     //호스트가 관리하고 각 클라이언트에게 공유되는 변수들
     public int startPlayerId; //현재 라운드의 선 플레이어
-    public int inRoundingPlayerId; //현재 라운드의 턴을 진행하고 있는 플레이어
+    public static int inRoundingPlayerId; //현재 라운드의 턴을 진행하고 있는 플레이어
     public static int nowRound = 0; // 라운드
 
     //호스트만 관리하는 변수들
