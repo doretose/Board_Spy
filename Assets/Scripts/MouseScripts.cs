@@ -123,52 +123,15 @@ public class MouseScripts : MonoBehaviour
                                 Image used_card = content_go.transform.GetChild(i).GetChild(3).gameObject.GetComponent<Image>();
                                 //0 공백 1 공격 2방어 3매수
                                 used_num.text = $"{i+1}";
-                                switch (EventManager.selectTiles[choice_Map_x][choice_Map_y][i].playerId)
-                                {
-                                    case 1:
-                                        {
-                                            used_player.sprite = Resources.Load<Sprite>("1");
-                                            break;
-                                        }
-                                    case 2:
-                                        {
-                                            used_player.sprite = Resources.Load<Sprite>("2");
-                                            break;
-                                        }
-                                    case 3:
-                                        {
-                                            used_player.sprite = Resources.Load<Sprite>("3");
-                                            break;
-                                        }
-                                    case 4:
-                                        {
-                                            used_player.sprite = Resources.Load<Sprite>("4");
-                                            break;
-                                        }
-                                }
-                                switch (EventManager.selectTiles[choice_Map_x][choice_Map_y][i].cardId)
-                                {
-                                    case 0:
-                                        {
-                                            used_card.sprite = Resources.Load<Sprite>("nameImage/bluffing");
-                                            break;
-                                        }
-                                    case 1:
-                                        {
-                                            used_card.sprite = Resources.Load<Sprite>("nameImage/attack_png");
-                                            break;
-                                        }
-                                    case 2:
-                                        {
-                                            used_card.sprite = Resources.Load<Sprite>("nameImage/sheild_png");
-                                            break;
-                                        }
-                                    case 3:
-                                        {
-                                            used_card.sprite = Resources.Load<Sprite>("nameImage/recruit");
-                                            break;
-                                        }
-                                }
+                                used_player.sprite = Resources.Load<Sprite>(EventManager.selectTiles[choice_Map_x][choice_Map_y][i].playerId.ToString());
+                                string[] used_card_sprite = new string[4] { "nameImage/bluffing", "nameImage/attack_png", "nameImage/sheild_png", "nameImage/recruit" };
+
+                                Debug.Log("<color=red>inroundingplayerid</color>" + NetworkRoundManager.inRoundingPlayerId + 1);
+                                Debug.Log("<color=red>inroundingplayerid</color>" + EventManager.selectTiles[choice_Map_x][choice_Map_y][i].playerId);
+                                if (NetworkRoundManager.inRoundingPlayerId+1 == EventManager.selectTiles[choice_Map_x][choice_Map_y][i].playerId)
+                                    used_card.sprite = Resources.Load<Sprite>(used_card_sprite[EventManager.selectTiles[choice_Map_x][choice_Map_y][i].cardId]);
+                                else
+                                    content_go.transform.GetChild(i).GetChild(3).gameObject.SetActive(false);
                             }
                             Debug.Log("<color=red>166</color>");
                             war_onoff = true;
