@@ -110,12 +110,17 @@ public class MouseScripts : MonoBehaviour
                             // playerid, cardid
                             // locX, locY, 패널.setActive(true), 
                             //실행되야될 함수 : 패널==> locX, locY(화면 텍스트 위치표시 용도), 
-                            for (int i = 0; i < EventManager.selectTiles[choice_Map_x][choice_Map_y].Count; i++)
-                            {
+                            for(int i = 0; i < EventManager.selectTiles[choice_Map_x][choice_Map_y].Count; i++)
                                 Instantiate(War_prefab).transform.SetParent(GameObject.Find("Content").transform, false);
-                                TextMeshProUGUI used_num = War_prefab.transform.GetChild(1).gameObject.GetComponent<TextMeshProUGUI>();
-                                Image used_player = War_prefab.transform.GetChild(2).gameObject.GetComponent<Image>();
-                                Image used_card = War_prefab.transform.GetChild(3).gameObject.GetComponent<Image>();
+
+                                for (int i = 0; i < EventManager.selectTiles[choice_Map_x][choice_Map_y].Count; i++)
+                            {
+                                GameObject content_go = GameObject.Find("Content");
+                                Debug.Log("<color=blue>119 i_num = </color>" + i);
+                                Debug.Log("<color=red>Content child_num = </color>" + EventManager.selectTiles[choice_Map_x][choice_Map_y].Count);
+                                TextMeshProUGUI used_num = content_go.transform.GetChild(i).GetChild(1).gameObject.GetComponent<TextMeshProUGUI>();
+                                Image used_player = content_go.transform.GetChild(i).GetChild(2).gameObject.GetComponent<Image>();
+                                Image used_card = content_go.transform.GetChild(i).GetChild(3).gameObject.GetComponent<Image>();
                                 //0 공백 1 공격 2방어 3매수
                                 used_num.text = $"{i+1}";
                                 switch (EventManager.selectTiles[choice_Map_x][choice_Map_y][i].playerId)
