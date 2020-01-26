@@ -41,12 +41,14 @@ public class EventManager : MonoBehaviour
     //깃발 프리팹
     public GameObject[] flag = new GameObject[4];
 
+    //턴끝날때 화살표 프리팹
+    public GameObject arrow_tile2;
     #endregion
 
     //플레이어 패널
     public GameObject game_result_pannel;
     public GameObject gameEndPannel;
-
+    public GameObject arrow_tile;
     // 3차원 배열 selectTiles 초기화
     private void Awake()
     {
@@ -64,24 +66,6 @@ public class EventManager : MonoBehaviour
 
         initPos = activeTextObj.transform.position;
     }
-
-    //void Update()
-    //{
-    //    if (!NetworkRoundManager.roundProcessBool)
-    //    {
-    //        player_count = new int[4] { 0, 0, 0, 0 };
-    //        for (int i = 0; i < occTiles.GetLength(0); i++)
-    //        {
-    //            for (int j = 0; j < occTiles.GetLength(1); j++)
-    //            {
-    //                if (occTiles[i, j] != 0)
-    //                {
-    //                    player_count[occTiles[i, j] - 1] += 1;
-    //                }
-    //            }
-    //        }
-    //    }
-    //}
 
     public void StartRoundResult()
     {
@@ -102,6 +86,11 @@ public class EventManager : MonoBehaviour
             occPlayerId = 0;
             LocX = tileLocX[i];
             LocY = tileLocY[i];
+            
+            Debug.Log("<color=red>Prefab create : </color>" + LocX +", " + LocY);
+            PrefebManager.CreateArrowPrefeb(arrow_tile, LocX, LocY);
+            yield return new WaitForSeconds(2);
+            MouseScripts.result_pannel_roundover(LocX,  LocY);
             for (int j = 0; j < selectTiles[LocX][LocY].Count; ++j)
             {
                 checkPlayer = selectTiles[LocX][LocY][j].playerId;
@@ -146,12 +135,11 @@ public class EventManager : MonoBehaviour
                             break;
                         }
                     default: //블러핑
-                        {
                             break;
-                        }
                 }
             }
-
+            yield return new WaitForSeconds(4);
+            MouseScripts.war_result_off();
             //탐색이 끝난 타일 초기화
             selectTiles[LocX][LocY].Clear();
 
@@ -175,7 +163,7 @@ public class EventManager : MonoBehaviour
                 int tempid = occTiles[LocX, LocY];
                 PrefebManager.CreatePrefeb(flag[tempid - 1], LocX, LocY, NetworkRoundManager.getMyColor(tempid));
             }
-            yield return new WaitForSeconds(0.5f);
+            yield return new WaitForSeconds(2);
         }
 
         //최종적으로 player_count를 재탐색하고 타일 초기화 -> occTile에 따른 결과 반영
@@ -197,12 +185,18 @@ public class EventManager : MonoBehaviour
         {
             yield return new WaitForSeconds(1);
 
-            //라운드 텍스트 이동하는거요
+            //라운드 텍스트 이동
             NetworkRoundManager.roundProcessBool = false;
             TweenMoveObj();
         }
     }
-
+    //패널 결과 처리 함수
+    private void round_end_pannel()
+    {
+        /* 라운드가 끝날때 카드가 한개이상 사용된 땅에
+         *  어떤 플레이어가 어떠한 카드를 사용했는지 보여줌
+         * */
+    }
     //라운드결과 종료
     private void RoundResultEnd()
     {
