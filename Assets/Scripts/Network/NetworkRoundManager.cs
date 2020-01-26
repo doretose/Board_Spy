@@ -422,7 +422,7 @@ public class NetworkRoundManager : MonoBehaviourPunCallbacks, IPunObservable
             player_pannel_bg[i].SetActive(false);
             endTurnText[i].SetActive(true);
         }
-
+        MouseScripts.static_result_pannel.SetActive(false);
         GameObject.Find("EventSystem").GetComponent<EventManager>().StartRoundResult();
     }
 

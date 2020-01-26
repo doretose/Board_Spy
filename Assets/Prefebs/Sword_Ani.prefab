@@ -116,7 +116,7 @@ Animation:
   serializedVersion: 3
   m_Animation: {fileID: 7400000, guid: 3a51e4fd754e71148ad1d3cebf8e74c9, type: 2}
   m_Animations:
-  - {fileID: 7400000, guid: 818e4bea8436c9445b1966220a21d5e1, type: 2}
+  - {fileID: 7400000, guid: 3a51e4fd754e71148ad1d3cebf8e74c9, type: 2}
   m_WrapMode: 0
   m_PlayAutomatically: 1
   m_AnimatePhysics: 0
@@ -412,13 +412,18 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8731272469148493694, guid: a910c6e228ecc1a47bff09771435dc1b,
         type: 3}
+      propertyPath: m_Animations.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8731272469148493694, guid: a910c6e228ecc1a47bff09771435dc1b,
+        type: 3}
       propertyPath: m_Animation
       value: 
-      objectReference: {fileID: 7400000, guid: 818e4bea8436c9445b1966220a21d5e1, type: 2}
+      objectReference: {fileID: 0}
     - target: {fileID: 8731272469148493694, guid: a910c6e228ecc1a47bff09771435dc1b,
         type: 3}
       propertyPath: m_Animations.Array.data[0]
       value: 
-      objectReference: {fileID: 7400000, guid: 818e4bea8436c9445b1966220a21d5e1, type: 2}
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: a910c6e228ecc1a47bff09771435dc1b, type: 3}
