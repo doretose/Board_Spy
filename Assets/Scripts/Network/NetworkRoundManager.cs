@@ -163,7 +163,12 @@ public class NetworkRoundManager : MonoBehaviourPunCallbacks, IPunObservable
             //카드, 타일 선택이 모두 완료되면 셀렉트버튼 활성화
             if (selectCard.HasValue && MouseScripts.choice_Map == true) { selectButton.interactable = true; }
             else { selectButton.interactable = false; }
-        }
+
+            Debug.Log("<color=red>myPlayerId</color>" + myPlayerId);
+            //카드갯수가 0이면 자동종료
+            if (cardNum[myPlayerId - 1] == 0)
+                EndTurn();
+            }
         else
         {
             isMyTurn = false;
@@ -263,7 +268,7 @@ public class NetworkRoundManager : MonoBehaviourPunCallbacks, IPunObservable
 
         for (int i = 0; i < player_Number; i++)
         {
-            if (cardNum[i] < 2)
+            if (cardNum[i] < 2 && nowRound < roundLimit)
             {
                 CardDisStart();
                 break;
@@ -290,7 +295,7 @@ public class NetworkRoundManager : MonoBehaviourPunCallbacks, IPunObservable
         timeText.gameObject.SetActive(true);
         timeCost -= Time.deltaTime;
         timeText.text = string.Format("{0:0}", timeCost);
-
+        GameObject Time_go = timeText.gameObject;
         if (timeCost < 0.0f)
         {
             EndTurn();
@@ -387,7 +392,12 @@ public class NetworkRoundManager : MonoBehaviourPunCallbacks, IPunObservable
     private void RPCCardUseData(int locX, int locY, int playerId, int value)
     {
         bool anotherCard;
-        if(PhotonNetwork.IsMasterClient) cardNum[playerId - 1] -= 1;
+        if (PhotonNetwork.IsMasterClient)
+        {
+            cardNum[playerId - 1] -= 1;
+            if(cardNum[playerId - 1] == 0)
+                playerTurn[playerId - 1] = false;
+        }
         //playerId, cardId
         anotherCard = GameObject.Find("EventSystem").GetComponent<EventManager>().setSelectTiles(locX, locY, playerId, value);
         if(anotherCard)
