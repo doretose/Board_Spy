@@ -7370,10 +7370,10 @@ RectTransform:
   m_Father: {fileID: 582418794}
   m_RootOrder: 7
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0.911875, y: 0.6366667}
-  m_AnchorMax: {x: 1, y: 0.7533334}
-  m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: -2.5999985, y: -2.1000004}
+  m_AnchorMin: {x: 0.9136829, y: 0.6483334}
+  m_AnchorMax: {x: 0.9835588, y: 0.7533334}
+  m_AnchoredPosition: {x: 0, y: 2}
+  m_SizeDelta: {x: 0, y: 3.7}
   m_Pivot: {x: 1, y: 1}
 --- !u!114 &1673976628
 MonoBehaviour:
@@ -7435,7 +7435,7 @@ MonoBehaviour:
   m_lineSpacingMax: 0
   m_paragraphSpacing: 0
   m_charWidthMaxAdj: 0
-  m_enableWordWrapping: 1
+  m_enableWordWrapping: 0
   m_wordWrappingRatios: 0.4
   m_overflowMode: 0
   m_firstOverflowCharacterIndex: -1
@@ -8818,6 +8818,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3b481a719f6869347a9fa5331ae3ca99, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  right_choice_Map_x: 0
+  right_choice_Map_y: 0
   toastMsg: {fileID: 1288889516}
   isMyMsg: 1
   result_pannel: {fileID: 1101252521}

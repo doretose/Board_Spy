@@ -9,6 +9,9 @@ public class MouseScripts : MonoBehaviour
     public static bool choice_Map = false;
     public static int choice_Map_x = 0;
     public static int choice_Map_y = 0;
+    public int right_choice_Map_x;
+    public int right_choice_Map_y;
+
     public static MeshRenderer mr;
     public static ParticleSystem ps;
     public GameObject toastMsg;
@@ -58,14 +61,15 @@ public class MouseScripts : MonoBehaviour
                 //Debug.Log("Raycast hit: " + ourHitObject.name);
                 if (Input.GetMouseButtonDown(0))
                 {
-                    choice_Map_x = ourHitObject.GetComponent<Hex>().x;
-                    choice_Map_y = ourHitObject.GetComponent<Hex>().y;
+                    
                     //mr = ourHitObject.GetComponentInChildren<MeshRenderer>();
                     //ps = ourHitObject.GetComponentInChildren<ParticleSystem>();
                     //Debug.Log(ps);
                     ourHitObject.GetComponentInChildren<ParticleSystem>();
                     if (choice_Map == false)
                     {
+                        choice_Map_x = ourHitObject.GetComponent<Hex>().x;
+                        choice_Map_y = ourHitObject.GetComponent<Hex>().y;
                         mr = ourHitObject.GetComponentInChildren<MeshRenderer>();
                         ps = ourHitObject.GetComponentInChildren<ParticleSystem>();
                         // 선택된 땅이 없으면 선택된 땅의 x, y값을 저장 후 색변환
@@ -98,37 +102,36 @@ public class MouseScripts : MonoBehaviour
                         }
                     }
                 }
+            }
+            if (Input.GetMouseButtonDown(1))
+            {
+                right_choice_Map_x = ourHitObject.GetComponent<Hex>().x;
+                right_choice_Map_y = ourHitObject.GetComponent<Hex>().y;
 
-                if (Input.GetMouseButtonDown(1))
+                if (EventManager.selectTiles[right_choice_Map_x][right_choice_Map_y].Count != 0)
                 {
-                    choice_Map_x = ourHitObject.GetComponent<Hex>().x;
-                    choice_Map_y = ourHitObject.GetComponent<Hex>().y;
-                    
-                    if (EventManager.selectTiles[choice_Map_x][choice_Map_y].Count != 0)
+                    if (war_onoff == false)
                     {
-                        if (war_onoff == false)
-                        {
-                            result_pannel.SetActive(true);
-                            // selectTiles x,y좌표확인후 0초과면 
-                            // playerid, cardid
-                            // locX, locY, 패널.setActive(true), 
-                            //실행되야될 함수 : 패널==> locX, locY(화면 텍스트 위치표시 용도), 
-                            for (int i = 0; i < EventManager.selectTiles[choice_Map_x][choice_Map_y].Count; i++)
-                                Instantiate(War_prefab).transform.SetParent(GameObject.Find("Content").transform, false);
-                            war_result_make();
-                        }
-                        else
-                            war_result_off();
+                        result_pannel.SetActive(true);
+                        // selectTiles x,y좌표확인후 0초과면 
+                        // playerid, cardid
+                        // locX, locY, 패널.setActive(true), 
+                        //실행되야될 함수 : 패널==> locX, locY(화면 텍스트 위치표시 용도), 
+                        for (int i = 0; i < EventManager.selectTiles[right_choice_Map_x][right_choice_Map_y].Count; i++)
+                            Instantiate(War_prefab).transform.SetParent(GameObject.Find("Content").transform, false);
+                        war_result_make();
                     }
                     else
                         war_result_off();
                 }
+                else
+                    war_result_off();
             }
         }
     }
     void war_result_make()
     {
-        for (int i = 0; i < EventManager.selectTiles[choice_Map_x][choice_Map_y].Count; i++)
+        for (int i = 0; i < EventManager.selectTiles[right_choice_Map_x][right_choice_Map_y].Count; i++)
         {
             GameObject content_go = GameObject.Find("Content");
             TextMeshProUGUI used_num = content_go.transform.GetChild(i).GetChild(1).gameObject.GetComponent<TextMeshProUGUI>();
@@ -136,10 +139,13 @@ public class MouseScripts : MonoBehaviour
             Image used_card = content_go.transform.GetChild(i).GetChild(3).gameObject.GetComponent<Image>();
             //0 공백 1 공격 2방어 3매수
             used_num.text = $"{i + 1}";
-            used_player.sprite = Resources.Load<Sprite>(EventManager.selectTiles[choice_Map_x][choice_Map_y][i].playerId.ToString());
+            used_player.sprite = Resources.Load<Sprite>(EventManager.selectTiles[right_choice_Map_x][right_choice_Map_y][i].playerId.ToString());
             string[] used_card_sprite = new string[4] { "nameImage/bluffing", "nameImage/attack_png", "nameImage/sheild_png", "nameImage/recruit" };
-            if (NetworkRoundManager.inRoundingPlayerId + 1 == EventManager.selectTiles[choice_Map_x][choice_Map_y][i].playerId)
-                used_card.sprite = Resources.Load<Sprite>(used_card_sprite[EventManager.selectTiles[choice_Map_x][choice_Map_y][i].cardId]);
+            //턴id == 타일의 플레이어id
+            //-> 내가 쓴게 아니면 setactive(False);
+            // -> 내id == 타일의 플레이어id
+            if (NetworkRoundManager.public_Player_Id == EventManager.selectTiles[right_choice_Map_x][right_choice_Map_y][i].playerId)
+                used_card.sprite = Resources.Load<Sprite>(used_card_sprite[EventManager.selectTiles[right_choice_Map_x][right_choice_Map_y][i].cardId]);
             else
                 content_go.transform.GetChild(i).GetChild(3).gameObject.SetActive(false);
         }
