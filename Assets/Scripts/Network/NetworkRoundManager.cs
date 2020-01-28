@@ -165,9 +165,6 @@ public class NetworkRoundManager : MonoBehaviourPunCallbacks, IPunObservable
             else { selectButton.interactable = false; }
 
             Debug.Log("<color=red>myPlayerId</color>" + myPlayerId);
-            //카드갯수가 0이면 자동종료
-            if (cardNum[myPlayerId - 1] == 0)
-                EndTurn();
             }
         else
         {

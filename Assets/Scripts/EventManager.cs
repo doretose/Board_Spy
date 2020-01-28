@@ -138,7 +138,19 @@ public class EventManager : MonoBehaviour
                             break;
                 }
             }
-            yield return new WaitForSeconds(4);
+            /* 게임창의 카드사용 개수가 
+             * 3개 이하이면 2초
+             * 3개 초과이면 4초
+             * 7개 이상이면 6초
+             */ 
+             GameObject content_go = GameObject.Find("Content");
+            if (content_go.transform.childCount <= 3) {
+                yield return new WaitForSeconds(2);
+            }
+            else if (3 < content_go.transform.childCount && content_go.transform.childCount < 6){
+                yield return new WaitForSeconds(4);
+            }
+            else { yield return new WaitForSeconds(6); }
             MouseScripts.war_result_off();
             //탐색이 끝난 타일 초기화
             selectTiles[LocX][LocY].Clear();
@@ -163,7 +175,7 @@ public class EventManager : MonoBehaviour
                 int tempid = occTiles[LocX, LocY];
                 PrefebManager.CreatePrefeb(flag[tempid - 1], LocX, LocY, NetworkRoundManager.getMyColor(tempid));
             }
-            yield return new WaitForSeconds(2);
+            yield return new WaitForSeconds(1);
         }
 
         //최종적으로 player_count를 재탐색하고 타일 초기화 -> occTile에 따른 결과 반영
@@ -175,9 +187,10 @@ public class EventManager : MonoBehaviour
         
         NetworkRoundManager.nowRound += 1;
 
+        Debug.Log("<color=red>nowRound, roundLimit : </color>" + NetworkRoundManager.nowRound + ", " + NetworkRoundManager.roundLimit);
         if (NetworkRoundManager.nowRound > NetworkRoundManager.roundLimit)
         {
-            yield return new WaitForSeconds(2);
+            yield return new WaitForSeconds(1);
 
             game_result_pannel.SetActive(true);
         }
