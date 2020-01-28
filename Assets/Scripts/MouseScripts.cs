@@ -56,12 +56,18 @@ public class MouseScripts : MonoBehaviour
         if (Physics.Raycast(ray, out hitInfo, _layerMask))
         {
             GameObject ourHitObject = hitInfo.collider.transform.gameObject;
+            GameObject scrollbar_go = GameObject.Find("Scrollbar");
+            
             if (ourHitObject.GetComponent<Hex>() != null && !ourHitObject.GetComponent<Hex>().thisBaseCamp && NetworkRoundManager.isMyTurn)
             {
                 //Debug.Log("Raycast hit: " + ourHitObject.name);
                 if (Input.GetMouseButtonDown(0))
                 {
-                    
+                    if (hitInfo.collider.transform.gameObject == scrollbar_go)
+                    {
+                        Debug.Log("<color=green>break left mouse click</color>");
+                        return;
+                    }
                     //mr = ourHitObject.GetComponentInChildren<MeshRenderer>();
                     //ps = ourHitObject.GetComponentInChildren<ParticleSystem>();
                     //Debug.Log(ps);

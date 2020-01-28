@@ -85,7 +85,7 @@ public class NetworkManager : MonoBehaviourPunCallbacks
     #region 서버연결
     void Awake()
     {
-        Screen.SetResolution(960, 540, false);
+        Screen.SetResolution(1440, 810, false);
         PhotonNetwork.AutomaticallySyncScene = true;
     }
     

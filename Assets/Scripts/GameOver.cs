@@ -8,7 +8,7 @@ using Photon.Pun;
 
 public class GameOver : MonoBehaviourPunCallbacks
 {
-    //변수의 수가 많아 각 패널로 분류하여 가시성 높임
+    //변수의 수가 많아 각 패널로 분류
     [Header("Player Pannel")]
     public GameObject[] Player_pannel = new GameObject[4];
     [Header("Castle Number Pannel")]
@@ -17,7 +17,6 @@ public class GameOver : MonoBehaviourPunCallbacks
     public TextMeshProUGUI[] score_txt = new TextMeshProUGUI[4];
 
     public TextMeshProUGUI gameResultText;
-    public Image Win_Img;
     public Sprite[] player_img = new Sprite[4];
 
     void Start()
