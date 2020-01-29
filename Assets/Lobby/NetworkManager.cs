@@ -94,6 +94,15 @@ public class NetworkManager : MonoBehaviourPunCallbacks
     {
         StatusText.text = PhotonNetwork.NetworkClientState.ToString();
         LobbyInfoText.text = (PhotonNetwork.CountOfPlayers - PhotonNetwork.CountOfPlayersInRooms) + "로비 / " + PhotonNetwork.CountOfPlayers + "접속";
+        if(PhotonNetwork.InRoom == true) {
+            if (Input.GetKeyDown(KeyCode.Return))
+            {
+                if (ChatInput.text == "")
+                    ChatInput.ActivateInputField();
+                else
+                    Send();
+            }
+        }
     }
 
     public void Connect() => PhotonNetwork.ConnectUsingSettings();
@@ -202,6 +211,7 @@ public class NetworkManager : MonoBehaviourPunCallbacks
         string msg = PhotonNetwork.NickName + " : " + ChatInput.text;
         PV.RPC("ChatRPC", RpcTarget.All, PhotonNetwork.NickName + " : " + ChatInput.text);
         ChatInput.text = "";
+        ChatInput.ActivateInputField();
     }
 
     [PunRPC] // RPC는 플레이어가 속해있는 방 모든 인원에게 전달한다
