@@ -6,6 +6,7 @@ public class PrefebManager : MonoBehaviour
 {
     public static void CreateArrowPrefeb(GameObject isPrefeb, int locX, int locY)
     {
+        
         GameObject go = GameObject.Find(locX + ", " + locY);
         MeshRenderer mr = go.GetComponent<MeshRenderer>();
         float pos_x = go.transform.position.x;
@@ -38,6 +39,7 @@ public class PrefebManager : MonoBehaviour
 
     public static void CreateSwordPrefeb(GameObject isPrefeb, int locX, int locY, GameObject choice_effect)
     {
+        SoundManager.instance.PlayswordSound();
         GameObject go = GameObject.Find(locX + ", " + locY);
         float pos_x = go.transform.position.x;
         float pos_z = go.transform.position.z;

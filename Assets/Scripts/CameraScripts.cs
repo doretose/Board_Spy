@@ -1,6 +1,5 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
+using UnityEngine.EventSystems;
 
 public class CameraScripts : MonoBehaviour
 {
@@ -30,9 +29,11 @@ public class CameraScripts : MonoBehaviour
         Zoom();
         //Rotate();
     }
-
     void UpdateDrag()
     {
+        if (EventSystem.current.IsPointerOverGameObject())
+            return;
+
         if (Input.GetMouseButtonDown(0))
             lastDragPosition = Input.mousePosition;
         if (Input.GetMouseButton(0))

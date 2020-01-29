@@ -181,6 +181,7 @@ public class NetworkRoundManager : MonoBehaviourPunCallbacks, IPunObservable
     #region 버튼 및 함수부
     public void EndTurn()
     {
+        SoundManager.instance.ClickBtnSound();
         endButton.interactable = false;
         timeCost = 20;
         if (MouseScripts.mr.material.color != null)
@@ -198,6 +199,7 @@ public class NetworkRoundManager : MonoBehaviourPunCallbacks, IPunObservable
 
     public void SelectButton()
     {
+        SoundManager.instance.ClickBtnSound();
         selectButton.interactable = false;
         //selectCAndT[0, 1], [0, 2] ==> x,y좌표
         Debug.Log("선택된 맵 x , y좌표 = " + "(" + MouseScripts.choice_Map_x + "," + MouseScripts.choice_Map_y + ")");
@@ -230,6 +232,7 @@ public class NetworkRoundManager : MonoBehaviourPunCallbacks, IPunObservable
     //베이스캠프 셀렉트 버트 클릭시 실행 0라운드에 진행되는 베이스캠프 선택
     public void SelectBaseButton()
     {
+        SoundManager.instance.PlayBasecampSound();
         baseSelectButton.interactable = false;
         //맵 선택하면 Button 활성화하고 해당 맵의 좌표를 EvenetManager의 occTiles에 넣어준다.
         locX = MouseScripts.choice_Map_x;
@@ -410,6 +413,7 @@ public class NetworkRoundManager : MonoBehaviourPunCallbacks, IPunObservable
         if (endTileChilds.Length < 8)
         {
             PrefebManager.DestroyPrefebs(locX, locY);
+            SoundManager.instance.PlaytokenSound();
             PrefebManager.CreatePrefeb(tokken[playerId - 1], locX, locY, choice_effect);
         }
         else {
