@@ -85,7 +85,9 @@ public class NetworkManager : MonoBehaviourPunCallbacks
     #region 서버연결
     void Awake()
     {
-        Screen.SetResolution(1440, 810, false);
+        //시연용 800x450
+        //플레이용 1440 x 810 or 1280 x 720
+        Screen.SetResolution(800, 450, false);
         PhotonNetwork.AutomaticallySyncScene = true;
     }
     
@@ -105,7 +107,11 @@ public class NetworkManager : MonoBehaviourPunCallbacks
         }
     }
 
-    public void Connect() => PhotonNetwork.ConnectUsingSettings();
+    public void Connect()
+    {
+        PhotonNetwork.ConnectUsingSettings();
+        SoundManager.instance.ClickBtnSound();
+    }
 
     public override void OnConnectedToMaster() =>PhotonNetwork.JoinLobby();
 
@@ -137,14 +143,23 @@ public class NetworkManager : MonoBehaviourPunCallbacks
 
 
     #region 방
-    public void CreateRoom() => PhotonNetwork.CreateRoom(RoomInput.text == "" ? "Room" + Random.Range(0, 100) : RoomInput.text, new RoomOptions { MaxPlayers = 4 });
+    public void CreateRoom()
+    {
+        PhotonNetwork.CreateRoom(RoomInput.text == "" ? "Room" + Random.Range(0, 100) : RoomInput.text, new RoomOptions { MaxPlayers = 4 });
+        SoundManager.instance.ClickBtnSound();
+    }
 
-    public void JoinRandomRoom() => PhotonNetwork.JoinRandomRoom();
+    public void JoinRandomRoom()
+    {
+        PhotonNetwork.JoinRandomRoom();
+        SoundManager.instance.ClickBtnSound();
+    }
 
     public void LeaveRoom()
     {
         PhotonNetwork.LeaveRoom();
-     }
+        SoundManager.instance.BackBtnSound();
+    }
 
     public override void OnJoinedRoom()
     {
@@ -190,7 +205,8 @@ public class NetworkManager : MonoBehaviourPunCallbacks
         PhotonNetwork.CurrentRoom.IsOpen = false;
         PhotonNetwork.IsMessageQueueRunning = false;
         PhotonNetwork.CurrentRoom.IsVisible = false;
-       
+
+        SoundManager.instance.audioSource.Stop();
         Debug.Log("시작하기전");
         PhotonNetwork.LoadLevel(1);
     }
@@ -208,6 +224,7 @@ public class NetworkManager : MonoBehaviourPunCallbacks
     #region 채팅
     public void Send()
     {
+        SoundManager.instance.PlaysendMSGSound();
         string msg = PhotonNetwork.NickName + " : " + ChatInput.text;
         PV.RPC("ChatRPC", RpcTarget.All, PhotonNetwork.NickName + " : " + ChatInput.text);
         ChatInput.text = "";

@@ -13,6 +13,7 @@ TagManager:
   - GameOver
   - Bullet
   - war_item
+  - UI
   layers:
   - Default
   - TransparentFX

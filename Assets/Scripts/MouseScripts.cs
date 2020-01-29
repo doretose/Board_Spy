@@ -56,18 +56,14 @@ public class MouseScripts : MonoBehaviour
         if (Physics.Raycast(ray, out hitInfo, _layerMask))
         {
             GameObject ourHitObject = hitInfo.collider.transform.gameObject;
-            GameObject scrollbar_go = GameObject.Find("Scrollbar");
+            
             
             if (ourHitObject.GetComponent<Hex>() != null && !ourHitObject.GetComponent<Hex>().thisBaseCamp && NetworkRoundManager.isMyTurn)
             {
                 //Debug.Log("Raycast hit: " + ourHitObject.name);
                 if (Input.GetMouseButtonDown(0))
                 {
-                    if (hitInfo.collider.transform.gameObject == scrollbar_go)
-                    {
-                        Debug.Log("<color=green>break left mouse click</color>");
-                        return;
-                    }
+                    
                     //mr = ourHitObject.GetComponentInChildren<MeshRenderer>();
                     //ps = ourHitObject.GetComponentInChildren<ParticleSystem>();
                     //Debug.Log(ps);
@@ -124,7 +120,7 @@ public class MouseScripts : MonoBehaviour
                         // locX, locY, 패널.setActive(true), 
                         //실행되야될 함수 : 패널==> locX, locY(화면 텍스트 위치표시 용도), 
                         for (int i = 0; i < EventManager.selectTiles[right_choice_Map_x][right_choice_Map_y].Count; i++)
-                            Instantiate(War_prefab).transform.SetParent(GameObject.Find("Content").transform, false);
+                            Instantiate(War_prefab).transform.SetParent(GameObject.Find("war_result_Content").transform, false);
                         war_result_make();
                     }
                     else
@@ -139,7 +135,7 @@ public class MouseScripts : MonoBehaviour
     {
         for (int i = 0; i < EventManager.selectTiles[right_choice_Map_x][right_choice_Map_y].Count; i++)
         {
-            GameObject content_go = GameObject.Find("Content");
+            GameObject content_go = GameObject.Find("war_result_Content");
             TextMeshProUGUI used_num = content_go.transform.GetChild(i).GetChild(1).gameObject.GetComponent<TextMeshProUGUI>();
             Image used_player = content_go.transform.GetChild(i).GetChild(2).gameObject.GetComponent<Image>();
             Image used_card = content_go.transform.GetChild(i).GetChild(3).gameObject.GetComponent<Image>();
@@ -162,10 +158,10 @@ public class MouseScripts : MonoBehaviour
     {
         static_result_pannel.SetActive(true);
         for (int i = 0; i < EventManager.selectTiles[LocX][LocY].Count; i++)
-            Instantiate(static_War_prefab).transform.SetParent(GameObject.Find("Content").transform, false);
+            Instantiate(static_War_prefab).transform.SetParent(GameObject.Find("war_result_Content").transform, false);
         for (int i = 0; i < EventManager.selectTiles[LocX][LocY].Count; i++)
         {
-            GameObject content_go = GameObject.Find("Content");
+            GameObject content_go = GameObject.Find("war_result_Content");
             TextMeshProUGUI used_num = content_go.transform.GetChild(i).GetChild(1).gameObject.GetComponent<TextMeshProUGUI>();
             Image used_player = content_go.transform.GetChild(i).GetChild(2).gameObject.GetComponent<Image>();
             Image used_card = content_go.transform.GetChild(i).GetChild(3).gameObject.GetComponent<Image>();

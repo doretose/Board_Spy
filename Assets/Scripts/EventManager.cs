@@ -88,8 +88,14 @@ public class EventManager : MonoBehaviour
             LocY = tileLocY[i];
             
             Debug.Log("<color=red>Prefab create : </color>" + LocX +", " + LocY);
+
+            
             PrefebManager.CreateArrowPrefeb(arrow_tile, LocX, LocY);
-            yield return new WaitForSeconds(2);
+            SoundManager.instance.PlayArrowSound();
+            yield return new WaitForSeconds(1);
+            SoundManager.instance.PlayArrowSound();
+            yield return new WaitForSeconds(1);
+
             MouseScripts.result_pannel_roundover(LocX,  LocY);
             for (int j = 0; j < selectTiles[LocX][LocY].Count; ++j)
             {
@@ -143,7 +149,7 @@ public class EventManager : MonoBehaviour
              * 3개 초과이면 4초
              * 7개 이상이면 6초
              */ 
-             GameObject content_go = GameObject.Find("Content");
+             GameObject content_go = GameObject.Find("war_result_Content");
             if (content_go.transform.childCount <= 3) {
                 yield return new WaitForSeconds(2);
             }
@@ -191,13 +197,22 @@ public class EventManager : MonoBehaviour
         if (NetworkRoundManager.nowRound > NetworkRoundManager.roundLimit)
         {
             yield return new WaitForSeconds(1);
-
+            if (GameOver.player_is_win == true)
+            {
+                SoundManager.instance.audioSource.Stop();
+                SoundManager.instance.PlayWinSound();
+            }
+            else
+            {
+                SoundManager.instance.audioSource.Stop();
+                SoundManager.instance.PlayLoseSound();
+            }
             game_result_pannel.SetActive(true);
         }
         else
         {
             yield return new WaitForSeconds(1);
-
+            
             //라운드 텍스트 이동
             NetworkRoundManager.roundProcessBool = false;
             TweenMoveObj();

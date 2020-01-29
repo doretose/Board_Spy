@@ -18,7 +18,7 @@ public class GameOver : MonoBehaviourPunCallbacks
 
     public TextMeshProUGUI gameResultText;
     public Sprite[] player_img = new Sprite[4];
-
+    public static bool player_is_win = false;
     void Start()
     {
         //플레이어 2명일때 34번 패널 지움
@@ -55,8 +55,12 @@ public class GameOver : MonoBehaviourPunCallbacks
 
         if(temp == EventManager.player_score[NetworkRoundManager.public_Player_Id -1])
         {
+            player_is_win = true;
             gameResultText.text = "You Win!!";
-        } else { gameResultText.text = "You Lose..."; }
+        } else {
+            player_is_win = false;
+            gameResultText.text = "You Lose...";
+        }
 
         if (temp2 != -1)
         {
