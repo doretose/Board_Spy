@@ -47,7 +47,7 @@ public class NetworkRoundManager : MonoBehaviourPunCallbacks, IPunObservable
     //시간제한 함수
     public TextMeshProUGUI timeText;
     private float timeCost;
-
+    private float timeLimit = 99;
     //라운드실행제어 변수
     public static bool roundProcessBool;
     public static bool isMyTurn = false;
@@ -61,7 +61,7 @@ public class NetworkRoundManager : MonoBehaviourPunCallbacks, IPunObservable
         playerTurn.Clear();
         cardNum.Clear();
         roundProcessBool = false;
-        roundLimit = 6;
+        roundLimit = 4;
 
         pv = this.GetComponent<PhotonView>();
 
@@ -70,7 +70,8 @@ public class NetworkRoundManager : MonoBehaviourPunCallbacks, IPunObservable
         //최초 선플레이어 지정, 모든 유저의 Turn을 True 플레이어 Id값 입력
         if (PhotonNetwork.IsMasterClient)
         {
-            startPlayerId = Random.Range(0, player_Number);
+            //Random.Range(0, player_Number);
+            startPlayerId = 0;
             inRoundingPlayerId = startPlayerId;
 
         }
@@ -82,7 +83,7 @@ public class NetworkRoundManager : MonoBehaviourPunCallbacks, IPunObservable
 
         myPlayerId = PhotonNetwork.LocalPlayer.ActorNumber;
         public_Player_Id = myPlayerId;
-        timeCost = 20;
+        timeCost = timeLimit;
     }
 
     void FixedUpdate()
@@ -171,7 +172,7 @@ public class NetworkRoundManager : MonoBehaviourPunCallbacks, IPunObservable
             isMyTurn = false;
             //시간제한
             timeText.gameObject.SetActive(false);
-            timeCost = 20;
+            timeCost = timeLimit;
 
             endButton.interactable = false;
             selectButton.interactable = false;
@@ -183,7 +184,7 @@ public class NetworkRoundManager : MonoBehaviourPunCallbacks, IPunObservable
     {
         SoundManager.instance.ClickBtnSound();
         endButton.interactable = false;
-        timeCost = 20;
+        timeCost = timeLimit;
         if (MouseScripts.mr.material.color != null)
             init_tile(MouseScripts.choice_Map_x, MouseScripts.choice_Map_y);
 
@@ -216,7 +217,7 @@ public class NetworkRoundManager : MonoBehaviourPunCallbacks, IPunObservable
         Destroy(destoy_Card);
 
         pv.RPC("RPCNextPlayer", RpcTarget.AllBuffered);
-        timeCost = 20;
+        timeCost = timeLimit;
         selectCard = null;
     }
 
@@ -275,7 +276,7 @@ public class NetworkRoundManager : MonoBehaviourPunCallbacks, IPunObservable
             }
         }
 
-        startPlayerId = (startPlayerId + 1) % player_Number;
+        startPlayerId = (startPlayerId) % player_Number;
         inRoundingPlayerId = startPlayerId;
         //nowRound += 1;
     }
@@ -330,7 +331,7 @@ public class NetworkRoundManager : MonoBehaviourPunCallbacks, IPunObservable
         endButton.interactable = false;
         selectButton.interactable = false;
         timeText.gameObject.SetActive(false);
-        timeCost = 20;
+        timeCost = timeLimit;
     }
 
     public static Color getMyColor(int occId)
