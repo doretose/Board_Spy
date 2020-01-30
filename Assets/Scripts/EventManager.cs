@@ -150,13 +150,24 @@ public class EventManager : MonoBehaviour
              * 7개 이상이면 6초
              */ 
              GameObject content_go = GameObject.Find("war_result_Content");
-            if (content_go.transform.childCount <= 3) {
-                yield return new WaitForSeconds(2);
-            }
-            else if (3 < content_go.transform.childCount && content_go.transform.childCount < 6){
+
+            if (content_go.transform.childCount <= 10)
+            {
                 yield return new WaitForSeconds(4);
             }
-            else { yield return new WaitForSeconds(6); }
+
+
+
+
+
+
+            //if (content_go.transform.childCount <= 3) {
+            //    yield return new WaitForSeconds(2);
+            //}
+            //else if (3 < content_go.transform.childCount && content_go.transform.childCount < 6){
+            //    yield return new WaitForSeconds(4);
+            //}
+            //else { yield return new WaitForSeconds(6); }
             MouseScripts.war_result_off();
             //탐색이 끝난 타일 초기화
             selectTiles[LocX][LocY].Clear();

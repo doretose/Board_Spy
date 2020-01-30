@@ -39,6 +39,9 @@ public class spyCardDeck : MonoBehaviour
             }
         }
         Shuffle();
+        deck[49] = CardDataBase.cardList[0];
+        deck[48] = CardDataBase.cardList[2];
+        deck[47] = CardDataBase.cardList[3];
     }
 
     void Update()
